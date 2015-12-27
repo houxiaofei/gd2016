@@ -1,17 +1,13 @@
-#include "MPC5604B.h"
+#include "includes.h"
 
 
 
 int main(void) {
-  volatile int i = 0;
-
+	
+	initALL();
+	for(;;){
+	}
   
-
-
-  /* Loop forever */
-  for (;;) {
-    i++;
-  }
 }
 
 
