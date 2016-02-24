@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-int currentspeedleft=0,currentspeedright=0;
+int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)

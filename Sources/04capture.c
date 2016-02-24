@@ -87,27 +87,27 @@ void SpeedCount(void)
 	speedcounter1=EMIOS_0.CH[24].CCNTR.R;              //×óD12
 	if(speedcounter1<speedcounter2)
 	{
-		currentspeedleft=speedcounter1+65536-speedcounter2;
+		csl=speedcounter1+65536-speedcounter2;         //current speed left
 	}
 	else 
-		currentspeedleft=speedcounter1-speedcounter2;
-	if(forewardleft)
-		currentspeedleft=currentspeedleft;
-	else 
-		currentspeedleft=-currentspeedleft;
+		csl=speedcounter1-speedcounter2;
+//	if(forewardleft)
+//		csl=csl;
+//	else 
+//		csl=-csl;
 	speedcounter2=speedcounter1;
 	
 	speedcounter3=EMIOS_0.CH[8].CCNTR.R;               //ÓÒA8
 	if(speedcounter3<speedcounter4)
 	{
-		currentspeedright=speedcounter3+65536-speedcounter4;
+		csr=speedcounter3+65536-speedcounter4;         //current speed right
 	}
 	else 
-		currentspeedright=speedcounter3-speedcounter4;	
-	if(backwardright) 
-		currentspeedright=-currentspeedright;
-	else 
-		currentspeedright=currentspeedright;
+		csr=speedcounter3-speedcounter4;	
+//	if(backwardright) 
+//		csr=-csr;
+//	else 
+//		csr=csr;
 	speedcounter4=speedcounter3;
 }
 

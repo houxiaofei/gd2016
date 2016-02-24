@@ -54,6 +54,7 @@ void LINFlex_TX_Interrupt(void)
 	unsigned char aa='L';
 	unsigned char bb='R';
 	unsigned char steer='X';
+	unsigned char speed='Y';
 //		if(*send!=0x00&&Ts==0)
 //			LINFlex_TX(*send++);
 //		else
@@ -133,7 +134,43 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(CurrentSteer));
 		Ts=14;
 		break;
-	case 14:
+	case 14: 
+		LINFlex_TX(speed);
+		Ts=15;
+		break;
+	case 15: 
+		LINFlex_TX(SendInt1(csl));
+		Ts=16;
+		break;
+	case 16: 
+		LINFlex_TX(SendInt2(csl));
+		Ts=17;
+		break;
+	case 17: 
+		LINFlex_TX(SendInt3(csl));
+		Ts=18;
+		break;
+	case 18:
+		LINFlex_TX(SendInt4(csl));
+		Ts=19;
+		break;
+	case 19: 
+		LINFlex_TX(SendInt1(csr));
+		Ts=20;
+		break;
+	case 20: 
+		LINFlex_TX(SendInt2(csr));
+		Ts=21;
+		break;
+	case 21: 
+		LINFlex_TX(SendInt3(csr));
+		Ts=22;
+		break;
+	case 22:
+		LINFlex_TX(SendInt4(csr));
+		Ts=23;
+		break;
+	case 23:
 		send = putstring;
 		Ts=0;
 		LINFLEX_0.LINCR1.B.INIT=1;
@@ -152,13 +189,13 @@ void KeyJudge(void)
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
 		TargetSteer+=100;}
-	if(S4==0&&S4_last==1){   //按键F2按下
+	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
 	    TargetSteer-=100;}
-	if(S5==0&&S5_last==1){   //按键S3按下
+	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
 		TargetSteer+=10;}
-	if(S6==0&&S6_last==1){   //按键F2按下
+	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
 		TargetSteer-=10;}
 	S3_last=S3;             //保存按键的状态

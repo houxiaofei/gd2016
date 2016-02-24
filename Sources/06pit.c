@@ -36,7 +36,7 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount3>=20)                          //100ms一次
 		{
 			pitcount3=0;
-			//SpeedCount();
+			SpeedCount();
 		}
 	}
 	if(pitcount0==5)

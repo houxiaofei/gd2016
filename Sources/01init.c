@@ -13,6 +13,7 @@ void initALL(void)
 	initModesAndClock();
 	enableIrq();
 	initEMIOS_0MotorAndSteer();
+	initEMIOS_0ModulusCounter();
 //	initEMIOS_0Image();
 	initLINFlex_0_UART();
 	initAD();
@@ -131,28 +132,28 @@ void initEMIOS_0MotorAndSteer(void)
 void initEMIOS_0ModulusCounter(void) //D12,A8模数计数器入口，上升沿，D11,A6光编正反转
 {
 	//D12
-	//	EMIOS_0.CH[24].CCR.B.MODE = 0x51; // Mode is MCB, 
-		EMIOS_0.CH[24].CCR.B.MODE = 0x13; // Mode is MCB, 
-		EMIOS_0.CH[24].CCR.B.BSL = 0x3; // Use internal counter
-		EMIOS_0.CH[24].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
-		EMIOS_0.CH[24].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
-		//EMIOS_0.CH[24].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
-		EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
-		EMIOS_0.CH[24].CADR.R=0xffff;
-		SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	 	SIU.PCR[59].R = 0x0102;  //PD11左轮光编正反转 ，高电平正转，低电平反转
+	//EMIOS_0.CH[24].CCR.B.MODE = 0x51; // Mode is MCB, 
+	EMIOS_0.CH[24].CCR.B.MODE = 0x13; // Mode is MCB, 
+	EMIOS_0.CH[24].CCR.B.BSL = 0x3; // Use internal counter
+	EMIOS_0.CH[24].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
+	EMIOS_0.CH[24].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
+	//EMIOS_0.CH[24].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
+	EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
+	EMIOS_0.CH[24].CADR.R=0xffff;
+	SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
+	SIU.PCR[59].R = 0x0102;  //PD11左轮光编正反转 ，高电平正转，低电平反转
 	 
 	 //A8 
 	 //	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
-		EMIOS_0.CH[8].CCR.B.MODE = 0x13; // Mode is MCB, 
-		EMIOS_0.CH[8].CCR.B.BSL = 0x3; // Use internal counter
-		EMIOS_0.CH[8].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
-		EMIOS_0.CH[8].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
-		//EMIOS_0.CH[8].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
-		EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
-		EMIOS_0.CH[8].CADR.R=0xffff;
-		SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-		SIU.PCR[6].R=0x0102;  //A6右轮光编正反转，高电平反转，低电平正转
+	EMIOS_0.CH[8].CCR.B.MODE = 0x13; // Mode is MCB, 
+	EMIOS_0.CH[8].CCR.B.BSL = 0x3; // Use internal counter
+	EMIOS_0.CH[8].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
+	EMIOS_0.CH[8].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
+	//EMIOS_0.CH[8].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
+	EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
+	EMIOS_0.CH[8].CADR.R=0xffff;
+	SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
+	SIU.PCR[6].R=0x0102;  //A6右轮光编正反转，高电平反转，低电平正转
 }
 
 //*****************************************************************************************************************
