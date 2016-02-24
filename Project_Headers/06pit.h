@@ -12,5 +12,6 @@ void initPIT(void);
 void PitISR(void);
 
 extern unsigned int IOtest;
+extern unsigned int pitcount0,pitcount1,pitcount2,pitcount3,pitcount4,pitcount5;
 
 #endif /* PIT_H_ */

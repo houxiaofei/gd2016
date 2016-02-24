@@ -13,4 +13,7 @@ void SET_motor_test(void);
 void SET_steer_test(void);
 void IO_test(void);
 
+extern unsigned int pit1count;
+extern unsigned char test_output;
+
 #endif /* TEST_H_ */

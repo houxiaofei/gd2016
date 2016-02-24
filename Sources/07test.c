@@ -21,14 +21,14 @@ void test(void){
 /*************************µç»ú²âÊÔº¯Êý*********************/
 void SET_motor_test(void)                                      //CH16 Count500
 {
-	EMIOS_0.CH[19].CBDR.R = 100;EMIOS_0.CH[20].CBDR.R = 150;
-	EMIOS_0.CH[21].CBDR.R = 200;EMIOS_0.CH[22].CBDR.R = 300;
+	EMIOS_0.CH[19].CBDR.R = 80;EMIOS_0.CH[20].CBDR.R = 0;//ÓÒÂÖ  E3ÓÒ½ø   E4ÓÒÍË
+	EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R = 80;//×óÂÖ  E5×óÍË   E6×ó½ø
 }
 
 /*************************¶æ»ú²âÊÔº¯Êý***********************/
 void SET_steer_test(void)                                   //CH23 Count50000
 {
-	EMIOS_0.CH[11].CBDR.R = 20000;
+	EMIOS_0.CH[11].CBDR.R = CENTER;
 }
 
 /*************************¶æ»ú²âÊÔº¯Êý***********************/
@@ -42,7 +42,7 @@ void IO_test(void)                                   //CH23 Count50000
 			test_output=0;
 		else
 			test_output=1;
-		SIU.GPDO[24].R = test_output;//CCDL AO  B8
+//		SIU.GPDO[24].R = test_output;//CCDL AO  B8
 //		SIU.GPDO[27].R = ~SIU.GPDO[27].R;//CCDL CLK B11
 //		SIU.GPDO[61].R = ~SIU.GPDO[61].R;//CCDL SI  D13
 //		SIU.GPDO[26].R = ~SIU.GPDO[26].R;//CCDR AO  B10

@@ -11,13 +11,14 @@ void initALL(void)
 {
 	disableWatchdog();
 	initModesAndClock();
+	enableIrq();
 	initEMIOS_0MotorAndSteer();
 //	initEMIOS_0Image();
-//	initLINFlex_0_UART();
+	initLINFlex_0_UART();
+	initAD();
 //	initOLED();
 //	initKeys_Switchs_Infrared();
 	initTestIO();
-	enableIrq();
 }
 
 /*********************************************************************************************/
@@ -62,8 +63,9 @@ void initModesAndClock(void)
 }
 
 //*****************************************************************************************************************
-//*************************	PWM初始化:电机正反转E3、E4、E5、E6；舵机输出A4  **********************************************
+//*************************eMIOS初始化:电机正反转E3、E4、E5、E6；舵机输出A4  **********************************************
 //*****************************************************************************************************************
+/*************************PWM初始化***********************/
 void initEMIOS_0MotorAndSteer(void)
 {
   //eMIOS0初始化80MHz分为1MHz
@@ -122,8 +124,53 @@ void initEMIOS_0MotorAndSteer(void)
 	EMIOS_0.CH[11].CCR.B.MODE = 0x60; /* Mode is OPWM Buffered */  
 	EMIOS_0.CH[11].CCR.B.EDPOL = 1;	/* Polarity-leading edge sets output/trailing clears*/
 	EMIOS_0.CH[11].CADR.R = 0;//半占空比/* Leading edge when channel counter bus=250*/
-	EMIOS_0.CH[11].CBDR.R = 0;            /* Trailing edge when channel counter bus=500*/
+	EMIOS_0.CH[11].CBDR.R = CENTER;            /* Trailing edge when channel counter bus=500*/
 	SIU.PCR[11].R = 0x0600;    //[11:10]选择AFx 此处AF1   A4口舵机输出
+}
+/*************************光编初始化***********************/
+void initEMIOS_0ModulusCounter(void) //D12,A8模数计数器入口，上升沿，D11,A6光编正反转
+{
+	//D12
+	//	EMIOS_0.CH[24].CCR.B.MODE = 0x51; // Mode is MCB, 
+		EMIOS_0.CH[24].CCR.B.MODE = 0x13; // Mode is MCB, 
+		EMIOS_0.CH[24].CCR.B.BSL = 0x3; // Use internal counter
+		EMIOS_0.CH[24].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
+		EMIOS_0.CH[24].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
+		//EMIOS_0.CH[24].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
+		EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
+		EMIOS_0.CH[24].CADR.R=0xffff;
+		SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
+	 	SIU.PCR[59].R = 0x0102;  //PD11左轮光编正反转 ，高电平正转，低电平反转
+	 
+	 //A8 
+	 //	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
+		EMIOS_0.CH[8].CCR.B.MODE = 0x13; // Mode is MCB, 
+		EMIOS_0.CH[8].CCR.B.BSL = 0x3; // Use internal counter
+		EMIOS_0.CH[8].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
+		EMIOS_0.CH[8].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
+		//EMIOS_0.CH[8].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
+		EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
+		EMIOS_0.CH[8].CADR.R=0xffff;
+		SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
+		SIU.PCR[6].R=0x0102;  //A6右轮光编正反转，高电平反转，低电平正转
+}
+
+//*****************************************************************************************************************
+//****************************************ADC初始化******************************************************    	  *
+//*****************************************************************************************************************
+void initAD(void)
+{
+  ADC.MCR.R = 0x20000000;       /*未读转换数据不能被覆盖；右对齐；连续转换序列模式；引起当前链转换结束并终止操作；对通道注入的外触发器使不能；模拟时钟频率为40MHz；CTU触发转换使不能；自动时钟关闭使不能；正常模式*/
+  ADC.NCMR[1].R = 0x00000005;   /*使能CH32和CH34通道（标准通道）的位正常采样*/
+  ADC.CTR[1].R = 0x00008606;    /*转换时间寄存器 与标准通道相关联*/
+  ADC.MCR.B.NSTART=1;         /* Trigger normal conversions for ADC0 */
+  
+  SIU.PCR[24].R = 0x2100;//CCDL AO  B8
+  SIU.PCR[27].R = 0x0200;//CCDL CLK B11
+  SIU.PCR[61].R = 0x0200;//CCDL SI  D13
+  SIU.PCR[26].R = 0x2100;//CCDR AO  B10
+  SIU.PCR[63].R = 0x0200;//CCDR CLK D15
+  SIU.PCR[62].R = 0x0200;//CCDR SI  D14
 }
 
 //*****************************************************************************************************************
@@ -135,66 +182,86 @@ void enableIrq(void)
   asm(" wrteei 1");	    	   /* Enable external interrupts */
 }
 
-
+//*****************************************************************************************************************
+//************************************************调试模块************************************************    	  *
+//*****************************************************************************************************************
+/*************************蓝牙初始化***********************/
+void initLINFlex_0_UART(void) 
+{
+	LINFLEX_0.LINCR1.B.INIT=1;  //进入初始化模式
+	LINFLEX_0.LINCR1.R=0x00000015; 
+	LINFLEX_0.LINIER.B.DTIE=1; //禁止发送中断
+	/*波特率算法baud=Fperiph_clk/(16*LFDIV)
+	DIV_M=LFDIV整数部分
+	DIV_F=LFDIV小数部分*16  */
+      //38400:64M-104+3
+	LINFLEX_0.LINIBRR.B.DIV_M =130;  	//波特率设置38400:80M-130+3 57600:80M-86+13 115200:80M-43+6 
+	LINFLEX_0.LINFBRR.B.DIV_F =3;	//38400:64M-104+3
+    LINFLEX_0.UARTCR.B.UART=1;
+	LINFLEX_0.UARTCR.R=0x00000033;//8-bit data UART mode
+	LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
+	
+	SIU.PCR[18].R = 0x0400;    /* MPC56xxB: Configure port B2 as LIN0TX */
+    SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
+  	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,4); 
+}
 
 /*********************测试IO初始化***********************/
 void initTestIO(void)
 {
-	SIU.PCR[24].R = 0x0200;//CCDL AO  B8
-	SIU.PCR[27].R = 0x0200;//CCDL CLK B11
-	SIU.PCR[61].R = 0x0200;//CCDL SI  D13
-	SIU.PCR[26].R = 0x0200;//CCDR AO  B10
-	SIU.PCR[63].R = 0x0200;//CCDR CLK D15
-	SIU.PCR[62].R = 0x0200;//CCDR SI  D14
-	SIU.PCR[25].R = 0x0200;//CCDM AO  B9
-	SIU.PCR[46].R = 0x0200;//CCDM CLK C14
-	SIU.PCR[2].R = 0x0200; //CCDM SI  A2
-	SIU.PCR[59].R = 0x0200;//COUNTER1 D11
-	SIU.PCR[60].R = 0x0200;//COUNTER1 D12
-	SIU.PCR[6].R = 0x0200; //COUNTER2 A6
-	SIU.PCR[8].R = 0x0200; //COUNTER1 A8
-	SIU.PCR[72].R = 0x0200;//OLED     E8
-	SIU.PCR[74].R = 0x0200;//OLED     E10
-	SIU.PCR[75].R = 0x0200;//OLED     E11
-	SIU.PCR[42].R = 0x0200;//OLED     C10
-	SIU.PCR[17].R = 0x0200;//OLED     B1
+//	SIU.PCR[24].R = 0x0200;//CCDL AO  B8
+//	SIU.PCR[27].R = 0x0200;//CCDL CLK B11
+//	SIU.PCR[61].R = 0x0200;//CCDL SI  D13
+//	SIU.PCR[26].R = 0x0200;//CCDR AO  B10
+//	SIU.PCR[63].R = 0x0200;//CCDR CLK D15
+//	SIU.PCR[62].R = 0x0200;//CCDR SI  D14
+//	SIU.PCR[25].R = 0x0200;//CCDM AO  B9
+//	SIU.PCR[46].R = 0x0200;//CCDM CLK C14
+//	SIU.PCR[2].R = 0x0200; //CCDM SI  A2
+//	SIU.PCR[59].R = 0x0200;//COUNTER1 D11
+//	SIU.PCR[60].R = 0x0200;//COUNTER1 D12
+//	SIU.PCR[6].R = 0x0200; //COUNTER2 A6
+//	SIU.PCR[8].R = 0x0200; //COUNTER1 A8
+//	SIU.PCR[72].R = 0x0200;//OLED     E8
+//	SIU.PCR[74].R = 0x0200;//OLED     E10
+//	SIU.PCR[75].R = 0x0200;//OLED     E11
+//	SIU.PCR[42].R = 0x0200;//OLED     C10
+//	SIU.PCR[17].R = 0x0200;//OLED     B1
 	SIU.PCR[0].R = 0x0200; //BEE      A0
-	SIU.PCR[9].R = 0x0200; //SUPER1   A9
-	SIU.PCR[5].R = 0x0200; //SUPER1   A5
-	SIU.PCR[66].R = 0x0200;//SUPER1   E2
-	SIU.PCR[18].R = 0x0200;//UART     B2
-	SIU.PCR[19].R = 0x0200;//UART     B3
-	SIU.PCR[50].R = 0x0103;//SWITCH   D2
-	SIU.PCR[52].R = 0x0103;//SWITCH   D4
-	SIU.PCR[54].R = 0x0103;//SWITCH   D6
-	SIU.PCR[56].R = 0x0103;//SWITCH   D8
+//	SIU.PCR[9].R = 0x0200; //SUPER1   A9
+//	SIU.PCR[5].R = 0x0200; //SUPER1   A5
+//	SIU.PCR[66].R = 0x0200;//SUPER1   E2
+	SIU.PCR[50].R = 0x0100;//SWITCH1  D2
+	SIU.PCR[52].R = 0x0100;//SWITCH2  D4
+	SIU.PCR[54].R = 0x0100;//SWITCH3  D6
+	SIU.PCR[56].R = 0x0100;//SWITCH4  D8
 	SIU.PCR[28].R = 0x0103;//KEY S6   B12
 	SIU.PCR[29].R = 0x0103;//KEY S5   B13
 	SIU.PCR[30].R = 0x0103;//KEY S4   B14
 	SIU.PCR[31].R = 0x0103;//KEY S3   B15
-	
-	SIU.GPDO[24].R = 0;//CCDL AO  B8
-	SIU.GPDO[27].R = 0;//CCDL CLK B11
-	SIU.GPDO[61].R = 0;//CCDL SI  D13
-	SIU.GPDO[26].R = 0;//CCDR AO  B10
-	SIU.GPDO[63].R = 0;//CCDR CLK D15
-	SIU.GPDO[62].R = 0;//CCDR SI  D14
-	SIU.GPDO[25].R = 0;//CCDM AO  B9
-	SIU.GPDO[46].R = 0;//CCDM CLK C14
-	SIU.GPDO[2].R = 0; //CCDM SI  A2
-	SIU.GPDO[59].R = 0;//COUNTER1 D11
-	SIU.GPDO[60].R = 0;//COUNTER1 D12
-	SIU.GPDO[6].R = 0; //COUNTER2 A6
-	SIU.GPDO[8].R = 0; //COUNTER1 A8
-	SIU.GPDO[72].R = 0;//OLED     E8
-	SIU.GPDO[74].R = 0;//OLED     E10
-	SIU.GPDO[75].R = 0;//OLED     E11
-	SIU.GPDO[42].R = 0;//OLED     C10
-	SIU.GPDO[17].R = 0;//OLED     B1
+//	
+//	SIU.GPDO[24].R = 1;//CCDL AO  B8
+//	SIU.GPDO[27].R = 0;//CCDL CLK B11
+//	SIU.GPDO[61].R = 0;//CCDL SI  D13
+//	SIU.GPDO[26].R = 1;//CCDR AO  B10
+//	SIU.GPDO[63].R = 0;//CCDR CLK D15
+//	SIU.GPDO[62].R = 0;//CCDR SI  D14
+//	SIU.GPDO[25].R = 1;//CCDM AO  B9
+//	SIU.GPDO[46].R = 0;//CCDM CLK C14
+//	SIU.GPDO[2].R = 0; //CCDM SI  A2
+//	SIU.GPDO[59].R = 1;//COUNTER1 D11
+//	SIU.GPDO[60].R = 0;//COUNTER1 D12
+//	SIU.GPDO[6].R = 0; //COUNTER2 A6
+//	SIU.GPDO[8].R = 1; //COUNTER1 A8
+//	SIU.GPDO[72].R = 0;//OLED     E8
+//	SIU.GPDO[74].R = 0;//OLED     E10
+//	SIU.GPDO[75].R = 0;//OLED     E11
+//	SIU.GPDO[42].R = 0;//OLED     C10
+//	SIU.GPDO[17].R = 1;//OLED     B1
 	SIU.GPDO[0].R = 0; //BEE      A0
-	SIU.GPDO[9].R = 0; //SUPER1   A9
-	SIU.GPDO[5].R = 0; //SUPER1   A5
-	SIU.GPDO[66].R = 0;//SUPER1   E2
-	SIU.GPDO[18].R = 0;//UART     B2
-	SIU.GPDO[19].R = 0;//UART     B3
+//	SIU.GPDO[9].R = 1; //SUPER1   A9
+//	SIU.GPDO[5].R = 0; //SUPER1   A5
+//	SIU.GPDO[66].R = 0;//SUPER1   E2
+//	SIU.GPDO[18].R = 1;//UART     B2
+//	SIU.GPDO[19].R = 0;//UART     B3
 }
