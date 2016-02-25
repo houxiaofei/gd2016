@@ -8,6 +8,7 @@
 #include "includes.h"
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
+int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
@@ -18,4 +19,10 @@ void SET_motor(int leftSpeed,int rightSpeed)
 		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
 }
 
-/*************************光编计数函数*********************/
+/*************************后轮差速函数*********************/
+//void Speed_differ(int ratio)
+//{
+//	int leftspeed,rightdpeed;
+//	
+//	
+//}

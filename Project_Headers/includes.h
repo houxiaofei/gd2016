@@ -17,6 +17,7 @@
 #include "06pit.h"
 #include "07test.h"
 #include "08sci.h"
+#include "09analysis.h"
 #include "delay.h"
 #include "IntcInterrupts.h"
 #include "string.h"
@@ -44,7 +45,7 @@ extern int PixelRight[128];
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[11].CBDR.R // ¶æ»úÖµ
-#define CENTER 3720;//3495
+#define CENTER 3692;//3720
 
 
 #endif /* INCLUDES_H_ */

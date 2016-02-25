@@ -8,6 +8,9 @@
 #ifndef STEER_H_
 #define STEER_H_
 
+extern int target_offset,last_offset;
 
+void SET_steer(unsigned int steer);
+void SteerControl(void);
 
 #endif /* 03STEER_H_ */

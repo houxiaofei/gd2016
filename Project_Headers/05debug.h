@@ -8,12 +8,12 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
+extern int Left[128];
+extern int Right[128];
 extern unsigned char *send;
 extern unsigned char putstring[];
 extern unsigned int Ts;
 extern unsigned int Tc;
-extern int Left[128];
-extern int Right[128];
 extern int CurrentSteer;
 
 extern unsigned char S3_last;

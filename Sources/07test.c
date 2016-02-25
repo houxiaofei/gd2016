@@ -22,7 +22,7 @@ void test(void){
 void SET_motor_test(void)                                      //CH16 Count500
 {
 	EMIOS_0.CH[19].CBDR.R = 80;EMIOS_0.CH[20].CBDR.R = 0;//右轮  E3右进   E4右退
-	EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R = 80;//左轮  E5左退   E6左进
+	EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R = 100;//左轮  E5左退   E6左进
 }
 
 /*************************舵机测试函数***********************/

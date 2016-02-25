@@ -9,10 +9,10 @@
 
 unsigned char *send;
 unsigned char putstring[]="Image";
+int Left[128];
+int Right[128];
 unsigned int Ts=0;
 unsigned int Tc=0;
-int Left[128]={0};
-int Right[128]={0};
 int CurrentSteer=0;
 
 unsigned char S3_last=1;
@@ -55,6 +55,7 @@ void LINFlex_TX_Interrupt(void)
 	unsigned char bb='R';
 	unsigned char steer='X';
 	unsigned char speed='Y';
+	unsigned char data='Z';
 //		if(*send!=0x00&&Ts==0)
 //			LINFlex_TX(*send++);
 //		else
@@ -69,8 +70,8 @@ void LINFlex_TX_Interrupt(void)
 				Ts=1;
 				break;}
 	case 1:
-		ImageCopy(Left,PixelLeft);
 		LINFlex_TX(aa);
+		ImageCopy(Left,PixelLeft);
 		Ts=2;
 		break;
 	case 2: 
@@ -91,8 +92,8 @@ void LINFlex_TX_Interrupt(void)
 			Ts=5;}
 		break;
 	case 5: 
-		ImageCopy(Right,PixelRight);
 		LINFlex_TX(bb);
+		ImageCopy(Right,PixelRight);
 		Ts=6;
 		break;
 	case 6: 
@@ -139,35 +140,43 @@ void LINFlex_TX_Interrupt(void)
 		Ts=15;
 		break;
 	case 15: 
-		LINFlex_TX(SendInt1(csl));
+		//LINFlex_TX(SendInt1(csl));
+		LINFlex_TX(SendInt2(b_value));
 		Ts=16;
 		break;
 	case 16: 
-		LINFlex_TX(SendInt2(csl));
+		//LINFlex_TX(SendInt2(csl));
+		LINFlex_TX(SendInt3(b_value));
 		Ts=17;
 		break;
 	case 17: 
-		LINFlex_TX(SendInt3(csl));
+		//LINFlex_TX(SendInt3(csl));
+		LINFlex_TX(SendInt4(b_value));
 		Ts=18;
 		break;
 	case 18:
-		LINFlex_TX(SendInt4(csl));
+		//LINFlex_TX(SendInt4(csl));
+		LINFlex_TX(SendInt3(b_start));
 		Ts=19;
 		break;
 	case 19: 
-		LINFlex_TX(SendInt1(csr));
+		//LINFlex_TX(SendInt1(csr));
+		LINFlex_TX(SendInt4(b_start));
 		Ts=20;
 		break;
 	case 20: 
-		LINFlex_TX(SendInt2(csr));
+		//LINFlex_TX(SendInt2(csr));
+		LINFlex_TX(SendInt2(b_T));
 		Ts=21;
 		break;
 	case 21: 
-		LINFlex_TX(SendInt3(csr));
+		//LINFlex_TX(SendInt3(csr));
+		LINFlex_TX(SendInt3(b_T));
 		Ts=22;
 		break;
 	case 22:
-		LINFlex_TX(SendInt4(csr));
+		//LINFlex_TX(SendInt4(csr));
+		LINFlex_TX(SendInt4(b_T));
 		Ts=23;
 		break;
 	case 23:

@@ -34,3 +34,10 @@ void udelay(int us)
    	       __asm(nop); __asm(nop); __asm(nop); __asm(nop);
    }
 }
+
+void mdelay(int ms)
+{
+	int mdelay_i;
+	for(mdelay_i=0;mdelay_i<ms;mdelay_i++)
+		udelay(1000);
+}

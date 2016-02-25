@@ -9,6 +9,7 @@
 #define DELAY_H_
 
 extern void udelay(int us);
+extern void mdelay(int ms);
 
 /* CPU delay 600ns at 80M bus clock */\
 #define Cpu_Delay600ns() \
