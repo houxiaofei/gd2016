@@ -10,14 +10,15 @@
 int A[128]={0};
 int B[128]={0};
 int al_end=0,ar_end=0,bl_end=0,br_end=0;
-int a_start=0,b_start=0;
-int a_value=0,b_value=0;                          //判断跳变沿的差值标准
-int a_T=0,b_T=0;                                  //黑白阈值
+int a_start=0,b_start=67;
+int a_value=0,b_value=260;                          //判断跳变沿的差值标准
+int a_T=0,b_T=600;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=0,b_PixelNumber=44;
 int a_allwhite=0,a_allblack=0,b_allwhite=42,b_allblack=2;                  //全白,全黑判断标准
 int a_scan=5,a_halfscan=3,b_scan=5,b_halfscan=3;
-int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
+int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
+int wrong_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0;
 int i=0,j=0;
@@ -34,7 +35,7 @@ void DataSet(void)
 		ImageCapture(PixelLeft,PixelRight);
 		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
 		bvcnt+=bv[k];
-		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4;
+		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/5;
 		btcnt+=bt[k];
 		for(i=70;i>0;i--)
 		{
@@ -66,6 +67,12 @@ void DataSet(void)
 
 void PixelScan(void)
 {
+	al_count=0,ar_count=0,bl_count=0,br_count=0;
+	al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;
+	al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;
+	error=0;
+	ImageCopy(A,PixelLeft);
+	ImageCopy(B,PixelRight);
 	for(i=b_start;i>bl_end;i--)
 	{
 		if(B[i]>b_T)
@@ -116,10 +123,43 @@ void PixelScan(void)
 
 void ErrorCalculate(void)
 {
-	if(bl_flag==2&&br_flag==2)                              //直道
+	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
-		error=bl_flag-b_start+br_flag-b_start;
+		error=(bl_edge-b_start+br_edge-b_start)*0.8;
 	}
+	if(bl_flag==1&&br_flag==1)                              //11十字
+	{
+		error=0;
+	}
+	if(bl_flag==1&&br_flag==2)                              //12左转小
+	{
+		error=br_edge-br_end;
+	}
+	if(bl_flag==1&&br_flag==0)                              //10左转中
+	{
+		error=b_start-br_end;
+	}
+	if(bl_flag==3&&br_flag==0)                              //30左转大
+	{
+		error=bl_edge-br_end;
+	}
+	if(bl_flag==2&&br_flag==1)                              //21右转小
+	{
+		error=bl_edge-bl_end;
+	}
+	if(bl_flag==0&&br_flag==1)                              //01右转小
+	{
+		error=b_start-bl_end;
+	}
+	if(bl_flag==0&&br_flag==3)                              //03右转小
+	{
+		error=br_edge-bl_end;
+	}
+	if(bl_flag==4||br_flag==4)
+	{
+		
+	}
+	target_offset=error;
 }
 
 

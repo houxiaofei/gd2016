@@ -11,6 +11,6 @@
 extern int target_offset,last_offset;
 
 void SET_steer(unsigned int steer);
-void SteerControl(void);
+extern void SteerControl(void);
 
 #endif /* 03STEER_H_ */

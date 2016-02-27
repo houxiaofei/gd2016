@@ -28,6 +28,9 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount2=0;
 			ImageCapture(PixelLeft,PixelRight);
+			PixelScan();
+			ErrorCalculate();
+			SteerControl();
 		}
 	}
 	if(pitcount0==3)

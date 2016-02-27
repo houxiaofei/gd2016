@@ -9,7 +9,7 @@ int main(void) {
 	DataSet();
 	initPIT();
 	
-	SET_motor(80,80);
+	SET_motor(90,90);
 	
 	for(;;){
 		KeyJudge();

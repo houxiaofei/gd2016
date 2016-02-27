@@ -10,6 +10,8 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
+unsigned int RIGHT=3200;
+unsigned int LEFT=4150;
 unsigned int Steer_PWM[4]={0,0,0,0};//舵机输出值记录
 
 /*************************舵机接口函数***********************/
@@ -18,7 +20,20 @@ void SET_steer(unsigned int steer)
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
-	Steer_PWM[3]=CENTER+Steer_kp*target_offset+Steer_kd*(target_offset-last_offset);//位置式PD
+	if(wrong_flag==1)
+	{
+		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
+		SET_steer(Steer_PWM[3]);
+		//存舵机值
+		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
+		return;
+	}
+	Steer_kp=8;
+	Steer_kd=0;
+	Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+
+	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
+	else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
 
 	SET_steer(Steer_PWM[3]);
 	

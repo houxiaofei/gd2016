@@ -75,7 +75,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=2;
 		break;
 	case 2: 
-		LINFlex_TX(SendInt2(Left[Tc]));
+		LINFlex_TX(SendInt2(Left[Tc]));        //发送左CCD图像
 		Ts=3;
 		break;
 	case 3: 
@@ -97,7 +97,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=6;
 		break;
 	case 6: 
-		LINFlex_TX(SendInt2(Right[Tc]));
+		LINFlex_TX(SendInt2(Right[Tc]));        //发送右CCD图像
 		Ts=7;
 		break;
 	case 7: 
@@ -120,7 +120,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=10;
 		break;
 	case 10: 
-		LINFlex_TX(SendInt1(CurrentSteer));
+		LINFlex_TX(SendInt1(CurrentSteer));        //发送舵机值
 		Ts=11;
 		break;
 	case 11: 
@@ -141,7 +141,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 15: 
 		//LINFlex_TX(SendInt1(csl));
-		LINFlex_TX(SendInt2(b_value));
+		LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
 		Ts=16;
 		break;
 	case 16: 
@@ -156,7 +156,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 18:
 		//LINFlex_TX(SendInt4(csl));
-		LINFlex_TX(SendInt3(b_start));
+		LINFlex_TX(SendInt3(b_start));        //发送B起始位
 		Ts=19;
 		break;
 	case 19: 
@@ -166,7 +166,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 20: 
 		//LINFlex_TX(SendInt2(csr));
-		LINFlex_TX(SendInt2(b_T));
+		LINFlex_TX(SendInt2(b_T));           //发送B阈值
 		Ts=21;
 		break;
 	case 21: 
@@ -179,7 +179,35 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(b_T));
 		Ts=23;
 		break;
-	case 23:
+	case 23: 
+		LINFlex_TX(data);
+		Ts=24;
+		break;
+	case 24: 
+		LINFlex_TX(SendInt4(bl_flag));        //发送B_flag
+		Ts=25;
+		break;
+	case 25: 
+		LINFlex_TX(SendInt4(br_flag));
+		Ts=26;
+		break;
+	case 26: 
+		LINFlex_TX(SendInt1(target_offset));        //发送error
+		Ts=27;
+		break;
+	case 27:
+		LINFlex_TX(SendInt2(target_offset));
+		Ts=28;
+		break;
+	case 28: 
+		LINFlex_TX(SendInt3(target_offset));        
+		Ts=29;
+		break;
+	case 29:
+		LINFlex_TX(SendInt4(target_offset));
+		Ts=30;
+		break;
+	case 30:
 		send = putstring;
 		Ts=0;
 		LINFLEX_0.LINCR1.B.INIT=1;
