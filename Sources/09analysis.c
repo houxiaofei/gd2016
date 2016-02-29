@@ -71,6 +71,7 @@ void PixelScan(void)
 	al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;
 	al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;
 	error=0;
+	wrong_flag=0;
 	ImageCopy(A,PixelLeft);
 	ImageCopy(B,PixelRight);
 	for(i=b_start;i>bl_end;i--)
@@ -126,40 +127,48 @@ void ErrorCalculate(void)
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
 		error=(bl_edge-b_start+br_edge-b_start)*0.8;
+		return;
 	}
 	if(bl_flag==1&&br_flag==1)                              //11十字
 	{
 		error=0;
+		return;
 	}
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
 		error=br_edge-br_end;
+		return;
 	}
 	if(bl_flag==1&&br_flag==0)                              //10左转中
 	{
 		error=b_start-br_end;
+		return;
 	}
 	if(bl_flag==3&&br_flag==0)                              //30左转大
 	{
 		error=bl_edge-br_end;
+		return;
 	}
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
 		error=bl_edge-bl_end;
+		return;
 	}
 	if(bl_flag==0&&br_flag==1)                              //01右转小
 	{
 		error=b_start-bl_end;
+		return;
 	}
 	if(bl_flag==0&&br_flag==3)                              //03右转小
 	{
 		error=br_edge-bl_end;
+		return;
 	}
-	if(bl_flag==4||br_flag==4)
-	{
-		
-	}
-	target_offset=error;
+//	if(bl_flag==4||br_flag==4)
+//	{
+//		wrong_flag=1;
+//	}
+	wrong_flag=1;
 }
 
 

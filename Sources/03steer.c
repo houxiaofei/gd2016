@@ -17,9 +17,58 @@ unsigned int Steer_PWM[4]={0,0,0,0};//舵机输出值记录
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
 {EMIOS_0.CH[11].CBDR.R = steer;}
+/*************************舵机PD参数设置***********************/
+void Steer_PDSet(void)
+{
+	if(tsl<100)
+	{
+		Steer_kp=8;Steer_kd=0;
+		return;
+	}
+	else if(tsl<130)
+	{
+		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
+		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
+		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
+		else							{Steer_kp=14;Steer_kd=0;}
+		return;
+	}
+	else if(tsl<160)
+	{
+		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
+		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
+		else if(ABS(target_offset)<20)  {Steer_kp=10;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=12;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=13;Steer_kd=0;}
+		else                            {Steer_kp=14;Steer_kd=0;}
+		return;
+	}
+	else if(tsl<200)
+	{
+		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
+		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
+		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
+		else                            {Steer_kp=14;Steer_kd=0;}
+		return;
+	}
+	else
+	{
+		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
+		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
+		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
+		else                            {Steer_kp=15;Steer_kd=0;}	
+	}
+}
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
+	target_offset=error;
 	if(wrong_flag==1)
 	{
 		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;
@@ -28,8 +77,7 @@ void SteerControl(void)
 		Steer_PWM[0]=Steer_PWM[1];Steer_PWM[1]=Steer_PWM[2];Steer_PWM[2]=Steer_PWM[3];
 		return;
 	}
-	Steer_kp=8;
-	Steer_kd=0;
+
 	Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;

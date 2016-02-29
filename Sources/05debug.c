@@ -36,9 +36,9 @@ unsigned char keymode=0;
 /*************************蓝牙发送函数*********************/
 void BlueTx(void)                             //蓝牙发数据
 {
-	LINFLEX_0.LINCR1.B.INIT=1;
-	LINFLEX_0.LINIER.B.DRIE=1;
-	LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
+//	LINFLEX_0.LINCR1.B.INIT=1;
+//	LINFLEX_0.LINIER.B.DRIE=1;
+//	LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
 	send = putstring;
 	LINFlex_TX(*send++);
 }
@@ -141,42 +141,50 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 15: 
 		//LINFlex_TX(SendInt1(csl));
-		LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
+		//LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
+		LINFlex_TX(SendInt1(tsl));
 		Ts=16;
 		break;
 	case 16: 
 		//LINFlex_TX(SendInt2(csl));
-		LINFlex_TX(SendInt3(b_value));
+		//LINFlex_TX(SendInt3(b_value));
+		LINFlex_TX(SendInt2(tsl));
 		Ts=17;
 		break;
 	case 17: 
 		//LINFlex_TX(SendInt3(csl));
-		LINFlex_TX(SendInt4(b_value));
+		//LINFlex_TX(SendInt4(b_value));
+		LINFlex_TX(SendInt3(tsl));
 		Ts=18;
 		break;
 	case 18:
 		//LINFlex_TX(SendInt4(csl));
-		LINFlex_TX(SendInt3(b_start));        //发送B起始位
+		//LINFlex_TX(SendInt3(b_start));        //发送B起始位
+		LINFlex_TX(SendInt4(tsl));
 		Ts=19;
 		break;
 	case 19: 
 		//LINFlex_TX(SendInt1(csr));
-		LINFlex_TX(SendInt4(b_start));
+		//LINFlex_TX(SendInt4(b_start));
+		LINFlex_TX(SendInt1(tsr));
 		Ts=20;
 		break;
 	case 20: 
 		//LINFlex_TX(SendInt2(csr));
-		LINFlex_TX(SendInt2(b_T));           //发送B阈值
+		//LINFlex_TX(SendInt2(b_T));           //发送B阈值
+		LINFlex_TX(SendInt2(tsr));
 		Ts=21;
 		break;
 	case 21: 
 		//LINFlex_TX(SendInt3(csr));
-		LINFlex_TX(SendInt3(b_T));
+		//LINFlex_TX(SendInt3(b_T));
+		LINFlex_TX(SendInt3(tsr));
 		Ts=22;
 		break;
 	case 22:
 		//LINFlex_TX(SendInt4(csr));
-		LINFlex_TX(SendInt4(b_T));
+		//LINFlex_TX(SendInt4(b_T));
+		LINFlex_TX(SendInt4(tsr));
 		Ts=23;
 		break;
 	case 23: 
@@ -210,9 +218,9 @@ void LINFlex_TX_Interrupt(void)
 	case 30:
 		send = putstring;
 		Ts=0;
-		LINFLEX_0.LINCR1.B.INIT=1;
-		LINFLEX_0.LINIER.B.DRIE=0;
-		LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
+//		LINFLEX_0.LINCR1.B.INIT=1;
+//		LINFLEX_0.LINIER.B.DRIE=0;
+//		LINFLEX_0.LINCR1.B.INIT=0; //退出初始化模式
 		break;	
 	}
 }
@@ -225,16 +233,24 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-		TargetSteer+=100;}
+		//TargetSteer+=100;
+		tsr-=10;
+		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    TargetSteer-=100;}
+	    //TargetSteer-=100;
+	    tsr+=10;
+	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-		TargetSteer+=10;}
+		//TargetSteer+=10;
+		tsl-=10;
+		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
-		TargetSteer-=10;}
+		//TargetSteer-=10;
+		tsl+=10;
+		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;
 	S5_last=S5;

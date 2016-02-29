@@ -11,5 +11,6 @@
 void SET_motor(int leftSpeed,int rightSpeed);
 
 extern int csl,csr;
+extern int tsl,tsr;
 
 #endif /* 02SPEED_H_ */

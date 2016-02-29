@@ -7,12 +7,17 @@ int main(void) {
 	initALL();
 	mdelay(1000);
 	DataSet();
+	
+	tsl=120;
+	tsr=120;
+	SET_motor(tsl,tsr);
+	
 	initPIT();
 	
-	SET_motor(90,90);
+	BlueTx();
 	
 	for(;;){
-		KeyJudge();
+		//KeyJudge();
 	}
   
 }

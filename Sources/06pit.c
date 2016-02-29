@@ -30,6 +30,7 @@ void PitISR(void)//1ms一个控制周期
 			ImageCapture(PixelLeft,PixelRight);
 			PixelScan();
 			ErrorCalculate();
+			Steer_PDSet();
 			SteerControl();
 		}
 	}
@@ -40,20 +41,21 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount3=0;
 			SpeedCount();
+			SET_motor(tsl,tsr);
 		}
 	}
 	if(pitcount0==5)
 	{
 		pitcount0=0;
 		pitcount5++;
-		if(pitcount5>=200)                         //1s一次
+		if(pitcount5>=100)                         //1s一次
 		{
 			pitcount5=0;
 			//  IOtest=1;
 			//	Bee=1;
 			//	udelay(100000);
 			//	Bee=0;
-			BlueTx();
+			//BlueTx();
 		}
 	}
 	PIT.CH[1].TFLG.B.TIF = 1;//write 1 to clear PIT1 清除标志位

@@ -22,6 +22,8 @@
 #include "IntcInterrupts.h"
 #include "string.h"
 
+#define ABS(x)              ((x) > 0 ? (x) : 0-(x))
+
 extern int PixelLeft[128];
 extern int PixelRight[128];
 
