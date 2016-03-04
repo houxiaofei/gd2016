@@ -204,7 +204,7 @@ void initLINFlex_0_UART(void)
 	
 	SIU.PCR[18].R = 0x0400;    /* MPC56xxB: Configure port B2 as LIN0TX */
     SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
-  	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,4); 
+  	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,2); 
 }
 
 /*********************≤‚ ‘IO≥ı ºªØ***********************/

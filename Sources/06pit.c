@@ -15,7 +15,7 @@ void initPIT(void)
   PIT.PITMCR.R = 0x00000001;       // Enable PIT and configure timers to stop in debug mode 
   PIT.CH[1].LDVAL.R = 80000;      // PIT1 timeout = 80000 sysclks x 1sec/80M sysclks = 1 msec 
   PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
-  INTC_InstallINTCInterruptHandler(PitISR,60,2); 
+  INTC_InstallINTCInterruptHandler(PitISR,60,4); 
 }
 
 void PitISR(void)//1ms一个控制周期
