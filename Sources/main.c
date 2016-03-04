@@ -3,7 +3,7 @@
 
 
 int main(void) {
-	
+	int a;
 	initALL();
 	mdelay(1000);
 	DataSet();
