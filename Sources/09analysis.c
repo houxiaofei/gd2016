@@ -9,7 +9,7 @@
 
 int A[128]={0};
 int B[128]={0};
-int al_end=0,ar_end=0,bl_end=0,br_end=0;
+int al_end=0,ar_end=0,bl_end=23,br_end=111;
 int a_start=0,b_start=67;
 int a_value=0,b_value=260;                          //判断跳变沿的差值标准
 int a_T=0,b_T=600;                                  //黑白阈值

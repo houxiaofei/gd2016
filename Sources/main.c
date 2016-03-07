@@ -3,10 +3,9 @@
 
 
 int main(void) {
-	int a;
 	initALL();
 	mdelay(1000);
-	DataSet();
+	//DataSet();
 	
 	tsl=120;
 	tsr=120;
@@ -17,7 +16,7 @@ int main(void) {
 	BlueTx();
 	
 	for(;;){
-		//KeyJudge();
+		KeyJudge();
 	}
   
 }
