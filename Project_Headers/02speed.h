@@ -9,8 +9,10 @@
 #define SPEED_H_
 
 void SET_motor(int leftSpeed,int rightSpeed);
+void Speed_control(void);
 
 extern int csl,csr;
 extern int tsl,tsr;
+extern int targetspeed;
 
 #endif /* 02SPEED_H_ */

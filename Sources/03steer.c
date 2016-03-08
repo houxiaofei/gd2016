@@ -10,9 +10,9 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3200;
-unsigned int LEFT=4150;
-unsigned int Steer_PWM[4]={0,0,0,0};//舵机输出值记录
+unsigned int RIGHT=3312;
+unsigned int LEFT=4132;
+unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -20,32 +20,32 @@ void SET_steer(unsigned int steer)
 /*************************舵机PD参数设置***********************/
 void Steer_PDSet(void)
 {
-	if(tsl<100)
+	if(targetspeed<100)
 	{
 		Steer_kp=8;Steer_kd=0;
 		return;
 	}
-	else if(tsl<130)
+	else if(targetspeed<130)
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
 		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
-		else							{Steer_kp=14;Steer_kd=0;}
+		else if(ABS(target_offset)<20)  {Steer_kp=10;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=12;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=13;Steer_kd=0;}
+		else							{Steer_kp=13;Steer_kd=0;}
 		return;
 	}
-	else if(tsl<160)
+	else if(targetspeed<160)
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=5;}
+		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
 		else if(ABS(target_offset)<20)  {Steer_kp=13;Steer_kd=5;}
 		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=5;}
 		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=5;}
 		else                            {Steer_kp=14;Steer_kd=5;}
 		return;
 	}
-	else if(tsl<200)
+	else if(targetspeed<200)
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
 		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}

@@ -41,7 +41,7 @@ void PitISR(void)//1ms一个控制周期
 		{
 			pitcount3=0;
 			SpeedCount();
-			SET_motor(tsl,tsr);
+			Speed_control();                        
 		}
 	}
 	if(pitcount0==5)

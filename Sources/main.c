@@ -7,9 +7,8 @@ int main(void) {
 	mdelay(1000);
 	//DataSet();
 	
-	tsl=120;
-	tsr=120;
-	SET_motor(tsl,tsr);
+	targetspeed=120;
+	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();
 	

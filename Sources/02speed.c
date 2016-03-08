@@ -9,6 +9,12 @@
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
+int targetspeed=0;
+//**********************差速参数***************************/
+signed int Speed_kc=15000;
+signed int wheel_distance=8;//半车距
+signed int RPID=0;	
+double r=0;
 
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
@@ -19,10 +25,12 @@ void SET_motor(int leftSpeed,int rightSpeed)
 		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
 }
 
-/*************************后轮差速函数*********************/
-//void Speed_differ(int ratio)
-//{
-//	int leftspeed,rightdpeed;
-//	
-//	
-//}
+/*************************速度控制函数*********************/
+void Speed_control(void)
+{
+	RPID=CENTER-Steer_PWM[3];
+	r=Speed_kc/RPID;
+	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+	SET_motor(tsl,tsr);
+}
