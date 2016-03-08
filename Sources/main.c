@@ -7,6 +7,8 @@ int main(void) {
 	mdelay(1000);
 	//DataSet();
 	
+	OLED_Test();
+	
 	targetspeed=120;
 	SET_motor(targetspeed,targetspeed);
 	

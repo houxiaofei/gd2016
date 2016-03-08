@@ -8,6 +8,32 @@
 #ifndef INCLUDES_H_
 #define INCLUDES_H_
 
+#ifndef _TYPEDEF_BYTE_
+#define _TYPEDEF_BYTE_
+typedef unsigned char BYTE;
+#endif
+
+#ifndef _TYPEDEF_SBYTE_
+#define _TYPEDEF_SBYTE_
+typedef signed char SBYTE;
+#endif
+
+#ifndef _TYPEDEF_WORD_
+#define _TYPEDEF_WORD_
+typedef unsigned short WORD;
+#endif
+
+#ifndef _TYPEDEF_SWORD_
+#define _TYPEDEF_SWORD_
+typedef signed short SWORD;
+#endif
+
+#ifndef _TYPEDEF_DWORD_
+#define _TYPEDEF_DWORD_
+//typedef unsigned int DWORD;
+typedef unsigned long int DWORD;
+#endif
+
 #include "MPC5604B.h"
 #include "01init.h"
 #include "02speed.h"
@@ -21,6 +47,7 @@
 #include "delay.h"
 #include "IntcInterrupts.h"
 #include "string.h"
+#include "oled.h"
 
 #define ABS(x)              ((x) > 0 ? (x) : 0-(x))
 
