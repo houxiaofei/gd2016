@@ -5,9 +5,9 @@
 int main(void) {
 	initALL();
 	mdelay(1000);
-	//DataSet();
+	DataSet();
 	
-	targetspeed=120;
+	targetspeed=140;
 	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();
@@ -15,7 +15,10 @@ int main(void) {
 	BlueTx();
 	
 	for(;;){
-		KeyJudge();
+		//KeyJudge();
+//		time1=TIME;
+//		time2=TIME;
+//		time3=TimeMesure();
 	}
   
 }

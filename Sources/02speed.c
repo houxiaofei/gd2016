@@ -12,7 +12,7 @@ int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
-signed int wheel_distance=8;//半车距
+signed int wheel_distance=9;//半车距8
 signed int RPID=0;	
 double r=0;
 
@@ -31,6 +31,6 @@ void Speed_control(void)
 	RPID=CENTER-Steer_PWM[3];
 	r=Speed_kc/RPID;
 	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
-	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
 	SET_motor(tsl,tsr);
 }
