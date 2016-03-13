@@ -14,6 +14,9 @@ int Right[128];
 unsigned int Ts=0;
 unsigned int Tc=0;
 int CurrentSteer=0;
+unsigned long time1=0;
+unsigned long time2=0;
+unsigned long time3=0;
 
 unsigned char S3_last=1;
 unsigned char S4_last=1;
@@ -141,50 +144,50 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 15: 
 		//LINFlex_TX(SendInt1(csl));
-		//LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
-		LINFlex_TX(SendInt1(tsl));
+		LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
+		//LINFlex_TX(SendInt1(tsl));
 		Ts=16;
 		break;
 	case 16: 
 		//LINFlex_TX(SendInt2(csl));
-		//LINFlex_TX(SendInt3(b_value));
-		LINFlex_TX(SendInt2(tsl));
+		LINFlex_TX(SendInt3(b_value));
+		//LINFlex_TX(SendInt2(tsl));
 		Ts=17;
 		break;
 	case 17: 
 		//LINFlex_TX(SendInt3(csl));
-		//LINFlex_TX(SendInt4(b_value));
-		LINFlex_TX(SendInt3(tsl));
+		LINFlex_TX(SendInt4(b_value));
+		//LINFlex_TX(SendInt3(tsl));
 		Ts=18;
 		break;
 	case 18:
 		//LINFlex_TX(SendInt4(csl));
-		//LINFlex_TX(SendInt3(b_start));        //发送B起始位
-		LINFlex_TX(SendInt4(tsl));
+		LINFlex_TX(SendInt3(b_start));        //发送B起始位
+		//LINFlex_TX(SendInt4(tsl));
 		Ts=19;
 		break;
 	case 19: 
 		//LINFlex_TX(SendInt1(csr));
-		//LINFlex_TX(SendInt4(b_start));
-		LINFlex_TX(SendInt1(tsr));
+		LINFlex_TX(SendInt4(b_start));
+		//LINFlex_TX(SendInt1(tsr));
 		Ts=20;
 		break;
 	case 20: 
 		//LINFlex_TX(SendInt2(csr));
-		//LINFlex_TX(SendInt2(b_T));           //发送B阈值
-		LINFlex_TX(SendInt2(tsr));
+		LINFlex_TX(SendInt2(b_T));           //发送B阈值
+		//LINFlex_TX(SendInt2(tsr));
 		Ts=21;
 		break;
 	case 21: 
 		//LINFlex_TX(SendInt3(csr));
-		//LINFlex_TX(SendInt3(b_T));
-		LINFlex_TX(SendInt3(tsr));
+		LINFlex_TX(SendInt3(b_T));
+		//LINFlex_TX(SendInt3(tsr));
 		Ts=22;
 		break;
 	case 22:
 		//LINFlex_TX(SendInt4(csr));
-		//LINFlex_TX(SendInt4(b_T));
-		LINFlex_TX(SendInt4(tsr));
+		LINFlex_TX(SendInt4(b_T));
+		//LINFlex_TX(SendInt4(tsr));
 		Ts=23;
 		break;
 	case 23: 
@@ -256,3 +259,15 @@ void KeyJudge(void)
 	S5_last=S5;
 	S6_last=S6;
 }
+
+//********************************************************************************************************
+//****************************************程序计时函数*****************************************************
+//********************************************************************************************************
+unsigned long TimeMesure(void)
+{
+	if(time2<time1)
+		return 0xFFFFFFFF+time2-time1;
+	else
+		return time2-time1;
+}
+
