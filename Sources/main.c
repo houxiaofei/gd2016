@@ -5,8 +5,8 @@
 int main(void) {
 	initALL();
 	mdelay(1000);
+	targetspeed=120;
 	DataSet();
-	OLED_Test();
 	
 	targetspeed=140;
 	SET_motor(targetspeed,targetspeed);
@@ -16,6 +16,7 @@ int main(void) {
 	BlueTx();
 	
 	for(;;){
+		OLED_Test();
 		//KeyJudge();
 //		time1=TIME;
 //		time2=TIME;
