@@ -20,28 +20,34 @@ void initPIT(void)
 
 void PitISR(void)//1ms一个控制周期
 {
-	pitcount0++;                                  //5ms一次清零
+	pitcount0++;                                  //5+2+0.035ms一次清零
 	if(pitcount0==2)
 	{
 		pitcount2++;
-		if(pitcount2>=2)                          //10ms一次
+		if(pitcount2>=1)                          //10ms一次,需2ms,共12ms一次
 		{
+			//time1=TIME;
 			pitcount2=0;
 			ImageCapture(PixelLeft,PixelRight);
 			PixelScan();
 			ErrorCalculate();
 			Steer_PDSet();
 			SteerControl();
+			//time2=TIME;
+			//time3=TimeMesure();
 		}
 	}
 	if(pitcount0==3)
 	{
 		pitcount3++;
-		if(pitcount3>=20)                          //100ms一次
+		if(pitcount3>=3)                          //15ms一次,35us
 		{
+			//time1=TIME;
 			pitcount3=0;
-			SpeedCount();
-			SpeedControl();                        
+			//SpeedCount();
+			//Speed_control(); 
+			//time2=TIME;
+			//time3=TimeMesure();
 		}
 	}
 	if(pitcount0==5)

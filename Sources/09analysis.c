@@ -21,6 +21,7 @@ int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-
 int wrong_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0;
+int rem=6;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)
@@ -31,11 +32,11 @@ void DataSet(void)
 	int bt[10],btcnt=0;
 	for(k=0;k<10;k++)
 	{
-		mdelay(10);
+		mdelay(3);
 		ImageCapture(PixelLeft,PixelRight);
-		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
+		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5.2;
 		bvcnt+=bv[k];
-		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/5;
+		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
 		btcnt+=bt[k];
 		for(i=70;i>0;i--)
 		{
@@ -126,7 +127,7 @@ void ErrorCalculate(void)
 {
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
-		error=(bl_edge-b_start+br_edge-b_start)*0.8;
+		error=(bl_edge-b_start+br_edge-b_start);
 		return;
 	}
 	if(bl_flag==1&&br_flag==1)                              //11十字
@@ -136,32 +137,32 @@ void ErrorCalculate(void)
 	}
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
-		error=br_edge-br_end;
+		error=br_edge-br_end-rem;
 		return;
 	}
 	if(bl_flag==1&&br_flag==0)                              //10左转中
 	{
-		error=b_start-br_end;
+		error=b_start-br_end-rem;
 		return;
 	}
 	if(bl_flag==3&&br_flag==0)                              //30左转大
 	{
-		error=bl_edge-br_end;
+		error=bl_edge-br_end-rem;
 		return;
 	}
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
-		error=bl_edge-bl_end;
+		error=bl_edge-bl_end+rem;
 		return;
 	}
 	if(bl_flag==0&&br_flag==1)                              //01右转小
 	{
-		error=b_start-bl_end;
+		error=b_start-bl_end+rem;
 		return;
 	}
 	if(bl_flag==0&&br_flag==3)                              //03右转小
 	{
-		error=br_edge-bl_end;
+		error=br_edge-bl_end+rem;
 		return;
 	}
 //	if(bl_flag==4||br_flag==4)

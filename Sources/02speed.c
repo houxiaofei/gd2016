@@ -12,7 +12,7 @@ int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int targetspeed=0,Motor_PWM_MAX=300,Motor_PWM_MIN=80;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
-signed int wheel_distance=8;//半车距
+signed int wheel_distance=9;//半车距8
 signed int RPID=0;	
 double r=0;
 
@@ -68,55 +68,41 @@ void SET_motor(int leftSpeed,int rightSpeed)
 //*****************************************************************************************************************
 void SpeedControl()//闭环,加差速
 {
-         targetspeed=100;
-		 RPID=CENTER-Steer_PWM[3];
-		 if(RPID>0)//向右拐
-		 {
-					 r=Speed_kc/RPID;
-			targetspeedright=((r-wheel_distance)/r)*targetspeed;//右轮减速
-			targetspeedleft=((r+wheel_distance)/r)*targetspeed;//左轮加速
-		 }
-		else if(RPID<0)//向左拐
-		 {
-					 r=-Speed_kc/RPID;
-			targetspeedright=((r+wheel_distance)/r)*targetspeed;//右轮加速
-			targetspeedleft=((r-wheel_distance)/r)*targetspeed;//左轮减速
-		 }
-		else
-		{
-			targetspeedleft=targetspeed;
-			targetspeedright=targetspeed;
-		}
-		
-		Speed_kp_Left=Speed_Left_k1/10;
-		Speed_ki_Left=Speed_Left_k2/10;
-		Speed_kd_Left=Speed_Left_k3/10;
-		
-		Speed_kp_Right=Speed_Right_k1/10;
-		Speed_ki_Right=Speed_Right_k2/10;
-		Speed_kd_Right=Speed_Right_k3/10;
-		
-	    ErrorLeft=(signed int)(targetspeedleft)-(signed int)(csl);
-	    ErrorRight=(signed int)(targetspeedright)-(signed int)(csr);
-	    
-	    SumErrorLeft+=ErrorLeft;
-	    if(SumErrorLeft>350) SumErrorLeft=350;
-	    if(SumErrorLeft<-350) SumErrorLeft=-350;	    
-	    SumErrorRight+=ErrorRight;
-	    if(SumErrorRight>350) SumErrorRight=350;
-	    if(SumErrorRight<-350) SumErrorRight=-350;
-	    
-	    tsl=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
-	    tsr=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
-	   	
-	    if(tsl>Motor_PWM_MAX)  tsl=Motor_PWM_MAX;
-		else if(tsl<Motor_PWM_MIN)  tsl=Motor_PWM_MIN;	    
-	    if(tsr>Motor_PWM_MAX)  tsr=Motor_PWM_MAX;
-		else if(tsr<Motor_PWM_MIN)  tsr=Motor_PWM_MIN;
+//	RPID=CENTER-Steer_PWM[3];
+//	r=Speed_kc/RPID;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+//	SET_motor(tsl,tsr);
+	targetspeedleft=targetspeed;
+	targetspeedright=targetspeed;
+	Speed_kp_Left=Speed_Left_k1/10;
+	Speed_ki_Left=Speed_Left_k2/10;
+	Speed_kd_Left=Speed_Left_k3/10;
+	
+	Speed_kp_Right=Speed_Right_k1/10;
+	Speed_ki_Right=Speed_Right_k2/10;
+	Speed_kd_Right=Speed_Right_k3/10;
+	
+	ErrorLeft=(signed int)(targetspeedleft)-(signed int)(csl);
+	ErrorRight=(signed int)(targetspeedright)-(signed int)(csr);
+	
+	SumErrorLeft+=ErrorLeft;
+	if(SumErrorLeft>350) SumErrorLeft=350;
+	if(SumErrorLeft<-350) SumErrorLeft=-350;	    
+	SumErrorRight+=ErrorRight;
+	if(SumErrorRight>350) SumErrorRight=350;
+	if(SumErrorRight<-350) SumErrorRight=-350;
+	
+	tsl=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
+	tsr=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
+	
+	if(tsl>Motor_PWM_MAX)  tsl=Motor_PWM_MAX;
+	else if(tsl<Motor_PWM_MIN)  tsl=Motor_PWM_MIN;	    
+	if(tsr>Motor_PWM_MAX)  tsr=Motor_PWM_MAX;
+	else if(tsr<Motor_PWM_MIN)  tsr=Motor_PWM_MIN;
 
-	    SET_motor(tsl,tsr);
-	    
-		PreErrorLeft=ErrorLeft;
-		PreErrorRight=ErrorRight;
-
+	SET_motor(tsl,tsr);
+	
+	PreErrorLeft=ErrorLeft;
+	PreErrorRight=ErrorRight;
 }
