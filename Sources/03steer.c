@@ -26,7 +26,7 @@ void Steer_PDSet(void)
 		Steer_kp=8;Steer_kd=0;
 		return;
 	}
-	else if(targetspeed<130)//120-5 8 8 12 12 10//125
+	else if(targetspeed<130)//120(150)-5 8 8 12 12 10//125
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
 		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}

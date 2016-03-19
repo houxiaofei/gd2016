@@ -16,17 +16,7 @@ signed int wheel_distance=9;//半车距8
 signed int RPID=0;	
 double r=0;
 
-
-
-
-////**********************舵机参数**********************************************
-//signed long target_offset=0,last_offset=0;	//舵机偏差值记录
-//double Steer_kp=0,Steer_kd=0;//舵机P、D值
-//unsigned int Steer_PWM[4]={0,0,0,0};//舵机输出值记录
-
-//**********************电机参数**********************************************
-//word speedcounter1=0,speedcounter2=0,speedcounter3=0,speedcounter4=0;
-signed int targetspeedleft=0,targetspeedright=0;		//当前速度、目标速度,应该在100-300范围附近	
+//**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
  
 double Speed_kp_Left=0,Speed_ki_Left=0,Speed_kd_Left=0,Speed_kp_Right=0,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
@@ -35,11 +25,6 @@ double Speed_kp_Left=0,Speed_ki_Left=0,Speed_kd_Left=0,Speed_kp_Right=0,Speed_ki
 //********************辅助调试参数******************************************
 unsigned int Counter_Error_Left=0,Counter_Error_Right=0;		//光编接触不牢靠错误计数量
 
-//********************蓝牙调试参数******************************************
-//double Steer_k1=5,Steer_k2=5,Steer_k3=15,Steer_k4=15,Steer_k5=18,Steer_k6=18,Steer_k7=5,Steer_k8=0;
-double Speed_Left_k1=60,Speed_Left_k2=8,Speed_Left_k3=0;
-double Speed_Right_k1=60,Speed_Right_k2=8,Speed_Right_k3=0;
-//signed int Speed_kc_k=150;
 
 
 
@@ -73,18 +58,11 @@ void SpeedControl()//闭环,加差速
 //	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
 //	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
 //	SET_motor(tsl,tsr);
-	targetspeedleft=targetspeed;
-	targetspeedright=targetspeed;
-	Speed_kp_Left=Speed_Left_k1/10;
-	Speed_ki_Left=Speed_Left_k2/10;
-	Speed_kd_Left=Speed_Left_k3/10;
+	tsl=targetspeed;
+	tsr=targetspeed;
 	
-	Speed_kp_Right=Speed_Right_k1/10;
-	Speed_ki_Right=Speed_Right_k2/10;
-	Speed_kd_Right=Speed_Right_k3/10;
-	
-	ErrorLeft=(signed int)(targetspeedleft)-(signed int)(csl);
-	ErrorRight=(signed int)(targetspeedright)-(signed int)(csr);
+	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
+	ErrorRight=(signed int)(tsr)-(signed int)(csr);
 	
 	SumErrorLeft+=ErrorLeft;
 	if(SumErrorLeft>350) SumErrorLeft=350;
