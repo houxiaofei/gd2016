@@ -4,11 +4,10 @@
 
 int main(void) {
 	initALL();
-	mdelay(1000);
-	targetspeed=120;
-	DataSet();
+	//mdelay(1000);
+	//DataSet();
 	
-	targetspeed=140;
+	targetspeed=120;
 	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();

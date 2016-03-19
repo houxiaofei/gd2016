@@ -28,11 +28,11 @@ void PitISR(void)//1ms一个控制周期
 		{
 			//time1=TIME;
 			pitcount2=0;
-			ImageCapture(PixelLeft,PixelRight);
-			PixelScan();
-			ErrorCalculate();
-			Steer_PDSet();
-			SteerControl();
+//			ImageCapture(PixelLeft,PixelRight);
+//			PixelScan();
+//			ErrorCalculate();
+//			Steer_PDSet();
+//			SteerControl();
 			//time2=TIME;
 			//time3=TimeMesure();
 		}
@@ -44,8 +44,8 @@ void PitISR(void)//1ms一个控制周期
 		{
 			//time1=TIME;
 			pitcount3=0;
-			//SpeedCount();
-			//Speed_control(); 
+			SpeedCount();
+			Speed_control(); 
 			//time2=TIME;
 			//time3=TimeMesure();
 		}
