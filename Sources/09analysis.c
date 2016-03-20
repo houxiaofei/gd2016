@@ -32,7 +32,7 @@ void DataSet(void)
 	int bt[10],btcnt=0;
 	for(k=0;k<10;k++)
 	{
-		mdelay(3);
+		mdelay(4);
 		ImageCapture(PixelLeft,PixelRight);
 		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5.2;
 		bvcnt+=bv[k];

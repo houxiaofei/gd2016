@@ -70,7 +70,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;
+				Ts=9;//9
 				break;}
 	case 1:
 		LINFlex_TX(aa);
