@@ -74,7 +74,7 @@ extern int PixelRight[128];
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[11].CBDR.R // ¶æ»úÖµ
-#define CENTER 3692//3720
+#define CENTER 3710//3692
 
 /***************stm*****************/
 #define TIME STM.CNT.R
