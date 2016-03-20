@@ -70,7 +70,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=9;//9
+				Ts=1;//9
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -143,50 +143,50 @@ void LINFlex_TX_Interrupt(void)
 		Ts=15;
 		break;
 	case 15: 
-		LINFlex_TX(SendInt1(csl));
-		//LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
+		//LINFlex_TX(SendInt1(csl));
+		LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
 		//LINFlex_TX(SendInt1(tsl));
 		Ts=16;
 		break;
 	case 16: 
-		LINFlex_TX(SendInt2(csl));
-		//LINFlex_TX(SendInt3(b_value));
+		//LINFlex_TX(SendInt2(csl));
+		LINFlex_TX(SendInt3(b_value));
 		//LINFlex_TX(SendInt2(tsl));
 		Ts=17;
 		break;
 	case 17: 
-		LINFlex_TX(SendInt3(csl));
-		//LINFlex_TX(SendInt4(b_value));
+		//LINFlex_TX(SendInt3(csl));
+		LINFlex_TX(SendInt4(b_value));
 		//LINFlex_TX(SendInt3(tsl));
 		Ts=18;
 		break;
 	case 18:
-		LINFlex_TX(SendInt4(csl));
-		//LINFlex_TX(SendInt3(b_start));        //发送B起始位
+		//LINFlex_TX(SendInt4(csl));
+		LINFlex_TX(SendInt3(b_start));        //发送B起始位
 		//LINFlex_TX(SendInt4(tsl));
 		Ts=19;
 		break;
 	case 19: 
-		LINFlex_TX(SendInt1(csr));
-		//LINFlex_TX(SendInt4(b_start));
+		//LINFlex_TX(SendInt1(csr));
+		LINFlex_TX(SendInt4(b_start));
 		//LINFlex_TX(SendInt1(tsr));
 		Ts=20;
 		break;
 	case 20: 
-		LINFlex_TX(SendInt2(csr));
-		//LINFlex_TX(SendInt2(b_T));           //发送B阈值
+		//LINFlex_TX(SendInt2(csr));
+		LINFlex_TX(SendInt2(b_T));           //发送B阈值
 		//LINFlex_TX(SendInt2(tsr));
 		Ts=21;
 		break;
 	case 21: 
-		LINFlex_TX(SendInt3(csr));
-		//LINFlex_TX(SendInt3(b_T));
+		//LINFlex_TX(SendInt3(csr));
+		LINFlex_TX(SendInt3(b_T));
 		//LINFlex_TX(SendInt3(tsr));
 		Ts=22;
 		break;
 	case 22:
-		LINFlex_TX(SendInt4(csr));
-		//LINFlex_TX(SendInt4(b_T));
+		//LINFlex_TX(SendInt4(csr));
+		LINFlex_TX(SendInt4(b_T));
 		//LINFlex_TX(SendInt4(tsr));
 		Ts=23;
 		break;

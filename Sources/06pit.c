@@ -44,8 +44,8 @@ void PitISR(void)//1ms一个控制周期
 		{
 			//time1=TIME;
 			pitcount3=0;
-			SpeedCount();
-			SpeedControl(); 
+			//SpeedCount();
+			//SpeedControl(); 
 			//time2=TIME;
 			//time3=TimeMesure();
 		}

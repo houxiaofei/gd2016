@@ -21,12 +21,12 @@ void SET_steer(unsigned int steer)
 void Steer_PDSet(void)
 {
 	target_offset=error;
-	if(targetspeed<120)//120
+	if(targetspeed<100)//120
 	{
 		Steer_kp=8;Steer_kd=0;
 		return;
 	}
-	else if(targetspeed<170)//120(150)-5 8 8 12 12 10//130-170
+	else if(targetspeed<130)//120(150)-5 8 8 12 12 10//130-170
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
 		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
@@ -36,7 +36,7 @@ void Steer_PDSet(void)
 		else							{Steer_kp=10;Steer_kd=0;}
 		return;
 	}
-	else if(targetspeed<190)//140-180//150-190
+	else if(targetspeed<150)//140-180//150-190
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
 		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
