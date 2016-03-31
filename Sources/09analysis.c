@@ -16,12 +16,12 @@ int a_T=0,b_T=600;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=0,b_PixelNumber=44;
 int a_allwhite=0,a_allblack=0,b_allwhite=42,b_allblack=2;                  //全白,全黑判断标准
-int a_scan=5,a_halfscan=3,b_scan=5,b_halfscan=3;
+int a_scan=8,a_halfscan=4,b_scan=8,b_halfscan=4;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int wrong_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0;
-int rem=6;                  //补线值
+int rem=-5;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)
@@ -30,11 +30,13 @@ void DataSet(void)
 	int bs[10],bscnt=0;
 	int bv[10],bvcnt=0;
 	int bt[10],btcnt=0;
+	ImageCapture(PixelLeft,PixelRight);
+	mdelay(1);
 	for(k=0;k<10;k++)
 	{
-		mdelay(4);
+		mdelay(3);
 		ImageCapture(PixelLeft,PixelRight);
-		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5.2;
+		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/6;
 		bvcnt+=bv[k];
 		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
 		btcnt+=bt[k];

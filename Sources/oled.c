@@ -138,7 +138,8 @@ void OLED_Test(void)
 		
 	OLED_SetPointer(4,20);
 	OLED_Str("ts: ");
-	OLED_Num(targetspeed);
+	CurrentSteer=TargetSteer;
+	OLED_Num(CurrentSteer);
 	
 	
 	
