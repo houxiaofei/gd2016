@@ -4,18 +4,19 @@
 
 int main(void) {
 	initALL();
-	mdelay(1000);
-	DataSet();
+	//mdelay(1000);
+	//DataSet();
 	
-	targetspeed=130;
+	targetspeed=150;
 	SET_motor(targetspeed,targetspeed);
 	
-	initPIT();
+	//initPIT();
 	
 	BlueTx();
 	
 	for(;;){
-		//KeyJudge();
+		KeyJudge();
+		OLED_Test();
 //		time1=TIME;
 //		time2=TIME;
 //		time3=TimeMesure();

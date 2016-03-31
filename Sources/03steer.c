@@ -23,37 +23,37 @@ void Steer_PDSet(void)
 	target_offset=error;
 	if(targetspeed<100)//120
 	{
-		Steer_kp=8;Steer_kd=0;
+		Steer_kp=5;Steer_kd=0;
 		return;
 	}
 	else if(targetspeed<130)//120(150)-5 8 8 12 12 10//130-170
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<35)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=12;Steer_kd=0;}
-		else							{Steer_kp=10;Steer_kd=0;}
+		else if(ABS(target_offset)<10)  {Steer_kp=5;Steer_kd=0;}
+		else if(ABS(target_offset)<30)  {Steer_kp=5;Steer_kd=0;}
+		else if(ABS(target_offset)<35)  {Steer_kp=8;Steer_kd=0;}
+		else if(ABS(target_offset)<40)  {Steer_kp=8;Steer_kd=0;}
+		else							{Steer_kp=5;Steer_kd=0;}
 		return;
 	}
-	else if(targetspeed<150)//140-180//150-190
+	else if(targetspeed<200)//140-180//150-190//160 5 8 8 10 10 10
 	{
 		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
-		else if(ABS(target_offset)<30)  {Steer_kp=8;Steer_kd=6;}
-		else if(ABS(target_offset)<35)  {Steer_kp=11;Steer_kd=5;}
-		else if(ABS(target_offset)<40)  {Steer_kp=12;Steer_kd=5;}
-		else                            {Steer_kp=10;Steer_kd=5;}
+		else if(ABS(target_offset)<10)  {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<30)  {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=8;Steer_kd=5;}
+		else if(ABS(target_offset)<40)  {Steer_kp=8;Steer_kd=5;}
+		else                            {Steer_kp=5;Steer_kd=5;}
 		return;
 	}
-	else if(targetspeed<200)
+	else if(targetspeed<250)
 	{
-		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
-		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
-		else                            {Steer_kp=14;Steer_kd=0;}
+		if(ABS(target_offset)<20)        {Steer_kp=5;Steer_kd=0.8;}
+		else if(ABS(target_offset)<40)  {Steer_kp=ABS(target_offset)*0.25;Steer_kd=1;}
+//		else if(ABS(target_offset)<40)  {Steer_kp=8;Steer_kd=2;}
+//		else if(ABS(target_offset)<46)  {Steer_kp=10;Steer_kd=3;}
+//		else if(ABS(target_offset)<50)  {Steer_kp=10;Steer_kd=3;}
+		else                            {Steer_kp=10;Steer_kd=2;}
 		return;
 	}
 	else
