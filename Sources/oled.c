@@ -129,12 +129,14 @@ void OLED_Test(void)
 //		OLED_Num(88);
 //	}
 	OLED_SetPointer(2,20);
-	OLED_Str("csl: ");
-	OLED_Num(csl);
-	
-	OLED_SetPointer(3,20);
-		OLED_Str("csr: ");
-		OLED_Num(csr);
+	OLED_Str("ts: ");
+	OLED_Num(targetspeed);
+//	OLED_Str("csl: ");
+//	OLED_Num(csl);
+//	
+//	OLED_SetPointer(3,20);
+//		OLED_Str("csr: ");
+//		OLED_Num(csr);
 		
 	OLED_SetPointer(4,20);
 	OLED_Str("ts: ");

@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-unsigned int IOtest=0;
+unsigned int timecount=0;
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 
 void initPIT(void) 
@@ -20,6 +20,7 @@ void initPIT(void)
 
 void PitISR(void)//1ms一个控制周期
 {
+	timecount++;
 	pitcount0++;                                  //5+2+0.035ms一次清零
 	if(pitcount0==2)
 	{
@@ -44,6 +45,11 @@ void PitISR(void)//1ms一个控制周期
 		{
 			//time1=TIME;
 			pitcount3=0;
+			if(timecount>30000)
+			{
+				SET_motor(0,0);
+				timecount=0;
+			}
 			//SpeedCount();
 			//SpeedControl(); 
 			//time2=TIME;

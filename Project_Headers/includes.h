@@ -41,7 +41,6 @@ typedef unsigned long int DWORD;
 #include "04capture.h"
 #include "05debug.h"
 #include "06pit.h"
-#include "07test.h"
 #include "08sci.h"
 #include "09analysis.h"
 #include "delay.h"
