@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-unsigned int IOtest=0;
+unsigned int timecount=0;
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 
 void initPIT(void) 
@@ -21,6 +21,7 @@ void initPIT(void)
 void PitISR(void)//1ms一个控制周期
 {
 	pitcount0++;                                  //5+2+0.035ms一次清零
+	timecount++;
 	if(pitcount0==2)
 	{
 		pitcount2++;
@@ -28,9 +29,11 @@ void PitISR(void)//1ms一个控制周期
 		{
 			//time1=TIME;
 			pitcount2=0;
-			ImageCapture(PixelLeft,PixelRight);
+			ImageCapture(A,B);
 			PixelScan();
+			PixelScan_A();
 			ErrorCalculate();
+			ErrorCalculate_A();
 			Steer_PDSet();
 			SteerControl();
 			//time2=TIME;
@@ -40,10 +43,26 @@ void PitISR(void)//1ms一个控制周期
 	if(pitcount0==3)
 	{
 		pitcount3++;
-		if(pitcount3>=3)                          //15ms一次,35us
+		if(pitcount3>=2)                          //10ms一次,35us
 		{
 			//time1=TIME;
 			pitcount3=0;
+//			if(timecount>25000)
+//			{
+//				SET_motor(0,0);
+//				timecount=0;
+//			}
+			if(stop_flag==1)
+			{
+				Bee=1;
+				SET_motor(0,0);
+				timecount=0;
+			}
+			else
+			{
+				Bee=0;
+				SET_motor(targetspeed,targetspeed);
+			}
 			//SpeedCount();
 			//SpeedControl(); 
 			//time2=TIME;

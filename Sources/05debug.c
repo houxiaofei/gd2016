@@ -74,7 +74,7 @@ void LINFlex_TX_Interrupt(void)
 				break;}
 	case 1:
 		LINFlex_TX(aa);
-		ImageCopy(Left,PixelLeft);
+		ImageCopy(Left,A);
 		Ts=2;
 		break;
 	case 2: 
@@ -96,7 +96,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 5: 
 		LINFlex_TX(bb);
-		ImageCopy(Right,PixelRight);
+		ImageCopy(Right,B);
 		Ts=6;
 		break;
 	case 6: 
@@ -144,49 +144,49 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 15: 
 		//LINFlex_TX(SendInt1(csl));
-		LINFlex_TX(SendInt2(b_value));        //发送B跳变沿标准
+		LINFlex_TX(SendInt2(a_value));        //发送B跳变沿标准
 		//LINFlex_TX(SendInt1(tsl));
 		Ts=16;
 		break;
 	case 16: 
 		//LINFlex_TX(SendInt2(csl));
-		LINFlex_TX(SendInt3(b_value));
+		LINFlex_TX(SendInt3(a_value));
 		//LINFlex_TX(SendInt2(tsl));
 		Ts=17;
 		break;
 	case 17: 
 		//LINFlex_TX(SendInt3(csl));
-		LINFlex_TX(SendInt4(b_value));
+		LINFlex_TX(SendInt4(a_value));
 		//LINFlex_TX(SendInt3(tsl));
 		Ts=18;
 		break;
 	case 18:
 		//LINFlex_TX(SendInt4(csl));
-		LINFlex_TX(SendInt3(b_start));        //发送B起始位
+		LINFlex_TX(SendInt3(a_start));        //发送B起始位
 		//LINFlex_TX(SendInt4(tsl));
 		Ts=19;
 		break;
 	case 19: 
 		//LINFlex_TX(SendInt1(csr));
-		LINFlex_TX(SendInt4(b_start));
+		LINFlex_TX(SendInt4(a_start));
 		//LINFlex_TX(SendInt1(tsr));
 		Ts=20;
 		break;
 	case 20: 
 		//LINFlex_TX(SendInt2(csr));
-		LINFlex_TX(SendInt2(b_T));           //发送B阈值
+		LINFlex_TX(SendInt2(a_T));           //发送B阈值
 		//LINFlex_TX(SendInt2(tsr));
 		Ts=21;
 		break;
 	case 21: 
 		//LINFlex_TX(SendInt3(csr));
-		LINFlex_TX(SendInt3(b_T));
+		LINFlex_TX(SendInt3(a_T));
 		//LINFlex_TX(SendInt3(tsr));
 		Ts=22;
 		break;
 	case 22:
 		//LINFlex_TX(SendInt4(csr));
-		LINFlex_TX(SendInt4(b_T));
+		LINFlex_TX(SendInt4(a_T));
 		//LINFlex_TX(SendInt4(tsr));
 		Ts=23;
 		break;
@@ -195,30 +195,54 @@ void LINFlex_TX_Interrupt(void)
 		Ts=24;
 		break;
 	case 24: 
-		LINFlex_TX(SendInt4(bl_flag));        //发送B_flag
+		LINFlex_TX(SendInt4(al_flag));        //发送A_flag
 		Ts=25;
 		break;
 	case 25: 
-		LINFlex_TX(SendInt4(br_flag));
+		LINFlex_TX(SendInt4(ar_flag));
 		Ts=26;
 		break;
 	case 26: 
-		LINFlex_TX(SendInt1(target_offset));        //发送error
+		LINFlex_TX(SendInt4(bl_flag));        //发送B_flag
 		Ts=27;
 		break;
-	case 27:
-		LINFlex_TX(SendInt2(target_offset));
+	case 27: 
+		LINFlex_TX(SendInt4(br_flag));
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt3(target_offset));        
+		LINFlex_TX(SendInt1(error));        //发送error
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt4(target_offset));
+		LINFlex_TX(SendInt2(error));
 		Ts=30;
 		break;
-	case 30:
+	case 30: 
+		LINFlex_TX(SendInt3(error));        
+		Ts=31;
+		break;
+	case 31:
+		LINFlex_TX(SendInt4(error));
+		Ts=32;
+		break;
+	case 32: 
+		LINFlex_TX(SendInt1(a_error));        //发送a_error
+		Ts=33;
+		break;
+	case 33:
+		LINFlex_TX(SendInt2(a_error));
+		Ts=34;
+		break;
+	case 34: 
+		LINFlex_TX(SendInt3(a_error));      
+		Ts=35;
+		break;
+	case 35:
+		LINFlex_TX(SendInt4(a_error));
+		Ts=36;
+		break;
+	case 36:
 		send = putstring;
 		Ts=0;
 //		LINFLEX_0.LINCR1.B.INIT=1;
@@ -236,23 +260,23 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-		TargetSteer+=100;
-		//tsr-=10;
+		//TargetSteer+=100;
+		targetspeed-=50;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    TargetSteer-=100;
-	    //tsr+=10;
+	    //TargetSteer-=100;
+	    targetspeed+=50;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-		TargetSteer+=10;
-		//tsl-=10;
+		//TargetSteer+=10;
+		targetspeed-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4; 
-		TargetSteer-=10;
-		//tsl+=10;
+		//TargetSteer-=10;
+		targetspeed+=10;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

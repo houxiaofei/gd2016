@@ -41,7 +41,6 @@ typedef unsigned long int DWORD;
 #include "04capture.h"
 #include "05debug.h"
 #include "06pit.h"
-#include "07test.h"
 #include "08sci.h"
 #include "09analysis.h"
 #include "delay.h"
@@ -74,7 +73,7 @@ extern int PixelRight[128];
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[11].CBDR.R // ¶æ»úÖµ
-#define CENTER 3710//3692
+#define CENTER 3692//3692 3710
 
 /***************stm*****************/
 #define TIME STM.CNT.R

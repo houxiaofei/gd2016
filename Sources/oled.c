@@ -129,17 +129,21 @@ void OLED_Test(void)
 //		OLED_Num(88);
 //	}
 	OLED_SetPointer(2,20);
-	OLED_Str("csl: ");
-	OLED_Num(csl);
-	
-	OLED_SetPointer(3,20);
-		OLED_Str("csr: ");
-		OLED_Num(csr);
+//	OLED_Str("tsl: ");
+//	OLED_Num(tsl);
+	OLED_Str("ts: ");
+	OLED_Num(targetspeed);
+//	
+//	OLED_SetPointer(3,20);
+//	OLED_Str("tsr: ");
+//		OLED_Num(tsr);
 		
 	OLED_SetPointer(4,20);
-	OLED_Str("ts: ");
-	CurrentSteer=TargetSteer;
-	OLED_Num(CurrentSteer);
+//	OLED_Str("ts: ");
+//	CurrentSteer=TargetSteer;
+//	OLED_Num(CurrentSteer);
+//	OLED_Str("stop: ");
+//	OLED_Num(stop_flag);
 	
 	
 	
