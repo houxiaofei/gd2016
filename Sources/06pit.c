@@ -20,6 +20,7 @@ void initPIT(void)
 
 void PitISR(void)//1ms一个控制周期
 {
+	timecount++;
 	pitcount0++;                                  //5+2+0.035ms一次清零
 	timecount++;
 	if(pitcount0==2)

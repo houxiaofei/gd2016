@@ -260,23 +260,27 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
+		targetspeed+=10;
 		//TargetSteer+=100;
-		targetspeed-=50;
+		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
+	    targetspeed-=10;
 	    //TargetSteer-=100;
-	    targetspeed+=50;
+	    //tsr+=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
+		targetspeed+=5;
 		//TargetSteer+=10;
-		targetspeed-=10;
+		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
-		keymode=4; 
+		keymode=4;
+		targetspeed-=5;
 		//TargetSteer-=10;
-		targetspeed+=10;
+		//tsl+=10;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

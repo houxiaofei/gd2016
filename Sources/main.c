@@ -8,6 +8,7 @@ int main(void) {
 	DataSet();
 	
 	targetspeed=180;
+
 	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();
