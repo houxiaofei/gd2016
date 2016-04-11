@@ -7,7 +7,7 @@
 
 #include "includes.h"
 
-unsigned int IOtest=0;
+unsigned int timecount=0;
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 
 void initPIT(void) 
@@ -20,28 +20,54 @@ void initPIT(void)
 
 void PitISR(void)//1ms一个控制周期
 {
-	pitcount0++;                                  //5ms一次清零
+	timecount++;
+	pitcount0++;                                  //5+2+0.035ms一次清零
+	timecount++;
 	if(pitcount0==2)
 	{
 		pitcount2++;
-		if(pitcount2>=2)                          //10ms一次
+		if(pitcount2>=1)                          //10ms一次,需2ms,共12ms一次
 		{
+			//time1=TIME;
 			pitcount2=0;
-			ImageCapture(PixelLeft,PixelRight);
+			ImageCapture(A,B);
 			PixelScan();
+			PixelScan_A();
 			ErrorCalculate();
+			ErrorCalculate_A();
 			Steer_PDSet();
 			SteerControl();
+			//time2=TIME;
+			//time3=TimeMesure();
 		}
 	}
 	if(pitcount0==3)
 	{
 		pitcount3++;
-		if(pitcount3>=20)                          //100ms一次
+		if(pitcount3>=2)                          //10ms一次,35us
 		{
+			//time1=TIME;
 			pitcount3=0;
-			SpeedCount();
-			Speed_control();                        
+//			if(timecount>25000)
+//			{
+//				SET_motor(0,0);
+//				timecount=0;
+//			}
+			if(stop_flag==1)
+			{
+				Bee=1;
+				SET_motor(0,0);
+				timecount=0;
+			}
+			else
+			{
+				Bee=0;
+				SET_motor(targetspeed,targetspeed);
+			}
+			//SpeedCount();
+			//SpeedControl(); 
+			//time2=TIME;
+			//time3=TimeMesure();
 		}
 	}
 	if(pitcount0==5)
@@ -51,6 +77,7 @@ void PitISR(void)//1ms一个控制周期
 		if(pitcount5>=100)                         //1s一次
 		{
 			pitcount5=0;
+			OLED_Test();
 			//  IOtest=1;
 			//	Bee=1;
 			//	udelay(100000);

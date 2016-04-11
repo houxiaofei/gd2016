@@ -5,9 +5,10 @@
 int main(void) {
 	initALL();
 	mdelay(1000);
-	//DataSet();
+	DataSet();
 	
-	targetspeed=120;
+	targetspeed=180;
+
 	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();
@@ -16,6 +17,10 @@ int main(void) {
 	
 	for(;;){
 		KeyJudge();
+		//OLED_Test();
+//		time1=TIME;
+//		time2=TIME;
+//		time3=TimeMesure();
 	}
   
 }

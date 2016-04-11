@@ -9,17 +9,18 @@
 
 void initALL(void)
 {
-	disableWatchdog();
-	initModesAndClock();
-	enableIrq();
-	initEMIOS_0MotorAndSteer();
-	initEMIOS_0ModulusCounter();
+	disableWatchdog();          //¹Ø±Õ¿´ÃÅ¹·
+	initModesAndClock();        //Ê±ÖÓÄ£¿é£¬ÏµÍ³Ê±ÖÓÉèÖÃÎªËøÏà»·£¬³¬Æµµ½80M  
+	enableIrq();                //ÖÐ¶Ï³õÊ¼»¯
+	initEMIOS_0MotorAndSteer();   //µç»ú¶æ»úµÄEMIOSÄ£¿é³õÊ¼»¯£¨¸Ä£©
+	initEMIOS_0ModulusCounter();  //EMIOSµÄÂö³å²¶×½¹¦ÄÜ³õÊ¼»¯£¨¸Ä£©
 //	initEMIOS_0Image();
-	initLINFlex_0_UART();
-	initAD();
-//	initOLED();
+	initLINFlex_0_UART();         //UART£¬À¶ÑÀ
+	initSTM();                    //¼ÆÊ±Æ÷
+	initAD();                     //ADC  £¨¸Ä£©
 //	initKeys_Switchs_Infrared();
 	initTestIO();
+	OLED_Init();
 }
 
 /*********************************************************************************************/
@@ -162,13 +163,13 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕ
 void initAD(void)
 {
   ADC.MCR.R = 0x20000000;       /*Î´¶Á×ª»»Êý¾Ý²»ÄÜ±»¸²¸Ç£»ÓÒ¶ÔÆë£»Á¬Ðø×ª»»ÐòÁÐÄ£Ê½£»ÒýÆðµ±Ç°Á´×ª»»½áÊø²¢ÖÕÖ¹²Ù×÷£»¶ÔÍ¨µÀ×¢ÈëµÄÍâ´¥·¢Æ÷Ê¹²»ÄÜ£»Ä£ÄâÊ±ÖÓÆµÂÊÎª40MHz£»CTU´¥·¢×ª»»Ê¹²»ÄÜ£»×Ô¶¯Ê±ÖÓ¹Ø±ÕÊ¹²»ÄÜ£»Õý³£Ä£Ê½*/
-  ADC.NCMR[1].R = 0x00000005;   /*Ê¹ÄÜCH32ºÍCH34Í¨µÀ£¨±ê×¼Í¨µÀ£©µÄÎ»Õý³£²ÉÑù*/
+  ADC.NCMR[1].R = 0x00000006;   /*Ê¹ÄÜCH33ºÍCH34Í¨µÀ£¨±ê×¼Í¨µÀ£©µÄÎ»Õý³£²ÉÑù*/
   ADC.CTR[1].R = 0x00008606;    /*×ª»»Ê±¼ä¼Ä´æÆ÷ Óë±ê×¼Í¨µÀÏà¹ØÁª*/
   ADC.MCR.B.NSTART=1;         /* Trigger normal conversions for ADC0 */
   
-  SIU.PCR[24].R = 0x2100;//CCDL AO  B8
-  SIU.PCR[27].R = 0x0200;//CCDL CLK B11
-  SIU.PCR[61].R = 0x0200;//CCDL SI  D13
+  SIU.PCR[25].R = 0x2100;//CCDM AO  B9
+  SIU.PCR[46].R = 0x0200;//CCDM CLK C14
+  SIU.PCR[2].R = 0x0200;//CCDM SI  A2
   SIU.PCR[26].R = 0x2100;//CCDR AO  B10
   SIU.PCR[63].R = 0x0200;//CCDR CLK D15
   SIU.PCR[62].R = 0x0200;//CCDR SI  D14
@@ -206,6 +207,11 @@ void initLINFlex_0_UART(void)
     SIU.PCR[19].R = 0x0103;    /* MPC56xxB: Configure port B3 as LIN0RX */
   	INTC_InstallINTCInterruptHandler(LINFlex_TX_Interrupt,80,2); 
 }
+/*************************STM³õÊ¼»¯***********************/
+void initSTM(void)
+{
+	STM.CR.R=0x00000001;
+}
 
 /*********************²âÊÔIO³õÊ¼»¯***********************/
 void initTestIO(void)
@@ -223,11 +229,11 @@ void initTestIO(void)
 //	SIU.PCR[60].R = 0x0200;//COUNTER1 D12
 //	SIU.PCR[6].R = 0x0200; //COUNTER2 A6
 //	SIU.PCR[8].R = 0x0200; //COUNTER1 A8
-//	SIU.PCR[72].R = 0x0200;//OLED     E8
-//	SIU.PCR[74].R = 0x0200;//OLED     E10
-//	SIU.PCR[75].R = 0x0200;//OLED     E11
-//	SIU.PCR[42].R = 0x0200;//OLED     C10
-//	SIU.PCR[17].R = 0x0200;//OLED     B1
+	SIU.PCR[72].R = 0x0200;//OLED     E8
+	SIU.PCR[74].R = 0x0200;//OLED     E10
+	SIU.PCR[75].R = 0x0200;//OLED     E11
+	SIU.PCR[42].R = 0x0200;//OLED     C10
+	SIU.PCR[17].R = 0x0200;//OLED     B1
 	SIU.PCR[0].R = 0x0200; //BEE      A0
 //	SIU.PCR[9].R = 0x0200; //SUPER1   A9
 //	SIU.PCR[5].R = 0x0200; //SUPER1   A5
