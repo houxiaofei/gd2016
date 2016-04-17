@@ -59,11 +59,6 @@ void PitISR(void)//1ms一个控制周期
 				SET_motor(0,0);
 				timecount=0;
 			}
-			else
-			{
-				Bee=0;
-				SET_motor(targetspeed,targetspeed);
-			}
 			//SpeedCount();
 			//SpeedControl(); 
 			//time2=TIME;

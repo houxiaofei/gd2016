@@ -18,7 +18,7 @@ int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=28,a_allblack=2,b_allwhite=42,b_allblack=2;                  //È«°×,È«ºÚÅÐ¶Ï±ê×¼
 int a_scan=4,a_halfscan=2,b_scan=8,b_halfscan=4;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
-int b_value2=4,b_scan2=3,b_cnt=4;
+int b_value2=4,b_scan2=3,b_cnt=5;
 int wrong_flag=0;
 int stop_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//Ìø±äÑØ
