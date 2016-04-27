@@ -27,6 +27,7 @@ extern void PixelScan(void);
 extern void PixelScan_A(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
+extern void ErrorCalculate_B(void);
 void EndJudge(void);
 
 #endif /* ANALYSIS_H_ */

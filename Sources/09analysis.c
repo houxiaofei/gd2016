@@ -22,7 +22,7 @@ int b_value2=4,b_scan2=3,b_cnt=5;
 int wrong_flag=0;
 int stop_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
-int error=0,a_error=0;
+int b_error=0,a_error=0,error=0;
 int rem=-5;                  //补线值
 int i=0,j=0;
 
@@ -208,47 +208,47 @@ void PixelScan_A(void)
 	}
 }
 
-void ErrorCalculate(void)
+void ErrorCalculate_B(void)
 {
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
 		EndJudge();
-		error=(bl_edge-b_start+br_edge-b_start);
+		b_error=(bl_edge-b_start+br_edge-b_start);
 		return;
 	}
 	if(bl_flag==1&&br_flag==1)                              //11十字
 	{
-		error=0;
+		b_error=0;
 		return;
 	}
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
-		error=br_edge-br_end-rem;
+		b_error=br_edge-br_end-rem;
 		return;
 	}
 	if(bl_flag==1&&br_flag==0)                              //10左转中
 	{
-		error=b_start-br_end-rem;
+		b_error=b_start-br_end-rem;
 		return;
 	}
 	if(bl_flag==3&&br_flag==0)                              //30左转大
 	{
-		error=bl_edge-br_end-rem;
+		b_error=bl_edge-br_end-rem;
 		return;
 	}
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
-		error=bl_edge-bl_end+rem;
+		b_error=bl_edge-bl_end+rem;
 		return;
 	}
 	if(bl_flag==0&&br_flag==1)                              //01右转小
 	{
-		error=b_start-bl_end+rem;
+		b_error=b_start-bl_end+rem;
 		return;
 	}
 	if(bl_flag==0&&br_flag==3)                              //03右转小
 	{
-		error=br_edge-bl_end+rem;
+		b_error=br_edge-bl_end+rem;
 		return;
 	}
 //	if(bl_flag==4||br_flag==4)
@@ -276,7 +276,10 @@ void ErrorCalculate_A(void)
 	if(al_flag==3&&ar_flag==0)
 		a_error=(al_edge-ar_end)*0.3;
 }
-
+void ErrorCalculate(void)
+{
+	error=0.3*a_error+b_error;
+}
 void EndJudge(void)
 {
 	int k=0;

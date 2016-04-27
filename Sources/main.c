@@ -7,7 +7,7 @@ int main(void) {
 	//mdelay(1000);
 	//DataSet();
 	
-	targetspeed=180;
+	targetspeed=110;
 
 	SET_motor(targetspeed,targetspeed);
 	
