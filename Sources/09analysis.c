@@ -9,14 +9,14 @@
 
 int A[128]={0};
 int B[128]={0};
-int al_end=40,ar_end=100,bl_end=23,br_end=111;
+int al_end=37,ar_end=97,bl_end=23,br_end=111;
 int a_start=70,b_start=67;
 int a_value=200,b_value=200;                          //判断跳变沿的差值标准
 int a_T=400,b_T=400;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
-int a_allwhite=28,a_allblack=2,b_allwhite=42,b_allblack=2;                  //全白,全黑判断标准
-int a_scan=4,a_halfscan=2,b_scan=8,b_halfscan=4;
+int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
+int a_scan=10,a_halfscan=5,b_scan=12,b_halfscan=6;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int b_value2=4,b_scan2=3,b_cnt=5;
 int wrong_flag=0;
@@ -42,8 +42,8 @@ void DataSet(void)
 	{
 		mdelay(3);
 		ImageCapture(PixelLeft,PixelRight);
-		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/6;
-		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/6;
+		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
+		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
 		bvcnt+=bv[k];
 		avcnt+=av[k];
 		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
@@ -107,7 +107,7 @@ void PixelScan(void)
 	error=0;
 	wrong_flag=0;
 	stop_flag=0;
-	for(i=b_start;i>bl_end;i--)
+	for(i=b_start;i>(bl_end+b_scan);i--)
 	{
 		if(B[i]>b_T)
 			bl_count++;
@@ -123,14 +123,14 @@ void PixelScan(void)
 			bl_edge=i-b_halfscan;
 			break;
 		}
-		if(bl_count>b_allwhite)
+		if(bl_count>(b_allwhite-b_scan))
 			bl_flag=1;
 		else if(bl_count<b_allblack)
 			bl_flag=0;
 		else
 			bl_flag=4;
 	}
-	for(i=b_start;i<br_end;i++)
+	for(i=b_start;i<(br_end-b_scan);i++)
 	{
 		if(B[i]>b_T)
 			br_count++;
@@ -146,7 +146,7 @@ void PixelScan(void)
 			br_edge=i+b_halfscan;
 			break;
 		}
-		if(br_count>b_allwhite)
+		if(br_count>(b_allwhite-b_scan))
 			br_flag=1;
 		else if(br_count<b_allblack)
 			br_flag=0;
@@ -160,7 +160,7 @@ void PixelScan_A(void)
 	al_count=0,ar_count=0;
 	al_flag=4,ar_flag=4;
 	al_edge=0,ar_edge=0;
-	for(i=a_start;i>al_end;i--)
+	for(i=a_start;i>(al_end+a_scan);i--)
 	{
 		if(A[i]>a_T)
 			al_count++;
@@ -176,14 +176,14 @@ void PixelScan_A(void)
 			al_edge=i-a_halfscan;
 			break;
 		}
-		if(al_count>a_allwhite)
+		if(al_count>(a_allwhite-a_scan))
 			al_flag=1;
 		else if(al_count<a_allblack)
 			al_flag=0;
 		else
 			al_flag=4;
 	}
-	for(i=a_start;i<ar_end;i++)
+	for(i=a_start;i<(ar_end-a_scan);i++)
 	{
 		if(A[i]>a_T)
 			ar_count++;
@@ -199,7 +199,7 @@ void PixelScan_A(void)
 			ar_edge=i+a_halfscan;
 			break;
 		}
-		if(ar_count>a_allwhite)
+		if(ar_count>(a_allwhite-a_scan))
 			ar_flag=1;
 		else if(ar_count<a_allblack)
 			ar_flag=0;
@@ -260,6 +260,7 @@ void ErrorCalculate(void)
 
 void ErrorCalculate_A(void)
 {
+	a_error=0;
 	if(al_flag==2&&ar_flag==2)
 		a_error=(al_edge-a_start+ar_edge-a_start)*0.3;  //全直
 	if(al_flag==2&&ar_flag==1)//即将进入右转
