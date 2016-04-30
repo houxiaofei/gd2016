@@ -136,7 +136,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 13:
 		LINFlex_TX(SendInt4(CurrentSteer));
-		Ts=14;
+		Ts=23;
 		break;
 	case 14: 
 		LINFlex_TX(speed);
@@ -242,7 +242,23 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(a_error));
 		Ts=36;
 		break;
-	case 36:
+	case 36: 
+		LINFlex_TX(SendInt1(b_error));        //·¢ËÍb_error
+		Ts=37;
+		break;
+	case 37:
+		LINFlex_TX(SendInt2(b_error));
+		Ts=38;
+		break;
+	case 38: 
+		LINFlex_TX(SendInt3(b_error));      
+		Ts=39;
+		break;
+	case 39:
+		LINFlex_TX(SendInt4(b_error));
+		Ts=40;
+		break;
+	case 40:
 		send = putstring;
 		Ts=0;
 //		LINFLEX_0.LINCR1.B.INIT=1;

@@ -20,7 +20,7 @@ extern int b_value2,b_scan2,b_cnt;
 extern int wrong_flag;
 extern int stop_flag;
 extern int al_edge,ar_edge,bl_edge,br_edge;//Ìø±äÑØ
-extern int error,a_error;
+extern int error,a_error,b_error;
 
 extern void DataSet(void);
 extern void PixelScan(void);

@@ -33,8 +33,8 @@ void PitISR(void)//1ms一个控制周期
 			ImageCapture(A,B);
 			PixelScan();
 			PixelScan_A();
-			ErrorCalculate();
 			ErrorCalculate_A();
+			ErrorCalculate();
 			Steer_PDSet();
 			SteerControl();
 			//time2=TIME;
