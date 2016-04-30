@@ -7,10 +7,9 @@ int main(void) {
 	//mdelay(1000);
 	//DataSet();
 	
-	targetspeed=110;
+	targetspeed=180;
 
 	SET_motor(targetspeed,targetspeed);
-	
 	initPIT();
 	
 	BlueTx();
