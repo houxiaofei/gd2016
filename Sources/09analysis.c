@@ -16,14 +16,14 @@ int a_T=400,b_T=400;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
-int a_scan=10,a_halfscan=5,b_scan=12,b_halfscan=6;
+int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int b_value2=4,b_scan2=3,b_cnt=5;
 int wrong_flag=0;
 int stop_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0;
-int rem=-5,ab_rem=0;                  //补线值
+int rem=-13,ab_rem=0;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)

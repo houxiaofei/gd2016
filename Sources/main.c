@@ -10,7 +10,6 @@ int main(void) {
 	targetspeed=180;
 
 	SET_motor(targetspeed,targetspeed);
-	
 	initPIT();
 	
 	BlueTx();
