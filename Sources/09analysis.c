@@ -9,7 +9,7 @@
 
 int A[128]={0};
 int B[128]={0};
-int al_end=37,ar_end=97,bl_end=23,br_end=111;
+int al_end=43,ar_end=97,bl_end=23,br_end=111;
 int a_start=70,b_start=67;
 int a_value=200,b_value=200;                          //判断跳变沿的差值标准
 int a_T=400,b_T=400;                                  //黑白阈值
@@ -23,7 +23,7 @@ int wrong_flag=0;
 int stop_flag=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0;
-int rem=-13,ab_rem=0;                  //补线值
+int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=12,ab_rem1=0;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)
@@ -225,37 +225,37 @@ void ErrorCalculate(void)
 	}
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
-		b_error=br_edge-br_end-rem;
-		error=a_error*0.3+b_error;
+		b_error=br_edge-br_end-b_rem;
+		error=a_error*0.3+b_error-ab_rem1;
 		return;
 	}
 	if(bl_flag==1&&br_flag==0)                              //10左转中
 	{
-		b_error=b_start-br_end-rem;
+		b_error=b_start-br_end-b_rem;
 		error=b_error-ab_rem;
 		return;
 	}
 	if(bl_flag==3&&br_flag==0)                              //30左转大
 	{
-		b_error=bl_edge-br_end-rem;
+		b_error=bl_edge-br_end-b_rem;
 		error=b_error-ab_rem;
 		return;
 	}
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
-		b_error=bl_edge-bl_end+rem;
-		error=a_error*0.3+b_error;
+		b_error=bl_edge-bl_end+b_rem;
+		error=a_error*0.3+b_error+ab_rem1;
 		return;
 	}
-	if(bl_flag==0&&br_flag==1)                              //01右转小
+	if(bl_flag==0&&br_flag==1)                              //01右转中
 	{
-		b_error=b_start-bl_end+rem;
+		b_error=b_start-bl_end+b_rem;
 		error=b_error+ab_rem;
 		return;
 	}
-	if(bl_flag==0&&br_flag==3)                              //03右转小
+	if(bl_flag==0&&br_flag==3)                              //03右转大
 	{
-		b_error=br_edge-bl_end+rem;
+		b_error=br_edge-bl_end+b_rem;
 		error=b_error+ab_rem;
 		return;
 	}
@@ -270,19 +270,19 @@ void ErrorCalculate_A(void)
 {
 	a_error=0;
 	if(al_flag==2&&ar_flag==2)
-		a_error=(al_edge-a_start+ar_edge-a_start);  //全直
+		a_error=(al_edge-a_start+ar_edge-a_start)*2.25+1;  //全直
 	if(al_flag==2&&ar_flag==1)//即将进入右转
-		a_error=(al_edge-al_end);
+		a_error=(al_edge-al_end+al_rem);
 	if(al_flag==0&&ar_flag==1)
-		a_error=(a_start-al_end);
+		a_error=(a_start-al_end+al_rem);
 	if(al_flag==0&&ar_flag==3)
-		a_error=(ar_edge-al_end);
+		a_error=(ar_edge-al_end+al_rem);
 	if(al_flag==1&&ar_flag==2)//即将进入左转
-		a_error=(ar_edge-ar_end);
+		a_error=(ar_edge-ar_end-ar_rem);
 	if(al_flag==1&&ar_flag==0)
-		a_error=(a_start-ar_end);
+		a_error=(a_start-ar_end-ar_rem);
 	if(al_flag==3&&ar_flag==0)
-		a_error=(al_edge-ar_end);
+		a_error=(al_edge-ar_end-ar_rem);
 }
 
 void EndJudge(void)

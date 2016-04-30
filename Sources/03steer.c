@@ -93,7 +93,7 @@ void SteerControl(void)
 	
 	Bee=0;
 
-	Steer_PWM[3] = CENTER-(Steer_kp+5)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+	Steer_PWM[3] = CENTER-(Steer_kp+2)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 	else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;
