@@ -38,11 +38,11 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<200)//140-180//150-190//160 5 8 8 10 10 10
 	{
-		if(ABS(target_offset)<20)        {Steer_kp=6;Steer_kd=5;}
-		else if(ABS(target_offset)<30)  {Steer_kp=(ABS(target_offset)-20)*0.2+6;Steer_kd=5;}
-		else if(ABS(target_offset)<40)  {Steer_kp=(ABS(target_offset)-30)*0.3+8;Steer_kd=5;}
-		else if(ABS(target_offset)<50)  {Steer_kp=(ABS(target_offset)-40)*0.1+11;Steer_kd=5;}
-		else                            {Steer_kp=12;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
+		else                            {Steer_kp=13;Steer_kd=5;}
 //		
 //		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
 //		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
@@ -54,10 +54,10 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<250)
 	{
-		if(ABS(target_offset)<20)        {Steer_kp=8;Steer_kd=5;}
-		else if(ABS(target_offset)<30)  {Steer_kp=(ABS(target_offset)-20)*0.1+8;Steer_kd=5;}
-		else if(ABS(target_offset)<40)  {Steer_kp=(ABS(target_offset)-30)*0.3+9;Steer_kd=5;}
-		else if(ABS(target_offset)<50)  {Steer_kp=(ABS(target_offset)-40)*0.1+12;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
 		else                            {Steer_kp=13;Steer_kd=5;}
 		
 //		if(ABS(target_offset)<20)        {Steer_kp=5;Steer_kd=0.8;}
@@ -68,14 +68,22 @@ void Steer_PDSet(void)
 //		else                            {Steer_kp=10;Steer_kd=2;}
 		return;
 	}
+	else if(targetspeed<300)
+	{
+		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
+		else                            {Steer_kp=13;Steer_kd=5;}
+	}
 	else
 	{
-		if(ABS(target_offset)<5)        {Steer_kp=8;Steer_kd=0;}
-		else if(ABS(target_offset)<10)  {Steer_kp=10;Steer_kd=0;}
-		else if(ABS(target_offset)<20)  {Steer_kp=12;Steer_kd=0;}
-		else if(ABS(target_offset)<30)  {Steer_kp=13;Steer_kd=0;}
-		else if(ABS(target_offset)<40)  {Steer_kp=14;Steer_kd=0;}
-		else                            {Steer_kp=15;Steer_kd=0;}	
+		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
+		else                            {Steer_kp=13;Steer_kd=5;}
+		return;
 	}
 }
 /*************************¶æ»ú¿ØÖÆ£¬PD***********************/

@@ -56,11 +56,15 @@ void PitISR(void)//1ms一个控制周期
 			if(stop_flag==1)
 			{
 				Bee=1;
+				targetspeed=0;
 				SET_motor(0,0);
 				timecount=0;
 			}
-			//SpeedCount();
-			//SpeedControl(); 
+			SET_motor(targetspeed,targetspeed);
+//			else
+//				targetspeed=140;
+//			SpeedCount();
+//			SpeedControl(); 
 			//time2=TIME;
 			//time3=TimeMesure();
 		}

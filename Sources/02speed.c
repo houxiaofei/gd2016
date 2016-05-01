@@ -9,7 +9,7 @@
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=80;
+int targetspeed=0,Motor_PWM_MAX=300,Motor_PWM_MIN=-100;
 //**********************差速参数***************************/
 signed int Speed_kc=15000;
 signed int wheel_distance=9;//半车距8
@@ -19,8 +19,8 @@ double r=0;
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,SumErrorRight=0;
  
-double Speed_kp_Left=15,Speed_ki_Left=0,Speed_kd_Left=0;//16
-double Speed_kp_Right=15,Speed_ki_Right=0,Speed_kd_Right=0;	//电机PID
+double Speed_kp_Left=15,Speed_ki_Left=1,Speed_kd_Left=0.1;//16
+double Speed_kp_Right=15,Speed_ki_Right=1,Speed_kd_Right=0.1;	//电机PID
 
 
 //********************辅助调试参数******************************************

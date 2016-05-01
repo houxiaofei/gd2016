@@ -6,8 +6,9 @@ int main(void) {
 	initALL();
 	//mdelay(1000);
 	//DataSet();
+	stop_flag=0;
 	
-	targetspeed=180;
+	targetspeed=230;
 
 	SET_motor(targetspeed,targetspeed);
 	initPIT();

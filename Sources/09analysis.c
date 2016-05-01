@@ -15,14 +15,17 @@ int a_value=200,b_value=200;                          //判断跳变沿的差值标准
 int a_T=400,b_T=400;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
-int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
+int a_allwhite=23,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
 int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
-int b_value2=4,b_scan2=3,b_cnt=5;
-int wrong_flag=0;
-int stop_flag=0;
+int a_flag=44,b_flag=44;
+int aa_flag[4]={0,0,0,0};
+int b_value2=50,b_scan2=10;//终点
+int wrong_flag=0,a_wrong_flag=0;
+int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0;
+int aa_error[4]={0,0,0,0};
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=12,ab_rem1=0;                  //补线值
 int i=0,j=0;
 
@@ -106,7 +109,6 @@ void PixelScan(void)
 	bl_edge=0,br_edge=0;
 	error=0;
 	wrong_flag=0;
-	stop_flag=0;
 	for(i=b_start;i>(bl_end+b_scan);i--)
 	{
 		if(B[i]>b_T)
@@ -153,6 +155,7 @@ void PixelScan(void)
 		else
 			br_flag=4;
 	}
+	b_flag=bl_flag*10+br_flag;
 }
 
 void PixelScan_A(void)
@@ -206,10 +209,25 @@ void PixelScan_A(void)
 		else
 			ar_flag=4;
 	}
+	a_flag=al_flag*10+ar_flag;
+	aa_flag[3]=a_flag;
 }
 
 void ErrorCalculate(void)
 {
+	if(bl_flag==0&&br_flag==0&al_flag==0&&ar_flag==0)
+	{
+		stop_cnt++;
+		if(stop_cnt>3)
+		{
+			stop_cnt=0;
+			stop_flag=1;
+		}
+	}
+	else
+	{
+		stop_cnt=0;
+	}
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
 		EndJudge();
@@ -220,13 +238,16 @@ void ErrorCalculate(void)
 	if(bl_flag==1&&br_flag==1)                              //11十字
 	{
 		b_error=0;
-		error=a_error+b_error;
+		error=a_error*0.7+b_error;
 		return;
 	}
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
 		b_error=br_edge-br_end-b_rem;
-		error=a_error*0.3+b_error-ab_rem1;
+		if(a_flag==0||a_flag==3||a_flag==1)               //00,03,01
+			error=b_error-12-ab_rem1;
+		else
+			error=a_error*0.3+b_error-ab_rem1;
 		return;
 	}
 	if(bl_flag==1&&br_flag==0)                              //10左转中
@@ -244,7 +265,10 @@ void ErrorCalculate(void)
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
 		b_error=bl_edge-bl_end+b_rem;
-		error=a_error*0.3+b_error+ab_rem1;
+		if(a_flag==0||a_flag==30||a_flag==10)           //00,30,10
+			error=b_error+12+ab_rem1;
+		else
+			error=a_error*0.3+b_error+ab_rem1;
 		return;
 	}
 	if(bl_flag==0&&br_flag==1)                              //01右转中
@@ -259,74 +283,100 @@ void ErrorCalculate(void)
 		error=b_error+ab_rem;
 		return;
 	}
-//	if(bl_flag==4||br_flag==4)
-//	{
-//		wrong_flag=1;
-//	}
 	wrong_flag=1;
 }
 
 void ErrorCalculate_A(void)
 {
 	a_error=0;
-	if(al_flag==2&&ar_flag==2)
-		a_error=(al_edge-a_start+ar_edge-a_start)*2.25+1;  //全直
+	a_wrong_flag=1;
+	if(a_flag==11)
+	{
+		a_error=0;
+		a_wrong_flag=0;
+	}
+	if(al_flag==2&&ar_flag==2)//全直
+	{
+		a_error=(al_edge-a_start+ar_edge-a_start)*2.25+1;
+		a_wrong_flag=0;
+	}
 	if(al_flag==2&&ar_flag==1)//即将进入右转
+	{
 		a_error=(al_edge-al_end+al_rem);
+		a_wrong_flag=0;
+	}
 	if(al_flag==0&&ar_flag==1)
+	{
 		a_error=(a_start-al_end+al_rem);
+		a_wrong_flag=0;
+	}
 	if(al_flag==0&&ar_flag==3)
+	{
 		a_error=(ar_edge-al_end+al_rem);
+		a_wrong_flag=0;
+	}
 	if(al_flag==1&&ar_flag==2)//即将进入左转
+	{
 		a_error=(ar_edge-ar_end-ar_rem);
+		a_wrong_flag=0;
+	}
 	if(al_flag==1&&ar_flag==0)
+	{
 		a_error=(a_start-ar_end-ar_rem);
+		a_wrong_flag=0;
+	}
 	if(al_flag==3&&ar_flag==0)
+	{
 		a_error=(al_edge-ar_end-ar_rem);
+		a_wrong_flag=0;
+	}
+	if(a_flag==33)
+	{
+		a_wrong_flag=0;
+		if(aa_flag[2]==30)
+		{
+			a_error=(al_edge-ar_end-ar_rem);
+			aa_flag[3]=30;
+		}
+		else if(aa_flag[2]==3)
+		{
+			a_error=(ar_edge-al_end+al_rem);
+			aa_flag[3]=3;
+		}
+		else
+			a_wrong_flag=1;
+	}
+	if(a_wrong_flag==1)
+	{
+		a_error=(aa_error[2]+aa_error[1])*0.5;
+	}
+	aa_error[3]=a_error;
+	aa_error[0]=aa_error[1];aa_error[1]=aa_error[2];aa_error[2]=aa_error[3];
+	aa_flag[0]=aa_flag[1];aa_flag[1]=aa_flag[2];aa_flag[2]=aa_flag[3];
 }
 
 void EndJudge(void)
 {
 	int k=0;
 	int cnt=0;
-	for(i=bl_edge;i<br_edge;i++)
+	for(i=bl_edge-5;i<br_edge;i++)
 	{
 		switch(k){
 		case 0:
-			if(B[i+b_scan2]-B[i]<-b_value2)
-				cnt++;
-			if(cnt>b_cnt)
-			{
-				cnt=0;
+			if((B[i+b_scan2]-B[i]<-b_value2)&&(B[i+1+b_scan2]-B[i+1]<-b_value2))
 				k=1;
-			}
 			break;
 		case 1:
-			if(B[i+b_scan2]-B[i]>b_value2)
-				cnt++;
-			if(cnt>b_cnt)
-			{
-				cnt=0;
+			if((B[i+b_scan2]-B[i]>b_value2)&&(B[i+1+b_scan2]-B[i+1]>b_value2))
 				k=2;
-			}
 			break;
 		case 2:
-			if(B[i+b_scan2]-B[i]<-b_value2)
-				cnt++;
-			if(cnt>b_cnt)
-			{
-				cnt=0;
+			if((B[i+b_scan2]-B[i]<-b_value2)&&(B[i+1+b_scan2]-B[i+1]<-b_value2))
 				k=3;
-			}
 			break;
 		case 3:
-			if(B[i+b_scan2]-B[i]>b_value2)
-				cnt++;
-			if(cnt>b_cnt)
-			{
-				cnt=0;
+			if((B[i+b_scan2]-B[i]>b_value2)&&(B[i+1+b_scan2]-B[i+1]>b_value2))
 				k=4;
-			}
 			break;
 		case 4:
 			stop_flag=1;

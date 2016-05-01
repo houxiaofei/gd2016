@@ -57,7 +57,7 @@ void LINFlex_TX_Interrupt(void)
 	unsigned char aa='L';
 	unsigned char bb='R';
 	unsigned char steer='X';
-	unsigned char speed='Y';
+	unsigned char edge='Y';
 	unsigned char data='Z';
 //		if(*send!=0x00&&Ts==0)
 //			LINFlex_TX(*send++);
@@ -139,54 +139,54 @@ void LINFlex_TX_Interrupt(void)
 		Ts=23;
 		break;
 	case 14: 
-		LINFlex_TX(speed);
+		LINFlex_TX(edge);
 		Ts=15;
 		break;
 	case 15: 
-		//LINFlex_TX(SendInt1(csl));
-		LINFlex_TX(SendInt2(a_value));        //发送B跳变沿标准
+		LINFlex_TX(SendInt1(csl));
+		//LINFlex_TX(SendInt2(a_value));        //发送B跳变沿标准
 		//LINFlex_TX(SendInt1(tsl));
 		Ts=16;
 		break;
 	case 16: 
-		//LINFlex_TX(SendInt2(csl));
-		LINFlex_TX(SendInt3(a_value));
+		LINFlex_TX(SendInt2(csl));
+		//LINFlex_TX(SendInt3(a_value));
 		//LINFlex_TX(SendInt2(tsl));
 		Ts=17;
 		break;
 	case 17: 
-		//LINFlex_TX(SendInt3(csl));
-		LINFlex_TX(SendInt4(a_value));
+		LINFlex_TX(SendInt3(csl));
+		//LINFlex_TX(SendInt4(a_value));
 		//LINFlex_TX(SendInt3(tsl));
 		Ts=18;
 		break;
 	case 18:
-		//LINFlex_TX(SendInt4(csl));
-		LINFlex_TX(SendInt3(a_start));        //发送B起始位
+		LINFlex_TX(SendInt4(csl));
+		//LINFlex_TX(SendInt3(a_start));        //发送B起始位
 		//LINFlex_TX(SendInt4(tsl));
 		Ts=19;
 		break;
 	case 19: 
-		//LINFlex_TX(SendInt1(csr));
-		LINFlex_TX(SendInt4(a_start));
+		LINFlex_TX(SendInt1(csr));
+		//LINFlex_TX(SendInt4(a_start));
 		//LINFlex_TX(SendInt1(tsr));
 		Ts=20;
 		break;
 	case 20: 
-		//LINFlex_TX(SendInt2(csr));
-		LINFlex_TX(SendInt2(a_T));           //发送B阈值
+		LINFlex_TX(SendInt2(csr));
+		//LINFlex_TX(SendInt2(a_T));           //发送B阈值
 		//LINFlex_TX(SendInt2(tsr));
 		Ts=21;
 		break;
 	case 21: 
-		//LINFlex_TX(SendInt3(csr));
-		LINFlex_TX(SendInt3(a_T));
+		LINFlex_TX(SendInt3(csr));
+		//LINFlex_TX(SendInt3(a_T));
 		//LINFlex_TX(SendInt3(tsr));
 		Ts=22;
 		break;
 	case 22:
-		//LINFlex_TX(SendInt4(csr));
-		LINFlex_TX(SendInt4(a_T));
+		LINFlex_TX(SendInt4(csr));
+		//LINFlex_TX(SendInt4(a_T));
 		//LINFlex_TX(SendInt4(tsr));
 		Ts=23;
 		break;
@@ -277,28 +277,32 @@ void KeyJudge(void)
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
 		targetspeed+=10;
-		SET_motor(targetspeed,targetspeed);
+//		Speed_kp_Left+=1;
+//		Speed_kp_Right+=1;
 		//TargetSteer+=100;
 		//tsr-=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
 	    targetspeed-=10;
-	    SET_motor(targetspeed,targetspeed);
+//	    Speed_kp_Left-=1;
+//	    Speed_kp_Right-=1;
 	    //TargetSteer-=100;
 	    //tsr+=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
 		targetspeed+=5;
-		SET_motor(targetspeed,targetspeed);
+//		Speed_ki_Left+=0.1;
+//		Speed_ki_Right+=0.1;
 		//TargetSteer+=10;
 		//tsl-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
 		targetspeed-=5;
-		SET_motor(targetspeed,targetspeed);
+//		Speed_ki_Left-=0.1;
+//		Speed_ki_Right-=0.1;
 		//TargetSteer-=10;
 		//tsl+=10;
 		}
