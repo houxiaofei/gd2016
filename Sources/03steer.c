@@ -38,51 +38,38 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<200)//140-180//150-190//160 5 8 8 10 10 10
 	{
-		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
-		else                            {Steer_kp=13;Steer_kd=5;}
-//		
-//		if(ABS(target_offset)<5)        {Steer_kp=5;Steer_kd=5;}
-//		else if(ABS(target_offset)<10)  {Steer_kp=8;Steer_kd=5;}
-//		else if(ABS(target_offset)<30)  {Steer_kp=8;Steer_kd=5;}
-//		else if(ABS(target_offset)<35)  {Steer_kp=11;Steer_kd=5;}
-//		else if(ABS(target_offset)<40)  {Steer_kp=10;Steer_kd=5;}
-//		else                            {Steer_kp=10;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=5;}
+		else                            {Steer_kp=16;Steer_kd=5;}
 		return;
 	}
 	else if(targetspeed<250)
 	{
-		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
-		else                            {Steer_kp=13;Steer_kd=5;}
-		
-//		if(ABS(target_offset)<20)        {Steer_kp=5;Steer_kd=0.8;}
-//		else if(ABS(target_offset)<40)  {Steer_kp=ABS(target_offset)*0.25;Steer_kd=1;}
-//		else if(ABS(target_offset)<40)  {Steer_kp=8;Steer_kd=2;}
-//		else if(ABS(target_offset)<46)  {Steer_kp=10;Steer_kd=3;}
-//		else if(ABS(target_offset)<50)  {Steer_kp=10;Steer_kd=3;}
-//		else                            {Steer_kp=10;Steer_kd=2;}
+		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=5;}
+		else                            {Steer_kp=16;Steer_kd=5;}
 		return;
 	}
 	else if(targetspeed<300)
 	{
-		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
-		else                            {Steer_kp=13;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=5;}
+		else                            {Steer_kp=16;Steer_kd=5;}
+		return;
 	}
 	else
 	{
-		if(ABS(target_offset)<25)        {Steer_kp=5;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.4+7;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+11;Steer_kd=5;}
-		else                            {Steer_kp=13;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=5;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=5;}
+		else                            {Steer_kp=16;Steer_kd=5;}
 		return;
 	}
 }
@@ -101,7 +88,7 @@ void SteerControl(void)
 	
 	Bee=0;
 
-	Steer_PWM[3] = CENTER-(Steer_kp+2)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+	Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 	else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;

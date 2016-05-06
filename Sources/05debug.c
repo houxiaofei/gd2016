@@ -70,7 +70,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;
+				Ts=14;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -136,7 +136,7 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 13:
 		LINFlex_TX(SendInt4(CurrentSteer));
-		Ts=23;
+		Ts=14;
 		break;
 	case 14: 
 		LINFlex_TX(edge);
@@ -188,7 +188,7 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(csr));
 		//LINFlex_TX(SendInt4(a_T));
 		//LINFlex_TX(SendInt4(tsr));
-		Ts=23;
+		Ts=40;
 		break;
 	case 23: 
 		LINFlex_TX(data);

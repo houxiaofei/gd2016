@@ -8,9 +8,9 @@ int main(void) {
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=230;
+	targetspeed=180;
 
-	SET_motor(targetspeed,targetspeed);
+	//SET_motor(targetspeed,targetspeed);
 	initPIT();
 	
 	BlueTx();
