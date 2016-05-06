@@ -33,8 +33,8 @@ void PitISR(void)//1ms一个控制周期
 			ImageCapture(A,B);
 			PixelScan();
 			PixelScan_A();
-			ErrorCalculate();
 			ErrorCalculate_A();
+			ErrorCalculate();
 			Steer_PDSet();
 			SteerControl();
 			//time2=TIME;
@@ -56,16 +56,15 @@ void PitISR(void)//1ms一个控制周期
 			if(stop_flag==1)
 			{
 				Bee=1;
+				targetspeed=0;
 				SET_motor(0,0);
 				timecount=0;
 			}
-			else
-			{
-				Bee=0;
-				SET_motor(targetspeed,targetspeed);
-			}
-			//SpeedCount();
-			//SpeedControl(); 
+//			SET_motor(targetspeed,targetspeed);
+//			else
+//				targetspeed=140;
+			SpeedCount();
+			SpeedControl(); 
 			//time2=TIME;
 			//time3=TimeMesure();
 		}

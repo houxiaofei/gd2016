@@ -4,13 +4,13 @@
 
 int main(void) {
 	initALL();
-	mdelay(1000);
-	DataSet();
+	//mdelay(1000);
+	//DataSet();
+	stop_flag=0;
 	
 	targetspeed=180;
 
-	SET_motor(targetspeed,targetspeed);
-	
+	//SET_motor(targetspeed,targetspeed);
 	initPIT();
 	
 	BlueTx();
