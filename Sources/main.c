@@ -8,7 +8,7 @@ int main(void) {
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=180;
+	targetspeed=100;
 
 	//SET_motor(targetspeed,targetspeed);
 	initPIT();

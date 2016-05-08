@@ -56,11 +56,11 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<300)
 	{
-		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=5;}
-		else                            {Steer_kp=16;Steer_kd=5;}
+		if(ABS(target_offset)<25)        {Steer_kp=6;Steer_kd=3;}
+		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+6;Steer_kd=3;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.6+8;Steer_kd=3;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+14;Steer_kd=3;}
+		else                            {Steer_kp=16;Steer_kd=3;}
 		return;
 	}
 	else
@@ -88,7 +88,7 @@ void SteerControl(void)
 	
 	Bee=0;
 
-	Steer_PWM[3] = CENTER-Steer_kp*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+	Steer_PWM[3] = CENTER-(Steer_kp-2)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 	else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;

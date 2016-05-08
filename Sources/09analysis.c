@@ -11,8 +11,8 @@ int A[128]={0};
 int B[128]={0};
 int al_end=43,ar_end=97,bl_end=23,br_end=111;
 int a_start=70,b_start=67;
-int a_value=200,b_value=200;                          //判断跳变沿的差值标准
-int a_T=400,b_T=400;                                  //黑白阈值
+int a_value=120,b_value=100;                          //判断跳变沿的差值标准
+int a_T=360,b_T=300;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=23,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
@@ -20,13 +20,13 @@ int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int a_flag=44,b_flag=44;
 int aa_flag[4]={0,0,0,0};
-int b_value2=50,b_scan2=10;//终点
+int b_value2=20,b_scan2=10;//终点
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0;
 int aa_error[4]={0,0,0,0};
-int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=12,ab_rem1=0;                  //补线值
+int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=12,ab_rem1=5;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)
