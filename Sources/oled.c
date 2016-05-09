@@ -142,9 +142,9 @@ void OLED_Test(void)
 	OLED_SetPointer(2,5);
 //	OLED_Str("stop: ");
 //	OLED_Num(stop_flag);
-	OLED_Num(csl);
+	OLED_Num(tsl);
 	OLED_Str("   ");
-	OLED_Num(csr);
+	OLED_Num(tsr);
 //	OLED_Str("ts: ");
 //	OLED_Num(targetspeed);
 //	OLED_Str("lp: ");

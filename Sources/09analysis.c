@@ -20,13 +20,13 @@ int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int a_flag=44,b_flag=44;
 int aa_flag[4]={0,0,0,0};
-int b_value2=20,b_scan2=10;//终点
+int b_value2=15,b_scan2=10;//终点
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0;
 int aa_error[4]={0,0,0,0};
-int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=12,ab_rem1=5;                  //补线值
+int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //补线值
 int i=0,j=0;
 
 void DataSet(void)
@@ -297,7 +297,7 @@ void ErrorCalculate_A(void)
 	}
 	if(al_flag==2&&ar_flag==2)//全直
 	{
-		a_error=(al_edge-a_start+ar_edge-a_start)*2.25+1;
+		a_error=(al_edge-a_start+ar_edge-a_start)*1.82;
 		a_wrong_flag=0;
 	}
 	if(al_flag==2&&ar_flag==1)//即将进入右转

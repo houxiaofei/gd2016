@@ -211,35 +211,35 @@ void LINFlex_TX_Interrupt(void)
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt1(csl));        //发送error
+		LINFlex_TX(SendInt1(error));        //发送error
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt2(csl));
+		LINFlex_TX(SendInt2(error));
 		Ts=30;
 		break;
 	case 30: 
-		LINFlex_TX(SendInt3(csl));        
+		LINFlex_TX(SendInt3(error));        
 		Ts=31;
 		break;
 	case 31:
-		LINFlex_TX(SendInt4(csl));
+		LINFlex_TX(SendInt4(error));
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(csr));        //发送a_error
+		LINFlex_TX(SendInt1(a_error));        //发送a_error
 		Ts=33;
 		break;
 	case 33:
-		LINFlex_TX(SendInt2(csr));
+		LINFlex_TX(SendInt2(a_error));
 		Ts=34;
 		break;
 	case 34: 
-		LINFlex_TX(SendInt3(csr));      
+		LINFlex_TX(SendInt3(a_error));      
 		Ts=35;
 		break;
 	case 35:
-		LINFlex_TX(SendInt4(csr));
+		LINFlex_TX(SendInt4(a_error));
 		Ts=36;
 		break;
 	case 36: 
