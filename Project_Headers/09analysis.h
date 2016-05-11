@@ -15,7 +15,7 @@ extern int a_start,b_start;
 extern int a_value,b_value;                          //ÅĞ¶ÏÌø±äÑØµÄ²îÖµ±ê×¼
 extern int a_T,b_T;                                  //ºÚ°×ãĞÖµ
 extern int al_count,ar_count,bl_count,br_count;  //°×µã¼ÆÊı
-extern int al_flag,ar_flag,bl_flag,br_flag,allflag;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
+extern int al_flag,ar_flag,bl_flag,br_flag,allflag,a_flag,b_flag;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
 extern int b_value2,b_scan2,b_cnt;
 extern int wrong_flag;
 extern int stop_flag;

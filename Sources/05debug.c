@@ -276,7 +276,12 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-		targetspeed+=10;
+//		csxs+=0.1;
+		Speed_ki_Right+=0.1;
+		Speed_ki_Left+=0.1;
+//	    Speed_kp_Right+=0.1;
+//	    Speed_kd_Right+=0.1;
+//		targetspeed+=10;
 //		Speed_kp_Left+=1;
 //		Speed_kp_Right+=1;
 		//TargetSteer+=100;
@@ -284,7 +289,12 @@ void KeyJudge(void)
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    targetspeed-=10;
+//		csxs-=0.1;
+		Speed_ki_Right-=0.1;
+		Speed_ki_Left-=0.1;
+//		Speed_kp_Right-=0.1;
+//		Speed_kd_Right-=0.1;
+//	    targetspeed-=10;
 //	    Speed_kp_Left-=1;
 //	    Speed_kp_Right-=1;
 	    //TargetSteer-=100;
@@ -292,7 +302,13 @@ void KeyJudge(void)
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-		targetspeed+=5;
+//		csxs+=0.01;
+//		Speed_ki_Right+=0.1;
+//		Speed_ki_Left+=0.1;
+//     	Speed_kp_Left+=0.1;
+		Speed_kd_Left+=0.001;
+		Speed_kd_Right+=0.001;
+//		targetspeed+=5;
 //		Speed_ki_Left+=0.1;
 //		Speed_ki_Right+=0.1;
 		//TargetSteer+=10;
@@ -300,7 +316,13 @@ void KeyJudge(void)
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
-		targetspeed-=5;
+//		csxs-=0.01;
+//		Speed_ki_Right-=0.1;
+//		Speed_ki_Left-=0.1;
+//		Speed_kp_Left-=0.1;
+		Speed_kd_Left-=0.001;
+		Speed_kd_Right-=0.001;
+//		targetspeed-=5;
 //		Speed_ki_Left-=0.1;
 //		Speed_ki_Right-=0.1;
 		//TargetSteer-=10;

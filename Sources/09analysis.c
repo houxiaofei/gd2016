@@ -20,7 +20,7 @@ int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
 int a_flag=44,b_flag=44;
 int aa_flag[4]={0,0,0,0};
-int b_value2=15,b_scan2=10;//ÖÕµã
+int b_value2=10,b_scan2=10;//ÖÕµã
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//Ìø±äÑØ

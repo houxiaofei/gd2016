@@ -1,14 +1,14 @@
 #include "includes.h"
 
-
-
 int main(void) {
 	initALL();
 	//mdelay(1000);
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=200;
+	targetspeed=160;
+	
+
 
 //	SET_motor(targetspeed,targetspeed);
 	initPIT();
@@ -19,7 +19,7 @@ int main(void) {
 		KeyJudge();
 		//OLED_Test();
 //		time1=TIME;
-//		time2=TIME;
+//		time2=TIME; 
 //		time3=TimeMesure();
 	}
   

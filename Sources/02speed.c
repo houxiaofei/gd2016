@@ -9,21 +9,25 @@
 
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
-int targetspeed=0,Motor_PWM_MAX=400,Motor_PWM_MIN=-400;
+int targetspeed=0,Motor_PWM_MAX=300,Motor_PWM_MIN=-300;
+double csxs=0.6;//差速系数
 //**********************差速参数***************************/
-signed int Speed_kc=10000;
+signed int Speed_kc1=20000,Speed_kc2=1800;
 signed int wheel_distance=9;//半车距8
-signed int RPID=0;	
+signed int RPID=0;
 double r=0;
-
 //**********************电机PID参数**********************************************;	
 signed int ErrorLeft=0,PreErrorLeft=0,Pre2ErrorLeft,SumErrorLeft=0,ErrorRight=0,PreErrorRight=0,Pre2ErrorRight=0,SumErrorRight=0;
 int Pwm_Delta_Left=0,Pwm_Delta_Right=0; 
 int tsl_PWM=0,tsr_PWM=0;
-double Speed_kp_Left=5,Speed_ki_Left=0.8,Speed_kd_Left=0.5;//16
-double Speed_kp_Right=5,Speed_ki_Right=1,Speed_kd_Right=0.5;	//电机位置式PID
-//double Speed_kp_Left=6,Speed_ki_Left=0.01,Speed_kd_Left=0;//16
-//double Speed_kp_Right=6,Speed_ki_Right=0,Speed_kd_Right=0;	//电机增量式PID
+
+double Speed_kp_Left=0.5,Speed_ki_Left=0,Speed_kd_Left=0;//16
+double Speed_kp_Right=0.5,Speed_ki_Right=0,Speed_kd_Right=0;	//电机增量式PID
+
+//double Speed_kp_Left=1,Speed_ki_Left=0.8,Speed_kd_Left=0.5;//16 I=0.01-1(0.8),d=1-10(0.5)
+//double Speed_kp_Right=1,Speed_ki_Right=0.8,Speed_kd_Right=0.5;	//电机位置式PID
+//double Speed_kp_Left=1.2,Speed_ki_Left=0.1,Speed_kd_Left=0.01;//16
+//double Speed_kp_Right=1.2,Speed_ki_Right=0.1,Speed_kd_Right=0.01;	//电机增量式PID
 
 
 //********************辅助调试参数******************************************
@@ -55,29 +59,87 @@ void SET_motor(int leftSpeed,int rightSpeed)
 //*****************************************************************************************************************
 //************************************************后轮差速PID速度控制************************************************    	  *
 //*****************************************************************************************************************
-void SpeedControl()//闭环,加差速位置式1111
-{
-	RPID=CENTER-Steer_PWM[3];
-	r=Speed_kc/RPID;
-	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
-	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+//void SpeedControl()//闭环,加差速位置式1111
+//{
+////	RPID=CENTER-Steer_PWM[3];
+////	r=Speed_kc1/RPID;
+////	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+////	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+//	
+//	r=Speed_kc2/error;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+//
+////	tsl=targetspeed;
+////	tsr=targetspeed;
+//	
+//	
+////	if(error<-20&&a_flag!=22)//&&b_flag!=22)
+////	{
+////		tsl=targetspeed*csxs;
+////		tsr=targetspeed*1;
+////	}
+////	else if(error>20&&a_flag!=22)
+////	{
+////		tsr=targetspeed*csxs;
+////		tsl=targetspeed*1;
+////	}
+////	else
+////	{
+////		tsr=targetspeed;
+////		tsl=targetspeed;
+////	}
+//	
+//	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
+//	ErrorRight=(signed int)(tsr)-(signed int)(csr);
+//	
+//	SumErrorLeft+=ErrorLeft;
+//	if(SumErrorLeft>350) SumErrorLeft=350;
+//	if(SumErrorLeft<-350) SumErrorLeft=-350;	    
+//	SumErrorRight+=ErrorRight;
+//	if(SumErrorRight>350) SumErrorRight=350;
+//	if(SumErrorRight<-350) SumErrorRight=-350;
+//	
+//	tsl_PWM=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
+//	tsr_PWM=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
+//	
+//	if(tsl_PWM>Motor_PWM_MAX)  tsl_PWM=Motor_PWM_MAX;
+//	else if(tsl_PWM<Motor_PWM_MIN)  tsl_PWM=Motor_PWM_MIN;	    
+//	if(tsr_PWM>Motor_PWM_MAX)  tsr_PWM=Motor_PWM_MAX;
+//	else if(tsr_PWM<Motor_PWM_MIN)  tsr_PWM=Motor_PWM_MIN;
+//
+//	SET_motor(tsl_PWM,tsr_PWM);
+//	//SET_motor(100,100);
+//	
+//	PreErrorLeft=ErrorLeft;
+//	PreErrorRight=ErrorRight;
+//}
 
-//	tsl=targetspeed;
-//	tsr=targetspeed;
+
+
+void SpeedControl()//闭环,加差速增量式2222
+{
+//	RPID=CENTER-Steer_PWM[3];
+//	r=Speed_kc/RPID;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
+//	SET_motor(tsl,tsr);
+	tsl=targetspeed;
+	tsr=targetspeed;
 	
 	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
 	ErrorRight=(signed int)(tsr)-(signed int)(csr);
 	
-	SumErrorLeft+=ErrorLeft;
-	if(SumErrorLeft>350) SumErrorLeft=350;
-	if(SumErrorLeft<-350) SumErrorLeft=-350;	    
-	SumErrorRight+=ErrorRight;
-	if(SumErrorRight>350) SumErrorRight=350;
-	if(SumErrorRight<-350) SumErrorRight=-350;
+	Pwm_Delta_Left=(Speed_kp_Left+Speed_ki_Left+Speed_kd_Left)*ErrorLeft;
+	Pwm_Delta_Left-=(Speed_kp_Left+2*Speed_kd_Left)*PreErrorLeft;
+	Pwm_Delta_Left+=(Speed_kd_Left)*Pre2ErrorLeft;
+	tsl_PWM+=Pwm_Delta_Left;
 	
-	tsl_PWM=Speed_kp_Left*ErrorLeft+Speed_ki_Left*SumErrorLeft+Speed_kd_Left*(ErrorLeft-PreErrorLeft);
-	tsr_PWM=Speed_kp_Right*ErrorRight+Speed_ki_Left*SumErrorRight+Speed_kd_Left*(ErrorRight-PreErrorRight);
-	
+	Pwm_Delta_Right=(Speed_kp_Right+Speed_ki_Right+Speed_kd_Right)*ErrorRight;
+	Pwm_Delta_Right-=(Speed_kp_Right+2*Speed_kd_Right)*PreErrorRight;
+	Pwm_Delta_Right+=(Speed_kd_Right)*Pre2ErrorRight;
+	tsr_PWM+=Pwm_Delta_Right;
+
 	if(tsl_PWM>Motor_PWM_MAX)  tsl_PWM=Motor_PWM_MAX;
 	else if(tsl_PWM<Motor_PWM_MIN)  tsl_PWM=Motor_PWM_MIN;	    
 	if(tsr_PWM>Motor_PWM_MAX)  tsr_PWM=Motor_PWM_MAX;
@@ -86,48 +148,11 @@ void SpeedControl()//闭环,加差速位置式1111
 	SET_motor(tsl_PWM,tsr_PWM);
 	//SET_motor(100,100);
 	
+	Pre2ErrorLeft=PreErrorLeft;
+	Pre2ErrorRight=PreErrorRight;
 	PreErrorLeft=ErrorLeft;
 	PreErrorRight=ErrorRight;
 }
-
-
-
-//void SpeedControl()//闭环,加差速增量式2222
-//{
-////	RPID=CENTER-Steer_PWM[3];
-////	r=Speed_kc/RPID;
-////	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
-////	tsl=((r+wheel_distance+2)/r)*targetspeed;//左轮加速
-////	SET_motor(tsl,tsr);
-//	tsl=targetspeed;
-//	tsr=targetspeed;
-//	
-//	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
-//	ErrorRight=(signed int)(tsr)-(signed int)(csr);
-//	
-//	Pwm_Delta_Left=(Speed_kp_Left+Speed_ki_Left+Speed_kd_Left)*ErrorLeft;
-//	Pwm_Delta_Left-=(Speed_kp_Left+2*Speed_kd_Left)*PreErrorLeft;
-//	Pwm_Delta_Left+=(Speed_kd_Left)*Pre2ErrorLeft;
-//	tsl_PWM+=Pwm_Delta_Left;
-//	
-//	Pwm_Delta_Right=(Speed_kp_Right+Speed_ki_Right+Speed_kd_Right)*ErrorRight;
-//	Pwm_Delta_Right-=(Speed_kp_Right+2*Speed_kd_Right)*PreErrorRight;
-//	Pwm_Delta_Right+=(Speed_kd_Right)*Pre2ErrorRight;
-//	tsr_PWM+=Pwm_Delta_Right;
-//
-////	if(tsl>Motor_PWM_MAX)  tsl=Motor_PWM_MAX;
-////	else if(tsl<Motor_PWM_MIN)  tsl=Motor_PWM_MIN;	    
-////	if(tsr>Motor_PWM_MAX)  tsr=Motor_PWM_MAX;
-////	else if(tsr<Motor_PWM_MIN)  tsr=Motor_PWM_MIN;
-//
-//	SET_motor(tsl_PWM,tsr_PWM);
-//	//SET_motor(100,100);
-//	
-//	Pre2ErrorLeft=PreErrorLeft;
-//	Pre2ErrorRight=PreErrorRight;
-//	PreErrorLeft=ErrorLeft;
-//	PreErrorRight=ErrorRight;
-//}
 
 
 //void SpeedControl()//速度开环,加差速增量式jucic

@@ -16,7 +16,7 @@ void initPIT(void)
   PIT.CH[2].LDVAL.R = 1000000;      // PIT2 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
   PIT.CH[2].TCTRL.R = 0x000000003; // Enable PIT2 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR2,61,5); 
-  udelay(1);
+  udelay(1000);
   PIT.CH[1].LDVAL.R = 800000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
   PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR,60,4); 
@@ -24,7 +24,7 @@ void initPIT(void)
 
 void PitISR(void)//10ms一个控制周期
 {
-	pitcount1++;                                  
+	pitcount1++;
 	//time1=TIME;
 	ImageCapture(A,B);
 	PixelScan();
@@ -45,12 +45,30 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-	if(stop_flag==1)
-	{
-		targetspeed=0;
-		SET_motor(0,0);
-		timecount=0;
-	}
+//	if(stop_flag==1)
+//	{
+//		targetspeed=0;
+//		SET_motor(0,0);
+//		timecount=0;
+//	}
+	
+//	pitcount2++;
+//	if(pitcount2>=400)                         //4s一次
+//	{
+//		pitcount2=0;
+//		pitcount3++;
+//		if(pitcount3==1)
+//		{
+//		    targetspeed+=40;
+//		}
+//		else if(pitcount3==2)
+//		{
+//			pitcount3=0;
+//		    targetspeed-=40;
+//		}
+//	}
+	
+	
 	SpeedCount();
 	SpeedControl(); 
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位
