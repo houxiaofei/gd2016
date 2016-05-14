@@ -14,5 +14,6 @@ void PitISR2(void);
 
 extern unsigned int timecount;
 extern unsigned int pitcount0,pitcount1,pitcount2,pitcount3,pitcount4,pitcount5;
+extern unsigned int steer_flag,oled_flag;
 
 #endif /* PIT_H_ */

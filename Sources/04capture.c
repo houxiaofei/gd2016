@@ -109,5 +109,8 @@ void SpeedCount(void)
 	else 
 		csr=csr;
 	speedcounter4=speedcounter3;
+	
+	csl_cnt[0]=csl_cnt[1];csl_cnt[1]=csl_cnt[2];csl_cnt[2]=csl;
+	csr_cnt[0]=csr_cnt[1];csr_cnt[1]=csr_cnt[2];csr_cnt[2]=csr;
 }
 

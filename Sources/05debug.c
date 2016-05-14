@@ -211,51 +211,51 @@ void LINFlex_TX_Interrupt(void)
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt1(error));        //发送error
+		LINFlex_TX(SendInt1(ErrorRight));        //发送error
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt2(error));
+		LINFlex_TX(SendInt2(ErrorRight));
 		Ts=30;
 		break;
 	case 30: 
-		LINFlex_TX(SendInt3(error));        
+		LINFlex_TX(SendInt3(ErrorRight));        
 		Ts=31;
 		break;
 	case 31:
-		LINFlex_TX(SendInt4(error));
+		LINFlex_TX(SendInt4(ErrorRight));
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(a_error));        //发送a_error
+		LINFlex_TX(SendInt1(PreErrorRight));        //发送a_error
 		Ts=33;
 		break;
 	case 33:
-		LINFlex_TX(SendInt2(a_error));
+		LINFlex_TX(SendInt2(PreErrorRight));
 		Ts=34;
 		break;
 	case 34: 
-		LINFlex_TX(SendInt3(a_error));      
+		LINFlex_TX(SendInt3(PreErrorRight));      
 		Ts=35;
 		break;
 	case 35:
-		LINFlex_TX(SendInt4(a_error));
+		LINFlex_TX(SendInt4(PreErrorRight));
 		Ts=36;
 		break;
 	case 36: 
-		LINFlex_TX(SendInt1(b_error));        //发送b_error
+		LINFlex_TX(SendInt1(tsr_Delta));        //发送b_error
 		Ts=37;
 		break;
 	case 37:
-		LINFlex_TX(SendInt2(b_error));
+		LINFlex_TX(SendInt2(tsr_Delta));
 		Ts=38;
 		break;
 	case 38: 
-		LINFlex_TX(SendInt3(b_error));      
+		LINFlex_TX(SendInt3(tsr_Delta));      
 		Ts=39;
 		break;
 	case 39:
-		LINFlex_TX(SendInt4(b_error));
+		LINFlex_TX(SendInt4(tsr_Delta));
 		Ts=40;
 		break;
 	case 40:
@@ -277,11 +277,11 @@ void KeyJudge(void)
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
 //		csxs+=0.1;
-		Speed_ki_Right+=0.1;
-		Speed_ki_Left+=0.1;
-//	    Speed_kp_Right+=0.1;
+//		Speed_ki_Right+=0.01;
+//		Speed_ki_Left+=0.1;
+//	    Speed_kp_Right+=1;
 //	    Speed_kd_Right+=0.1;
-//		targetspeed+=10;
+		targetspeed+=10;
 //		Speed_kp_Left+=1;
 //		Speed_kp_Right+=1;
 		//TargetSteer+=100;
@@ -290,11 +290,11 @@ void KeyJudge(void)
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
 //		csxs-=0.1;
-		Speed_ki_Right-=0.1;
-		Speed_ki_Left-=0.1;
-//		Speed_kp_Right-=0.1;
+//		Speed_ki_Right-=0.01;
+//		Speed_ki_Left-=0.1;
+//		Speed_kp_Right-=1;
 //		Speed_kd_Right-=0.1;
-//	    targetspeed-=10;
+	    targetspeed-=10;
 //	    Speed_kp_Left-=1;
 //	    Speed_kp_Right-=1;
 	    //TargetSteer-=100;
@@ -305,10 +305,10 @@ void KeyJudge(void)
 //		csxs+=0.01;
 //		Speed_ki_Right+=0.1;
 //		Speed_ki_Left+=0.1;
-//     	Speed_kp_Left+=0.1;
-		Speed_kd_Left+=0.001;
-		Speed_kd_Right+=0.001;
-//		targetspeed+=5;
+//    	Speed_kp_Right+=0.1;
+//		Speed_kd_Left+=0.001;
+//		Speed_kd_Right+=0.001;
+		targetspeed+=5;
 //		Speed_ki_Left+=0.1;
 //		Speed_ki_Right+=0.1;
 		//TargetSteer+=10;
@@ -319,10 +319,10 @@ void KeyJudge(void)
 //		csxs-=0.01;
 //		Speed_ki_Right-=0.1;
 //		Speed_ki_Left-=0.1;
-//		Speed_kp_Left-=0.1;
-		Speed_kd_Left-=0.001;
-		Speed_kd_Right-=0.001;
-//		targetspeed-=5;
+//		Speed_kp_Right-=0.1;
+//		Speed_kd_Left-=0.001;
+//		Speed_kd_Right-=0.001;
+		targetspeed-=5;
 //		Speed_ki_Left-=0.1;
 //		Speed_ki_Right-=0.1;
 		//TargetSteer-=10;
