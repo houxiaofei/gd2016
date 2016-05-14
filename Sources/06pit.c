@@ -14,7 +14,7 @@ unsigned int steer_flag=0,oled_flag=0;
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
   PIT.PITMCR.R = 0x00000001;       // Enable PIT and configure timers to stop in debug mode 
-  PIT.CH[2].LDVAL.R = 300000;      // PIT2 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
+  PIT.CH[2].LDVAL.R = 1000000;      // PIT2 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
   PIT.CH[2].TCTRL.R = 0x000000003; // Enable PIT2 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR2,61,5); 
   udelay(10);
@@ -55,7 +55,7 @@ void PitISR2(void)
 //	}
 //	
 	pitcount2++;
-	pitcount3++;
+	pitcount4++;
 //	if(pitcount2>=400)                         //4s一次
 //	{
 //		pitcount2=0;
@@ -70,15 +70,16 @@ void PitISR2(void)
 //		    targetspeed-=40;
 //		}
 //	}
-	
-	
 	SpeedCount();
-	if(pitcount3>=3)
-	{
-		pitcount3=0;
-		csl=(csl_cnt[0]+csl_cnt[1]+csl_cnt[2])/3;
-		csr=(csr_cnt[0]+csr_cnt[1]+csr_cnt[2])/3;
-		SpeedControl(); 
-	} 
+	Speed_PID();
+	DifferSpeed_PID();
+//	if(pitcount4>=3)
+//	{
+//		pitcount4=0;
+//		csl=(csl_cnt[0]+csl_cnt[1]+csl_cnt[2])/3;
+//		csr=(csr_cnt[0]+csr_cnt[1]+csr_cnt[2])/3;
+//		Speed_PID();
+//		//SpeedControl(); 
+//	} 
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位
 }

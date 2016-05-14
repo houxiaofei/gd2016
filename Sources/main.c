@@ -6,7 +6,7 @@ int main(void) {
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=30;
+	targetspeed=150;
 	
 
 

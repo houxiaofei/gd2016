@@ -10,6 +10,8 @@
 
 void SET_motor(int leftSpeed,int rightSpeed);
 void SpeedControl(void);
+void Speed_PID(void);
+void DifferSpeed_PID(void);
 
 extern int csl,csr;
 extern int tsl,tsr;
