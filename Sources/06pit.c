@@ -47,15 +47,15 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-//	if(stop_flag==1)
-//	{
-//		targetspeed=0;
-//		SET_motor(0,0);
-//		timecount=0;
-//	}
+	if(stop_flag==1)
+	{
+		targetspeed=0;
+		SET_motor(0,0);
+		timecount=0;
+	}
 //	
-	pitcount2++;
-	pitcount4++;
+//	pitcount2++;
+//	pitcount4++;
 //	if(pitcount2>=400)                         //4s一次
 //	{
 //		pitcount2=0;
@@ -71,6 +71,7 @@ void PitISR2(void)
 //		}
 //	}
 	SpeedCount();
+//	SpeedControl(); 
 	Speed_PID();
 	DifferSpeed_PID();
 //	if(pitcount4>=3)
@@ -79,7 +80,7 @@ void PitISR2(void)
 //		csl=(csl_cnt[0]+csl_cnt[1]+csl_cnt[2])/3;
 //		csr=(csr_cnt[0]+csr_cnt[1]+csr_cnt[2])/3;
 //		Speed_PID();
-//		//SpeedControl(); 
+//		SpeedControl(); 
 //	} 
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位
 }

@@ -70,7 +70,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=14;
+				Ts=1;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -211,51 +211,51 @@ void LINFlex_TX_Interrupt(void)
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt1(ErrorRight));        //发送error
+		LINFlex_TX(SendInt1(error));        //发送error
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt2(ErrorRight));
+		LINFlex_TX(SendInt2(error));
 		Ts=30;
 		break;
 	case 30: 
-		LINFlex_TX(SendInt3(ErrorRight));        
+		LINFlex_TX(SendInt3(error));        
 		Ts=31;
 		break;
 	case 31:
-		LINFlex_TX(SendInt4(ErrorRight));
+		LINFlex_TX(SendInt4(error));
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(PreErrorRight));        //发送a_error
+		LINFlex_TX(SendInt1(a_error));        //发送a_error
 		Ts=33;
 		break;
 	case 33:
-		LINFlex_TX(SendInt2(PreErrorRight));
+		LINFlex_TX(SendInt2(a_error));
 		Ts=34;
 		break;
 	case 34: 
-		LINFlex_TX(SendInt3(PreErrorRight));      
+		LINFlex_TX(SendInt3(a_error));      
 		Ts=35;
 		break;
 	case 35:
-		LINFlex_TX(SendInt4(PreErrorRight));
+		LINFlex_TX(SendInt4(a_error));
 		Ts=36;
 		break;
 	case 36: 
-		LINFlex_TX(SendInt1(tsr_Delta));        //发送b_error
+		LINFlex_TX(SendInt1(b_error));        //发送b_error
 		Ts=37;
 		break;
 	case 37:
-		LINFlex_TX(SendInt2(tsr_Delta));
+		LINFlex_TX(SendInt2(b_error));
 		Ts=38;
 		break;
 	case 38: 
-		LINFlex_TX(SendInt3(tsr_Delta));      
+		LINFlex_TX(SendInt3(b_error));      
 		Ts=39;
 		break;
 	case 39:
-		LINFlex_TX(SendInt4(tsr_Delta));
+		LINFlex_TX(SendInt4(b_error));
 		Ts=40;
 		break;
 	case 40:
@@ -281,11 +281,11 @@ void KeyJudge(void)
 //		Speed_ki_Left+=0.1;
 //	    Speed_kp_Right+=1;
 //	    Speed_kd_Right+=0.1;
-		targetspeed+=10;
+//		targetspeed+=10;
 //		Speed_kp_Left+=1;
 //		Speed_kp_Right+=1;
-		//TargetSteer+=100;
-		//tsr-=10;
+//		TargetSteer+=100;
+		tsr-=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
@@ -294,11 +294,11 @@ void KeyJudge(void)
 //		Speed_ki_Left-=0.1;
 //		Speed_kp_Right-=1;
 //		Speed_kd_Right-=0.1;
-	    targetspeed-=10;
+//	    targetspeed-=10;
 //	    Speed_kp_Left-=1;
 //	    Speed_kp_Right-=1;
-	    //TargetSteer-=100;
-	    //tsr+=10;
+//	    TargetSteer-=100;
+	    tsr+=1;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
@@ -308,11 +308,12 @@ void KeyJudge(void)
 //    	Speed_kp_Right+=0.1;
 //		Speed_kd_Left+=0.001;
 //		Speed_kd_Right+=0.001;
-		targetspeed+=5;
+		targetspeed+=10;
+//		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left+=0.1;
 //		Speed_ki_Right+=0.1;
-		//TargetSteer+=10;
-		//tsl-=10;
+//		TargetSteer+=10;
+		tsl-=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
@@ -322,11 +323,12 @@ void KeyJudge(void)
 //		Speed_kp_Right-=0.1;
 //		Speed_kd_Left-=0.001;
 //		Speed_kd_Right-=0.001;
-		targetspeed-=5;
+		targetspeed-=10;
+//		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left-=0.1;
 //		Speed_ki_Right-=0.1;
-		//TargetSteer-=10;
-		//tsl+=10;
+//		TargetSteer-=10;
+		tsl+=1;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

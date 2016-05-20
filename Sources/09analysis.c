@@ -15,12 +15,11 @@ int a_value=120,b_value=100;                          //判断跳变沿的差值标准
 int a_T=360,b_T=300;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
-int a_allwhite=23,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
-int a_scan=10,a_halfscan=0,b_scan=12,b_halfscan=0;
+int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
+int a_scan=7,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int a_flag=44,b_flag=44;
 int aa_flag[4]={0,0,0,0};
-int b_value2=10,b_scan2=10;//终点
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
@@ -28,6 +27,9 @@ int error=0,a_error=0,b_error=0;
 int aa_error[4]={0,0,0,0};
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //补线值
 int i=0,j=0;
+int b_value2=15,b_scan2=10;//终点
+int a_edg_err=0,a_bar_value=9,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=35,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 void DataSet(void)
 {
@@ -228,9 +230,18 @@ void ErrorCalculate(void)
 	{
 		stop_cnt=0;
 	}
+	if(a_bar_flag==1)                                        //障碍物
+	{
+		BarrierControl();
+		return;
+	}
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
 		EndJudge();
+		if(a_flag==22)
+		{
+			BarrierJudge();
+		}
 		b_error=(bl_edge-b_start+br_edge-b_start);
 		error=a_error*0.5+b_error;
 		return;
@@ -382,6 +393,122 @@ void EndJudge(void)
 			stop_flag=1;
 			break;
 		}	
+	}
+}
+
+void BarrierJudge(void)
+{
+	if(a_bar_flag==1)
+		return;
+	a_edg_err=ar_edge-al_edge;
+	if(a_edg_err<a_bar_value)
+	{
+		a_bar_cnt++;	
+	}
+	if(((ABS(al_edge-a_start)-ABS(ar_edge-a_start))<0)&&al_bar_flag==0&&a_bar_cnt>0)//障碍物在左边
+	{
+		i=0;j=0;
+		for(i=al_edge;i>al_end;i--)
+		{
+			if(A[i]-A[i-4]>a_bar_value2)
+			{
+				for(j=al_end;j<i;j++)
+				{
+					if(A[j+4]-A[j]>a_bar_value2)
+						al_bar_flag=1;
+				}
+			}
+		}
+	}
+	if(((ABS(al_edge-a_start)-ABS(ar_edge-a_start))>0)&&ar_bar_flag==0&&a_bar_cnt>0)//障碍物在右边
+	{
+		i=0;j=0;
+		for(i=ar_edge;i<ar_end;i++)
+		{
+			if(A[i+4]-A[i]>a_bar_value2)
+			{
+				for(j=ar_end;j>i;j--)
+				{
+					if(A[j-4]-A[j]>a_bar_value2)
+						ar_bar_flag=1;
+				}
+			}
+		}
+	}
+	if((a_bar_cnt>2)&&(al_bar_flag==1||ar_bar_flag==1))
+	{
+		a_bar_cnt=0;
+		a_bar_flag=1;
+	}
+}
+
+void BarrierControl(void)
+{
+	if(al_bar_flag==1)
+	{
+		if(br_flag==2)
+		{
+			error=br_edge-(b_start+3);
+			if(error>=0)
+				error=error*2.5;
+			else
+				error=error*4;
+		}
+		else if(br_flag==1)
+		{
+			error=(br_end-b_scan-(b_start+3))*3;
+		}
+		else
+		{
+			error=-25;
+		}
+		if(a_flag==22&&b_flag==22)
+		{
+			b_error=(bl_edge-b_start+br_edge-b_start);
+			if((a_error+b_error)<-b_bar_value)
+			{
+				b_bar_cnt++;
+				if(b_bar_cnt>b_bar_cnttop)
+				{
+					a_bar_flag=0;
+					al_bar_flag=0;
+					ar_bar_flag=0;
+				}
+			}
+		}
+	}
+	else if(ar_bar_flag==1)
+	{
+		if(bl_flag==2)
+		{
+			error=bl_edge-(b_start-3);
+			if(error<=0)
+				error=error*2.5;
+			else
+				error=error*4;
+		}
+		else if(bl_flag==1)
+		{
+			error=(bl_end+b_scan-(b_start-3))*3;
+		}
+		else
+		{
+			error=25;
+		}
+		if(a_flag==22&&b_flag==22)
+		{
+			b_error=(bl_edge-b_start+br_edge-b_start);
+			if((a_error+b_error)>b_bar_value)
+			{
+				b_bar_cnt++;
+				if(b_bar_cnt>b_bar_cnttop)
+				{
+					a_bar_flag=0;
+					al_bar_flag=0;
+					ar_bar_flag=0;
+				}
+			}
+		}
 	}
 }
 

@@ -21,6 +21,7 @@ extern int wrong_flag;
 extern int stop_flag;
 extern int al_edge,ar_edge,bl_edge,br_edge;//Ã¯±‰—ÿ
 extern int error,a_error,b_error;
+extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,ar_bar_flag;//’œ∞≠ŒÔ
 
 extern void DataSet(void);
 extern void PixelScan(void);
@@ -28,5 +29,7 @@ extern void PixelScan_A(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
 void EndJudge(void);
+void BarrierJudge(void);
+void BarrierControl(void);
 
 #endif /* ANALYSIS_H_ */

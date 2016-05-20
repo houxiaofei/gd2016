@@ -7,7 +7,9 @@ int main(void) {
 	stop_flag=0;
 	
 	targetspeed=150;
-	
+//	tsl=105;
+//	tsr=120;
+//	TargetSteer=3892;
 
 
 	//SET_motor(targetspeed,targetspeed);
