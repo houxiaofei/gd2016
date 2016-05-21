@@ -16,6 +16,7 @@ extern int a_value,b_value;                          //判断跳变沿的差值标准
 extern int a_T,b_T;                                  //黑白阈值
 extern int al_count,ar_count,bl_count,br_count;  //白点计数
 extern int al_flag,ar_flag,bl_flag,br_flag,allflag,a_flag,b_flag;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
+extern int aa_flag[4];
 extern int b_value2,b_scan2,b_cnt;
 extern int wrong_flag;
 extern int stop_flag;

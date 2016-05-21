@@ -71,6 +71,7 @@ void PitISR2(void)
 //		}
 //	}
 	SpeedCount();
+//	Speed_Set();
 //	SpeedControl(); 
 	Speed_PID();
 	DifferSpeed_PID();

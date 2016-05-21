@@ -255,7 +255,7 @@ void ErrorCalculate(void)
 	if(bl_flag==1&&br_flag==2)                              //12左转小
 	{
 		b_error=br_edge-br_end-b_rem;
-		if(a_flag==0||a_flag==3||a_flag==1)               //00,03,01
+		if(a_flag==0||a_flag==3||a_flag==1||a_flag==21)               //00,03,01
 			error=b_error-12-ab_rem1;
 		else
 			error=a_error*0.3+b_error-ab_rem1;
@@ -276,7 +276,7 @@ void ErrorCalculate(void)
 	if(bl_flag==2&&br_flag==1)                              //21右转小
 	{
 		b_error=bl_edge-bl_end+b_rem;
-		if(a_flag==0||a_flag==30||a_flag==10)           //00,30,10
+		if(a_flag==0||a_flag==30||a_flag==10||a_flag==12)           //00,30,10
 			error=b_error+12+ab_rem1;
 		else
 			error=a_error*0.3+b_error+ab_rem1;
@@ -347,11 +347,13 @@ void ErrorCalculate_A(void)
 		if(aa_flag[2]==30)
 		{
 			a_error=(al_edge-ar_end-ar_rem);
+			a_flag=30;
 			aa_flag[3]=30;
 		}
 		else if(aa_flag[2]==3)
 		{
 			a_error=(ar_edge-al_end+al_rem);
+			a_flag=3;
 			aa_flag[3]=3;
 		}
 		else
@@ -435,7 +437,7 @@ void BarrierJudge(void)
 			}
 		}
 	}
-	if((a_bar_cnt>2)&&(al_bar_flag==1||ar_bar_flag==1))
+	if((a_bar_cnt>1)&&(al_bar_flag==1||ar_bar_flag==1))
 	{
 		a_bar_cnt=0;
 		a_bar_flag=1;
