@@ -35,22 +35,22 @@ void Steer_PDSet(void)
 		else                            {Steer_kp=16;Steer_kd=5;}
 		return;
 	}
-	else if(targetspeed<200)//140-180//150-190//160 5 8 8 10 10 10
+	else if(targetspeed<250)//140-180//150-190//160 5 8 8 10 10 10
 	{
-		//if(a_flag==22&&b_flag==22)      {Steer_kp=3;Steer_kd=5;}
-//		if(ABS(target_offset)<30)  {Steer_kp=4;Steer_kd=5;}
-//		else if(ABS(target_offset)<40)  {Steer_kp=(ABS(target_offset)-30)*0.4+4;Steer_kd=5;}
-//		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-40)*0.6+8;Steer_kd=5;}
-//		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+11;Steer_kd=5;}
-//		else                            {Steer_kp=12;Steer_kd=5;}
-		if(ABS(target_offset)<25)        {Steer_kp=4;Steer_kd=5;}
-		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+4;Steer_kd=5;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.3+6;Steer_kd=5;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.4+9;Steer_kd=5;}
-		else                            {Steer_kp=13;Steer_kd=5;}
+		//if(a_flag==22&&b_flag==22)      {Steer_kp=3;Steer_kd=10;}
+		if(ABS(target_offset)<30)  {Steer_kp=4;Steer_kd=8;}
+		else if(ABS(target_offset)<40)  {Steer_kp=(ABS(target_offset)-30)*0.4+4;Steer_kd=8;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-40)*0.4+8;Steer_kd=8;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+10;Steer_kd=8;}
+		else                            {Steer_kp=11;Steer_kd=8;}
+//		if(ABS(target_offset)<25)        {Steer_kp=4;Steer_kd=10;}
+//		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.1+4;Steer_kd=10;}
+//		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.2+5;Steer_kd=10;}
+//		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.3+7;Steer_kd=10;}
+//		else                            {Steer_kp=10;Steer_kd=10;}
 		return;
 	}
-	else if(targetspeed<250)
+	else if(targetspeed<280)
 	{
 		if(ABS(target_offset)<25)        {Steer_kp=4;Steer_kd=5;}
 		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.5+4;Steer_kd=5;}
@@ -93,7 +93,7 @@ void SteerControl(void)
 	
 	Bee=0;
 
-	Steer_PWM[3] = CENTER-(Steer_kp-1)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
+	Steer_PWM[3] = CENTER-(Steer_kp)*target_offset-Steer_kd*(target_offset-last_offset); //位置式PD
 
 	if(Steer_PWM[3]>LEFT) Steer_PWM[3]=LEFT;
 	else if(Steer_PWM[3]<RIGHT) Steer_PWM[3]=RIGHT;

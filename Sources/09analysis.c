@@ -19,7 +19,7 @@ int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //È
 int a_scan=7,a_halfscan=0,b_scan=12,b_halfscan=0;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
 int a_flag=44,b_flag=44;
-int aa_flag[4]={0,0,0,0};
+int aa_flag[4]={0,0,0,0},all_flag[10]={0,0,0,0,0,0,0,0,0,0};
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//Ìø±äÑØ
@@ -27,8 +27,8 @@ int error=0,a_error=0,b_error=0;
 int aa_error[4]={0,0,0,0};
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //²¹ÏßÖµ
 int i=0,j=0;
-int b_value2=15,b_scan2=10;//ÖÕµã
-int a_edg_err=0,a_bar_value=9,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
+int b_value2=40,b_scan2=10;//ÖÕµã
+int a_edg_err=0,a_bar_value=12,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
 int b_bar_value=35,b_bar_cnt=0,b_bar_cnttop=1;//ÕÏ°­Îï
 
 void DataSet(void)
@@ -213,6 +213,9 @@ void PixelScan_A(void)
 	}
 	a_flag=al_flag*10+ar_flag;
 	aa_flag[3]=a_flag;
+	all_flag[9]=a_flag*100+b_flag;
+	all_flag[8]=all_flag[9];all_flag[7]=all_flag[8];all_flag[6]=all_flag[7];all_flag[5]=all_flag[6];
+	all_flag[4]=all_flag[5];all_flag[3]=all_flag[4];all_flag[2]=all_flag[3];all_flag[1]=all_flag[2];all_flag[0]=all_flag[1];
 }
 
 void ErrorCalculate(void)
@@ -372,7 +375,7 @@ void EndJudge(void)
 {
 	int k=0;
 	int cnt=0;
-	for(i=bl_edge-5;i<br_edge;i++)
+	for(i=bl_edge-20;i<br_edge+20;i++)
 	{
 		switch(k){
 		case 0:
@@ -452,7 +455,7 @@ void BarrierControl(void)
 		{
 			error=br_edge-(b_start+3);
 			if(error>=0)
-				error=error*2.5;
+				error=error*3;
 			else
 				error=error*4;
 		}
@@ -485,7 +488,7 @@ void BarrierControl(void)
 		{
 			error=bl_edge-(b_start-3);
 			if(error<=0)
-				error=error*2.5;
+				error=error*3;
 			else
 				error=error*4;
 		}

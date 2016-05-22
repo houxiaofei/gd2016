@@ -71,9 +71,9 @@ void PitISR2(void)
 //		}
 //	}
 	SpeedCount();
-//	Speed_Set();
+	Speed_Set();
 //	SpeedControl(); 
-	Speed_PID();
+	Speed_PID2();
 	DifferSpeed_PID();
 //	if(pitcount4>=3)
 //	{

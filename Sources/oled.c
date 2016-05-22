@@ -152,8 +152,11 @@ void OLED_Test(void)
 //	OLED_Str("lp: ");
 //	OLED_Num(Speed_kp_Left);
 //	OLED_Str("  ");
-	OLED_Str("kp: ");
-	OLED_Num((KP_speed*10));
+	OLED_Str("kc: ");
+	OLED_Num(Speed_kc1);
+	OLED_Str("  ");
+	OLED_Str("kd: ");
+	OLED_Num(Steer_kd);
 		
 	OLED_SetPointer(2,5);
 	OLED_Str("flag: ");

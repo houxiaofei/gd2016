@@ -6,7 +6,7 @@ int main(void) {
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=180;
+	targetspeed=150;
 //	tsl=105;
 //	tsr=120;
 //	TargetSteer=3892;
