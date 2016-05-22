@@ -70,7 +70,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=14;
+				Ts=9;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -188,7 +188,7 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(csr));
 		//LINFlex_TX(SendInt4(a_T));
 		//LINFlex_TX(SendInt4(tsr));
-		Ts=40;
+		Ts=23;
 		break;
 	case 23: 
 		LINFlex_TX(data);
@@ -276,35 +276,67 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-		targetspeed+=10;
+//		csxs+=0.1;
+//		Speed_ki_Right+=0.01;
+//		Speed_ki_Left+=0.1;
+//	    Speed_kp_Right+=1;
+//	    Speed_kd_Right+=0.1;
+//		targetspeed+=10;
 //		Speed_kp_Left+=1;
 //		Speed_kp_Right+=1;
-		//TargetSteer+=100;
-		//tsr-=10;
+//		TargetSteer+=100;
+//		KI_DifSpd-=0.01;
+		Speed_kc1+=1000;
+//		tsr-=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-	    targetspeed-=10;
+//		csxs-=0.1;
+//		Speed_ki_Right-=0.01;
+//		Speed_ki_Left-=0.1;
+//		Speed_kp_Right-=1;
+//		Speed_kd_Right-=0.1;
+//	    targetspeed-=10;
 //	    Speed_kp_Left-=1;
 //	    Speed_kp_Right-=1;
-	    //TargetSteer-=100;
-	    //tsr+=10;
+//	    TargetSteer-=100;
+//	    KI_DifSpd+=0.01;
+	    Speed_kc1-=1000;
+//	    tsr+=1;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-		targetspeed+=5;
+//		csxs+=0.01;
+//		Speed_ki_Right+=0.1;
+//		Speed_ki_Left+=0.1;
+//    	Speed_kp_Right+=0.1;
+//		Speed_kd_Left+=0.001;
+//		Speed_kd_Right+=0.001;
+//		targetspeed+=10;
+//		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left+=0.1;
 //		Speed_ki_Right+=0.1;
-		//TargetSteer+=10;
-		//tsl-=10;
+//		TargetSteer+=10;
+		Steer_kd+=1;
+//		KI_DifSpd+=0.1;
+//		tsl-=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
-		targetspeed-=5;
+//		csxs-=0.01;
+//		Speed_ki_Right-=0.1;
+//		Speed_ki_Left-=0.1;
+//		Speed_kp_Right-=0.1;
+//		Speed_kd_Left-=0.001;
+//		Speed_kd_Right-=0.001;
+//		targetspeed-=10;
+//		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left-=0.1;
 //		Speed_ki_Right-=0.1;
-		//TargetSteer-=10;
-		//tsl+=10;
+//		TargetSteer-=10;
+//		KI_DifSpd-=0.1;
+		Steer_kd-=1;
+//		tsl+=1;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

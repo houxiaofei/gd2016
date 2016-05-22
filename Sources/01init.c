@@ -145,12 +145,12 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕ
 	SIU.PCR[59].R = 0x0102;  //PD11×óÂÖ¹â±àÕý·´×ª £¬¸ßµçÆ½Õý×ª£¬µÍµçÆ½·´×ª
 	 
 	 //A8 
-	 //	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
-	EMIOS_0.CH[8].CCR.B.MODE = 0x13; // Mode is MCB, 
+	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
+	//EMIOS_0.CH[8].CCR.B.MODE = 0x13; // Mode is MCB, 
 	EMIOS_0.CH[8].CCR.B.BSL = 0x3; // Use internal counter
 	EMIOS_0.CH[8].CCR.B.UCPRE=0; // Set channel prescaler to divide by 1
 	EMIOS_0.CH[8].CCR.B.UCPEN = 1; // Enable prescaler; uses default divide by 1 
-	//EMIOS_0.CH[8].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
+	EMIOS_0.CH[8].CCR.B.FREN = 0;// Freeze channel counting when in debug mode 
 	EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[8].CADR.R=0xffff;
 	SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
