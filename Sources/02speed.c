@@ -35,21 +35,29 @@ float Speed_kp_Right=1,Speed_ki_Right=0.8,Speed_kd_Right=0.5;	//电机位置式PID
 //********************辅助调试参数******************************************
 unsigned int Counter_Error_Left=0,Counter_Error_Right=0;		//光编接触不牢靠错误计数量
 
-//**********************双PID差速控制参数**********************************************;	
+//**********************双PID差速控制参数(内外环增量式)**********************************************;	
 //float KP_speed=1,KI_speed=0.01,KD_speed=0.4;//3,0.02，0.4
-int Speed_Err=0,Speed_Err_his=0,Speed_Err_his2=0;
+//int Speed_Err=0,Speed_Err_his=0,Speed_Err_his2=0;
+//int Pwm_Delta=0;
+//int MotorPWM=0;
+//float KP_DifSpd=2,KI_DifSpd=0.02,KD_DifSpd=0.1;//0.8，0.01，0.2
+//int Cur_DifSpd=0,Tar_DifSpd=0;
+//int DifSpd_Err=0,DifSpd_Err_his=0,DifSpd_Err_his2=0;
+//int DifferPWM_Delta=0;
+//int DifferPWM=0;
+//int LMotorPWM=0,RMotorPWM=0;
+
+//**********************双PID差速控制参数(内外环位置式)**********************************************;	
+float KP_speed=4,KI_speed=0.8,KD_speed=0.1;
+int Sum_Speed_Err=0,Speed_Err=0,Pre_Speed_Err=0;
 int Pwm_Delta=0;
 int MotorPWM=0;
-float KP_DifSpd=2,KI_DifSpd=0.02,KD_DifSpd=0.1;//0.8，0.01，0.2
+float KP_DifSpd=8,KI_DifSpd=0.6,KD_DifSpd=0.1;//0.8，0.01，0.2
 int Cur_DifSpd=0,Tar_DifSpd=0;
-int DifSpd_Err=0,DifSpd_Err_his=0,DifSpd_Err_his2=0;
+int DifSpd_Err=0,Sum_DifSpd_Err=0,Pre_DifSpd_Err=0;
 int DifferPWM_Delta=0;
 int DifferPWM=0;
 int LMotorPWM=0,RMotorPWM=0;
-
-//**********************双PID差速控制参数(外环位置式)**********************************************;	
-float KP_speed=4,KI_speed=0.8,KD_speed=0.1;
-int Sum_Speed_Err=0,Pre_Speed_Err=0;
 
 
 
@@ -63,35 +71,35 @@ void SET_motor(int leftSpeed,int rightSpeed)
 }
 
 //**********************双PID差速控制*******************************************
-void Speed_PID(void)
-{
-	Speed_Err=targetspeed-((csl+csr)/2);
-	Pwm_Delta=KP_speed*(Speed_Err-Speed_Err_his)+KI_speed*Speed_Err+KD_speed*(Speed_Err+Speed_Err_his2-2*Speed_Err_his);
-	MotorPWM+=Pwm_Delta;
-	if(MotorPWM>Motor_PWM_MAX)  MotorPWM=Motor_PWM_MAX;
-	else if(MotorPWM<Motor_PWM_MIN)  MotorPWM=Motor_PWM_MIN;
-	Speed_Err_his2=Speed_Err_his;
-	Speed_Err_his=Speed_Err;
-	//SET_motor(MotorPWM,MotorPWM);
-	//SET_motor(100,100);
-}
-void DifferSpeed_PID(void)
-{
-	RPID=CENTER-Steer_PWM[3];
-	r=Speed_kc1/RPID;
-	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
-	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
-	Cur_DifSpd=csl-csr;
-	Tar_DifSpd=tsl-tsr;
-	DifSpd_Err=Tar_DifSpd-Cur_DifSpd;
-	DifferPWM_Delta=KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his);
-	DifSpd_Err_his2=DifSpd_Err_his;
-	DifSpd_Err_his=DifSpd_Err;
-	DifferPWM+=DifferPWM_Delta;
-	LMotorPWM=MotorPWM+DifferPWM;
-	RMotorPWM=MotorPWM-DifferPWM;
-	SET_motor(LMotorPWM,RMotorPWM);
-}
+//void Speed_PID(void)
+//{
+//	Speed_Err=targetspeed-((csl+csr)/2);
+//	Pwm_Delta=KP_speed*(Speed_Err-Speed_Err_his)+KI_speed*Speed_Err+KD_speed*(Speed_Err+Speed_Err_his2-2*Speed_Err_his);
+//	MotorPWM+=Pwm_Delta;
+//	if(MotorPWM>Motor_PWM_MAX)  MotorPWM=Motor_PWM_MAX;
+//	else if(MotorPWM<Motor_PWM_MIN)  MotorPWM=Motor_PWM_MIN;
+//	Speed_Err_his2=Speed_Err_his;
+//	Speed_Err_his=Speed_Err;
+//	//SET_motor(MotorPWM,MotorPWM);
+//	//SET_motor(100,100);
+//}
+//void DifferSpeed_PID(void)
+//{
+//	RPID=CENTER-Steer_PWM[3];
+//	r=Speed_kc1/RPID;
+//	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+//	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+//	Cur_DifSpd=csl-csr;
+//	Tar_DifSpd=tsl-tsr;
+//	DifSpd_Err=Tar_DifSpd-Cur_DifSpd;
+//	DifferPWM_Delta=KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his);
+//	DifSpd_Err_his2=DifSpd_Err_his;
+//	DifSpd_Err_his=DifSpd_Err;
+//	DifferPWM+=DifferPWM_Delta;
+//	LMotorPWM=MotorPWM+DifferPWM;
+//	RMotorPWM=MotorPWM-DifferPWM;
+//	SET_motor(LMotorPWM,RMotorPWM);
+//}
 
 /*************************变速控制函数*********************/
 void Speed_Set(void)
@@ -136,6 +144,29 @@ void Speed_PID2(void) //外环位置式
 	Pre_Speed_Err=Speed_Err;
 //	SET_motor(MotorPWM,MotorPWM);
 	//SET_motor(100,100);
+}
+
+void DifferSpeed_PID2(void)
+{
+	RPID=CENTER-Steer_PWM[3];
+	r=Speed_kc1/RPID;
+	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
+	tsl=((r+wheel_distance)/r)*targetspeed;//左轮加速
+	
+	Cur_DifSpd=csl-csr;
+	Tar_DifSpd=tsl-tsr;
+	DifSpd_Err=Tar_DifSpd-Cur_DifSpd;
+	
+	Sum_DifSpd_Err+=DifSpd_Err;
+	if(Sum_DifSpd_Err>200) Sum_DifSpd_Err=200;
+	if(Sum_DifSpd_Err<-200) Sum_DifSpd_Err=-200;
+	DifferPWM=KP_speed*DifSpd_Err+KI_speed*Sum_DifSpd_Err+KD_speed*(DifSpd_Err-	Pre_DifSpd_Err);
+	
+	LMotorPWM=MotorPWM+DifferPWM;
+	RMotorPWM=MotorPWM-DifferPWM;
+	SET_motor(LMotorPWM,RMotorPWM);
+	
+	Pre_DifSpd_Err=DifSpd_Err;
 }
 
 /*************************速度控制函数*********************/

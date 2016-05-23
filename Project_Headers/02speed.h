@@ -14,6 +14,7 @@ void Speed_PID(void);
 void DifferSpeed_PID(void);
 void Speed_Set(void);
 void Speed_PID2(void);
+void DifferSpeed_PID2(void);
 
 extern int csl,csr;
 extern int tsl,tsr;

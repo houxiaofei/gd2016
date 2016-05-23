@@ -74,7 +74,7 @@ void PitISR2(void)
 	Speed_Set();
 //	SpeedControl(); 
 	Speed_PID2();
-	DifferSpeed_PID();
+	DifferSpeed_PID2();
 //	if(pitcount4>=3)
 //	{
 //		pitcount4=0;
