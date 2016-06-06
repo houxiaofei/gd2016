@@ -223,7 +223,7 @@ void OLED_Test(void)
 	OLED_Str("cs: ");
 	CurrentSteer=TargetSteer;
 	OLED_Num(CurrentSteer);
-//	OLED_Str("ld: ");
+	OLED_Str("ld: ");
 //    OLED_Num(Speed_kd_Left*1000);
 //    OLED_Str("  ");
 //	OLED_Str("rd: ");

@@ -77,7 +77,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;//9速度
+				Ts=9;//9速度
 				break;}
 	case 1:
 		LINFlex_TX(aa);

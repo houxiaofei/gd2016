@@ -240,7 +240,8 @@ void ErrorCalculate(void)
 	}
 	if(bl_flag==2&&br_flag==2)                              //22Ö±µÀ
 	{
-		EndJudge();
+		if(end_judge_flag)
+			EndJudge();
 		if(a_flag==22)
 		{
 			BarrierJudge();
@@ -454,15 +455,15 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start-3);
+			error=br_edge-(b_start-8);
 			if(error>=0)
-				error=error*3;
+				error=error*2;
 			else
-				error=error*4;
+				error=error*3;
 		}
 		else if(br_flag==1)
 		{
-			error=(br_end-b_scan-(b_start-3))*3;
+			error=(br_end-b_scan-(b_start-8))*2;
 		}
 		else
 		{

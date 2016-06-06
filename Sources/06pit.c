@@ -10,6 +10,7 @@
 unsigned int timecount=0;
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 unsigned int steer_flag=0,oled_flag=0;
+unsigned int end_judge_flag=0;
 
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
@@ -26,7 +27,10 @@ void initPIT(void)
 void PitISR(void)//10ms一个控制周期
 {
 	pitcount1++;
+	pitcount2++;
 	steer_flag=1;
+	if(pitcount2>=1600)
+		end_judge_flag=1;
 	//time1=TIME;
 //	ImageCapture(A,B);
 //	PixelScan();
@@ -55,9 +59,9 @@ void PitISR2(void)
 		targetspeed=0;
 		if(((csl+csr)/2)>15)
 		{
-//		    SpeedControl(); 
-			Speed_PID2();
-		    DifferSpeed_PID2();
+		    SpeedControl(); 
+//			Speed_PID2();
+//		    DifferSpeed_PID2();
 		}
 		else
 		{
