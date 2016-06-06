@@ -14,6 +14,7 @@ void Speed_PID(void);
 void DifferSpeed_PID(void);
 void Speed_Set(void);
 void Speed_PID2(void);
+void DifferSpeed_PID2(void);
 
 extern int csl,csr;
 extern int tsl,tsr;
@@ -22,6 +23,9 @@ extern int targetspeed;
 extern int tsl_PWM,tsr_PWM,tsr_Delta,error_Delta;
 extern int ErrorRight,PreErrorRight;
 extern signed int Speed_kc1;
+extern signed int RPID;
+
+extern int straightspeed,transspeed,turnspeed,deadspeed,barspeed;
 
 extern float Speed_kp_Left,Speed_ki_Left,Speed_kd_Left,csxs;
 extern float Speed_kp_Right,Speed_ki_Right,Speed_kd_Right;	//µç»úPID

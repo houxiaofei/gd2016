@@ -10,6 +10,7 @@
 unsigned int timecount=0;
 unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
 unsigned int steer_flag=0,oled_flag=0;
+unsigned int end_judge_flag=0;
 
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
@@ -18,7 +19,7 @@ void initPIT(void)
   PIT.CH[2].TCTRL.R = 0x000000003; // Enable PIT2 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR2,61,5); 
   udelay(10);
-  PIT.CH[1].LDVAL.R = 800000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
+  PIT.CH[1].LDVAL.R = 800000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec //电信50万 无偏正片60
   PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR,60,4); 
 }
@@ -26,7 +27,10 @@ void initPIT(void)
 void PitISR(void)//10ms一个控制周期
 {
 	pitcount1++;
+	pitcount2++;
 	steer_flag=1;
+	if(pitcount2>=1600)
+		end_judge_flag=1;
 	//time1=TIME;
 //	ImageCapture(A,B);
 //	PixelScan();
@@ -47,13 +51,32 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
+	
+	SpeedCount();
+	Speed_Set();
 	if(stop_flag==1)
 	{
 		targetspeed=0;
+		if(((csl+csr)/2)>15)
+		{
+		    SpeedControl(); 
+//			Speed_PID2();
+//		    DifferSpeed_PID2();
+		}
+		else
+		{
 		SET_motor(0,0);
+		}
 		timecount=0;
 	}
-//	
+	else
+	{
+//	SpeedControl();
+	Speed_PID2();
+    DifferSpeed_PID2();
+	}
+	
+	
 //	pitcount2++;
 //	pitcount4++;
 //	if(pitcount2>=400)                         //4s一次
@@ -70,11 +93,10 @@ void PitISR2(void)
 //		    targetspeed-=40;
 //		}
 //	}
-	SpeedCount();
-	Speed_Set();
+
 //	SpeedControl(); 
-	Speed_PID2();
-	DifferSpeed_PID();
+//	Speed_PID2();
+//	DifferSpeed_PID();
 //	if(pitcount4>=3)
 //	{
 //		pitcount4=0;

@@ -15,6 +15,10 @@ extern unsigned char putstring[];
 extern unsigned int Ts;
 extern unsigned int Tc;
 extern int CurrentSteer;
+extern unsigned char RX_data;
+extern unsigned char Y[25],Z[11];
+
+extern int X[16];
 
 extern unsigned char S3_last;
 extern unsigned char S4_last;
@@ -31,5 +35,6 @@ void LINFlex_TX(unsigned char data);
 void LINFlex_TX_Interrupt(void);
 extern void KeyJudge(void);
 extern unsigned long TimeMesure(void);
+void LINFlex_RX_Interrupt(void);
 
 #endif /* 05DEBUG_H_ */
