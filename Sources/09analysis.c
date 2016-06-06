@@ -9,10 +9,10 @@
 
 int A[128]={0};
 int B[128]={0};
-int al_end=43,ar_end=97,bl_end=23,br_end=111;
-int a_start=70,b_start=67;
-int a_value=120,b_value=100;                          //判断跳变沿的差值标准
-int a_T=360,b_T=300;                                  //黑白阈值
+int al_end=40,ar_end=94,bl_end=26,br_end=114;
+int a_start=67,b_start=70;
+int a_value=100,b_value=130;                          //判断跳变沿的差值标准120 100
+int a_T=300,b_T=360;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
@@ -23,13 +23,13 @@ int aa_flag[4]={0,0,0,0},all_flag[10]={0,0,0,0,0,0,0,0,0,0};
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
-int error=0,a_error=0,b_error=0;
+int error=0,a_error=0,b_error=0,pre_error=0;
 int aa_error[4]={0,0,0,0};
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //补线值
 int i=0,j=0;
-int b_value2=40,b_scan2=10;//终点
-int a_edg_err=0,a_bar_value=12,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=35,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
+int b_value2=30,b_scan2=10;//终点
+int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 void DataSet(void)
 {
@@ -298,6 +298,7 @@ void ErrorCalculate(void)
 		return;
 	}
 	wrong_flag=1;
+	error=pre_error;  //出问题时error给历史值
 }
 
 void ErrorCalculate_A(void)
@@ -311,7 +312,7 @@ void ErrorCalculate_A(void)
 	}
 	if(al_flag==2&&ar_flag==2)//全直
 	{
-		a_error=(al_edge-a_start+ar_edge-a_start)*1.82;
+		a_error=(al_edge-a_start+ar_edge-a_start)*1.55;
 		a_wrong_flag=0;
 	}
 	if(al_flag==2&&ar_flag==1)//即将进入右转
@@ -375,7 +376,7 @@ void EndJudge(void)
 {
 	int k=0;
 	int cnt=0;
-	for(i=bl_edge-20;i<br_edge+20;i++)
+	for(i=b_start-30;i<b_start+30;i++)
 	{
 		switch(k){
 		case 0:
@@ -453,7 +454,7 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start+3);
+			error=br_edge-(b_start-3);
 			if(error>=0)
 				error=error*3;
 			else
@@ -461,7 +462,7 @@ void BarrierControl(void)
 		}
 		else if(br_flag==1)
 		{
-			error=(br_end-b_scan-(b_start+3))*3;
+			error=(br_end-b_scan-(b_start-3))*3;
 		}
 		else
 		{
