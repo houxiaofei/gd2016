@@ -17,6 +17,6 @@ void enableIrq(void);
 void initLINFlex_0_UART(void);
 void initSTM(void);
 void initAD(void);
-void initTestIO(void);
+void initIO(void);
 
 #endif /* 01INIT_H_ */

@@ -19,7 +19,7 @@ void initALL(void)
 	initSTM();                    //¼ÆÊ±Æ÷
 	initAD();                     //ADC  £¨¸Ä£©
 //	initKeys_Switchs_Infrared();
-	initTestIO();
+	initIO();
 	OLED_Init();
 }
 
@@ -112,25 +112,25 @@ void initEMIOS_0MotorAndSteer(void)
 	EMIOS_0.CH[22].CBDR.R = 0;     /* Trailing edge when channel counter bus=500*/
 	SIU.PCR[70].R = 0x0600;   //[11:10]Ñ¡ÔñAFx ´Ë´¦AF1 /* MPC56xxS: Assign EMIOS_0 ch 21 to pad */
 	
-	/**********¶æ»úPWM 50HZ A11¿ÚÊä³ö50000*7.5%=3750ÖÐÎ»**********/
-	//eMIOS0 AÍ¨µÀ23ÉèÖÃ/* EMIOS 0 CH 0: Modulus Counter */
-	EMIOS_0.CH[23].CCR.B.UCPRE=0;	    /* Set channel prescaler to divide by 1 */
-	EMIOS_0.CH[23].CCR.B.UCPEN = 1;   /* Enable prescaler; uses default divide by 1 */
-	EMIOS_0.CH[23].CCR.B.FREN = 1; 	/* Freeze channel counting when in debug mode */
-	EMIOS_0.CH[23].CADR.R = 50000;/********ÉèÖÃÖÜÆÚ20ms  50HZ*******/
-	EMIOS_0.CH[23].CCR.B.MODE = 0x50; /* Modulus Counter Buffered (MCB) */
-	EMIOS_0.CH[23].CCR.B.BSL = 0x3;	/* Use internal counter */
+	//**********¶æ»úPWM 50HZ A4¿ÚÊä³ö50000*7.5%=3750ÖÐÎ»**********/
+	//eMIOS0 AÍ¨µÀ0ÉèÖÃ/* EMIOS 0 CH 0: Modulus Counter */
+	EMIOS_0.CH[0].CCR.B.UCPRE=0;	    /* Set channel prescaler to divide by 1 */
+	EMIOS_0.CH[0].CCR.B.UCPEN = 1;   /* Enable prescaler; uses default divide by 1 */
+	EMIOS_0.CH[0].CCR.B.FREN = 1; 	/* Freeze channel counting when in debug mode */
+	EMIOS_0.CH[0].CADR.R = 50000;/********ÉèÖÃÖÜÆÚ20ms  50HZ*******/
+	EMIOS_0.CH[0].CCR.B.MODE = 0x50; /* Modulus Counter Buffered (MCB) */
+	EMIOS_0.CH[0].CCR.B.BSL = 0x3;	/* Use internal counter */
 		
-	/* EMIOS 0 CH 11: Output Pulse Width Modulation */
-	EMIOS_0.CH[11].CCR.B.BSL = 0;	/* Use counter bus A (default) */
-	EMIOS_0.CH[11].CCR.B.MODE = 0x60; /* Mode is OPWM Buffered */  
-	EMIOS_0.CH[11].CCR.B.EDPOL = 1;	/* Polarity-leading edge sets output/trailing clears*/
-	EMIOS_0.CH[11].CADR.R = 0;//°ëÕ¼¿Õ±È/* Leading edge when channel counter bus=250*/
-	EMIOS_0.CH[11].CBDR.R = CENTER;            /* Trailing edge when channel counter bus=500*/
-	SIU.PCR[11].R = 0x0600;    //[11:10]Ñ¡ÔñAFx ´Ë´¦AF1   A4¿Ú¶æ»úÊä³ö
+	/* EMIOS 0 CH 4: Output Pulse Width Modulation */
+	EMIOS_0.CH[4].CCR.B.BSL = 1;	/* Use counter bus B (default) */
+	EMIOS_0.CH[4].CCR.B.MODE = 0x60; /* Mode is OPWM Buffered */  
+	EMIOS_0.CH[4].CCR.B.EDPOL = 1;	/* Polarity-leading edge sets output/trailing clears*/
+	EMIOS_0.CH[4].CADR.R = 0;//°ëÕ¼¿Õ±È/* Leading edge when channel counter bus=250*/
+	EMIOS_0.CH[4].CBDR.R = CENTER;            /* Trailing edge when channel counter bus=500*/
+	SIU.PCR[4].R = 0x0600;    //[11:10]Ñ¡ÔñAFx ´Ë´¦AF1   A4¿Ú¶æ»úÊä³ö
 }
 /*************************¹â±à³õÊ¼»¯***********************/
-void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕý·´×ª
+void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬C9,C15¹â±àÕý·´×ª
 {
 	//D12
 	//EMIOS_0.CH[24].CCR.B.MODE = 0x51; // Mode is MCB, 
@@ -142,7 +142,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕ
 	EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[24].CADR.R=0xffff;
 	SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[59].R = 0x0102;  //PD11×óÂÖ¹â±àÕý·´×ª £¬¸ßµçÆ½Õý×ª£¬µÍµçÆ½·´×ª
+	SIU.PCR[41].R = 0x0102;  //PD11×óÂÖ¹â±àÕý·´×ª £¬¸ßµçÆ½Õý×ª£¬µÍµçÆ½·´×ª
 	 
 	 //A8 
 	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
@@ -154,7 +154,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕ
 	EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[8].CADR.R=0xffff;
 	SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[6].R=0x0102;  //A6ÓÒÂÖ¹â±àÕý·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õý×ª
+	SIU.PCR[47].R=0x0102;  //A6ÓÒÂÖ¹â±àÕý·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õý×ª
 }
 
 //*****************************************************************************************************************
@@ -163,16 +163,19 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êý¼ÆÊýÆ÷Èë¿Ú£¬ÉÏÉýÑØ£¬D11,A6¹â±àÕ
 void initAD(void)
 {
   ADC.MCR.R = 0x20000000;       /*Î´¶Á×ª»»Êý¾Ý²»ÄÜ±»¸²¸Ç£»ÓÒ¶ÔÆë£»Á¬Ðø×ª»»ÐòÁÐÄ£Ê½£»ÒýÆðµ±Ç°Á´×ª»»½áÊø²¢ÖÕÖ¹²Ù×÷£»¶ÔÍ¨µÀ×¢ÈëµÄÍâ´¥·¢Æ÷Ê¹²»ÄÜ£»Ä£ÄâÊ±ÖÓÆµÂÊÎª40MHz£»CTU´¥·¢×ª»»Ê¹²»ÄÜ£»×Ô¶¯Ê±ÖÓ¹Ø±ÕÊ¹²»ÄÜ£»Õý³£Ä£Ê½*/
-  ADC.NCMR[1].R = 0x00000006;   /*Ê¹ÄÜCH33ºÍCH34Í¨µÀ£¨±ê×¼Í¨µÀ£©µÄÎ»Õý³£²ÉÑù*/
+  ADC.NCMR[1].R = 0x00000007;   /*Ê¹ÄÜCH32,CH33ºÍCH34Í¨µÀ£¨±ê×¼Í¨µÀ£©µÄÎ»Õý³£²ÉÑù*/
   ADC.CTR[1].R = 0x00008606;    /*×ª»»Ê±¼ä¼Ä´æÆ÷ Óë±ê×¼Í¨µÀÏà¹ØÁª*/
   ADC.MCR.B.NSTART=1;         /* Trigger normal conversions for ADC0 */
   
+  SIU.PCR[26].R = 0x2100;//CCDL AO  B10
+  SIU.PCR[11].R = 0x0200;//CCDL CLK A11
+  SIU.PCR[10].R = 0x0200;//CCDL SI  A10
   SIU.PCR[25].R = 0x2100;//CCDM AO  B9
-  SIU.PCR[46].R = 0x0200;//CCDM CLK C14
-  SIU.PCR[2].R = 0x0200;//CCDM SI  A2
-  SIU.PCR[26].R = 0x2100;//CCDR AO  B10
-  SIU.PCR[63].R = 0x0200;//CCDR CLK D15
-  SIU.PCR[62].R = 0x0200;//CCDR SI  D14
+  SIU.PCR[76].R = 0x0200;//CCDM CLK E12
+  SIU.PCR[5].R = 0x0200;//CCDM SI  A5
+  SIU.PCR[24].R = 0x2100;//CCDR AO  B8
+  SIU.PCR[6].R = 0x0200;//CCDR CLK  A6
+  SIU.PCR[66].R = 0x0200;//CCDR SI  E2
 }
 
 //*****************************************************************************************************************
@@ -215,62 +218,26 @@ void initSTM(void)
 	STM.CR.R=0x00000001;
 }
 
-/*********************²âÊÔIO³õÊ¼»¯***********************/
-void initTestIO(void)
+/*********************IO³õÊ¼»¯***********************/
+void initIO(void)
 {
-//	SIU.PCR[24].R = 0x0200;//CCDL AO  B8
-//	SIU.PCR[27].R = 0x0200;//CCDL CLK B11
-//	SIU.PCR[61].R = 0x0200;//CCDL SI  D13
-//	SIU.PCR[26].R = 0x0200;//CCDR AO  B10
-//	SIU.PCR[63].R = 0x0200;//CCDR CLK D15
-//	SIU.PCR[62].R = 0x0200;//CCDR SI  D14
-//	SIU.PCR[25].R = 0x0200;//CCDM AO  B9
-//	SIU.PCR[46].R = 0x0200;//CCDM CLK C14
-//	SIU.PCR[2].R = 0x0200; //CCDM SI  A2
-//	SIU.PCR[59].R = 0x0200;//COUNTER1 D11
-//	SIU.PCR[60].R = 0x0200;//COUNTER1 D12
-//	SIU.PCR[6].R = 0x0200; //COUNTER2 A6
-//	SIU.PCR[8].R = 0x0200; //COUNTER1 A8
 	SIU.PCR[72].R = 0x0200;//OLED     E8
 	SIU.PCR[74].R = 0x0200;//OLED     E10
 	SIU.PCR[75].R = 0x0200;//OLED     E11
 	SIU.PCR[42].R = 0x0200;//OLED     C10
 	SIU.PCR[17].R = 0x0200;//OLED     B1
-	SIU.PCR[0].R = 0x0200; //BEE      A0
-//	SIU.PCR[9].R = 0x0200; //SUPER1   A9
-//	SIU.PCR[5].R = 0x0200; //SUPER1   A5
-//	SIU.PCR[66].R = 0x0200;//SUPER1   E2
-	SIU.PCR[50].R = 0x0100;//SWITCH1  D2
-	SIU.PCR[52].R = 0x0100;//SWITCH2  D4
-	SIU.PCR[54].R = 0x0100;//SWITCH3  D6
-	SIU.PCR[56].R = 0x0100;//SWITCH4  D8
-	SIU.PCR[28].R = 0x0103;//KEY S6   B12
-	SIU.PCR[29].R = 0x0103;//KEY S5   B13
-	SIU.PCR[30].R = 0x0103;//KEY S4   B14
-	SIU.PCR[31].R = 0x0103;//KEY S3   B15
-//	
-//	SIU.GPDO[24].R = 1;//CCDL AO  B8
-//	SIU.GPDO[27].R = 0;//CCDL CLK B11
-//	SIU.GPDO[61].R = 0;//CCDL SI  D13
-//	SIU.GPDO[26].R = 1;//CCDR AO  B10
-//	SIU.GPDO[63].R = 0;//CCDR CLK D15
-//	SIU.GPDO[62].R = 0;//CCDR SI  D14
-//	SIU.GPDO[25].R = 1;//CCDM AO  B9
-//	SIU.GPDO[46].R = 0;//CCDM CLK C14
-//	SIU.GPDO[2].R = 0; //CCDM SI  A2
-//	SIU.GPDO[59].R = 1;//COUNTER1 D11
-//	SIU.GPDO[60].R = 0;//COUNTER1 D12
-//	SIU.GPDO[6].R = 0; //COUNTER2 A6
-//	SIU.GPDO[8].R = 1; //COUNTER1 A8
-//	SIU.GPDO[72].R = 0;//OLED     E8
-//	SIU.GPDO[74].R = 0;//OLED     E10
-//	SIU.GPDO[75].R = 0;//OLED     E11
-//	SIU.GPDO[42].R = 0;//OLED     C10
-//	SIU.GPDO[17].R = 1;//OLED     B1
-	SIU.GPDO[0].R = 0; //BEE      A0
-//	SIU.GPDO[9].R = 1; //SUPER1   A9
-//	SIU.GPDO[5].R = 0; //SUPER1   A5
-//	SIU.GPDO[66].R = 0;//SUPER1   E2
-//	SIU.GPDO[18].R = 1;//UART     B2
-//	SIU.GPDO[19].R = 0;//UART     B3
+	SIU.PCR[16].R = 0x0103;//SWITCH1  B0
+	SIU.PCR[38].R = 0x0103;//SWITCH2  C6
+	SIU.PCR[43].R = 0x0103;//SWITCH3  C11
+	SIU.PCR[65].R = 0x0103;//SWITCH4  E1
+	SIU.PCR[1].R = 0x0103; //SWITCH5  A1
+	SIU.PCR[13].R = 0x0103;//KEY S6   A13
+	SIU.PCR[14].R = 0x0103;//KEY S5   A14
+	SIU.PCR[39].R = 0x0103;//KEY S4   C7
+	SIU.PCR[15].R = 0x0103;//KEY S3   A15
+//	SIU.PCR[27].R = 0x0200;//SUPER    B11
+//	SIU.PCR[28].R = 0x0200;//SUPER    B12
+
+//	SIU.GPDO[27].R = 0x0200;//SUPER    B11
+//	SIU.GPDO[28].R = 0x0200;//SUPER    B12
 }

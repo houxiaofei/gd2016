@@ -10,6 +10,7 @@
 
 extern int A[128];
 extern int B[128];
+extern int C[128];
 extern int al_end,ar_end,bl_end,br_end;
 extern int a_start,b_start;
 extern int a_value,b_value;                          //判断跳变沿的差值标准

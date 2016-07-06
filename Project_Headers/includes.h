@@ -57,22 +57,21 @@ extern int PixelRight[128];
 #define backwardleft SIU.GPDI[59].R	//光编检测车实际方向:1左前进 0左倒退
 #define backwardright SIU.GPDI[6].R	//光编检测车实际方向:1右倒退 0右前进
 
-/***************bee*****************/
-#define Bee  SIU.GPDO[0].R
 
 /***************switch*****************/
-#define switch1 SIU.GPDI[50].R
-#define switch2 SIU.GPDI[52].R
-#define switch3 SIU.GPDI[54].R	//E0
-#define switch4 SIU.GPDI[56].R
+#define switch1 SIU.GPDI[16].R
+#define switch2 SIU.GPDI[38].R
+#define switch3 SIU.GPDI[43].R
+#define switch4 SIU.GPDI[65].R
+#define switch5 SIU.GPDI[1].R
 /***************keys*****************/
-#define S6 SIU.GPDI[28].R
-#define S5 SIU.GPDI[29].R
-#define S4 SIU.GPDI[30].R	//E0
-#define S3 SIU.GPDI[31].R
+#define S6 SIU.PCR[13].R
+#define S5 SIU.PCR[14].R
+#define S4 SIU.PCR[39].R
+#define S3 SIU.PCR[15].R
 
 /***************steer*****************/
-#define TargetSteer EMIOS_0.CH[11].CBDR.R // 舵机值
+#define TargetSteer EMIOS_0.CH[4].CBDR.R // 舵机值
 #define CENTER 3500//3692 3710 3664 3704 3756新车3278 老车3712   3520
 
 /***************stm*****************/

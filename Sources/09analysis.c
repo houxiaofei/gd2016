@@ -9,6 +9,7 @@
 
 int A[128]={0};
 int B[128]={0};
+int C[128]={0};
 //int al_end=43,ar_end=97,bl_end=23,br_end=111;
 //int a_start=70,b_start=67;
 //int a_value=120,b_value=100;                          //判断跳变沿的差值标准
@@ -40,75 +41,75 @@ int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 void DataSet(void)
 {
-	int k;
-	int bs[10],bscnt=0;
-	int bv[10],bvcnt=0;
-	int bt[10],btcnt=0;
-	int as[10],ascnt=0;
-	int av[10],avcnt=0;
-	int at[10],atcnt=0;
-	stop_flag=0;
-	ImageCapture(PixelLeft,PixelRight);
-	mdelay(1);
-	for(k=0;k<10;k++)
-	{
-		mdelay(3);
-		ImageCapture(PixelLeft,PixelRight);
-		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
-		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
-		bvcnt+=bv[k];
-		avcnt+=av[k];
-		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
-		at[k]=(PixelLeft[70]+PixelLeft[71]+PixelLeft[20]+PixelLeft[21])/4.5;
-		btcnt+=bt[k];
-		atcnt+=at[k];
-		for(i=70;i>0;i--)
-		{
-			if(PixelRight[i]-PixelRight[i-b_scan]>bv[k]&&PixelRight[i-1]-PixelRight[i-b_scan-1]>bv[k])
-			{
-				bl_edge=i-b_halfscan;
-				break;
-			}
-		}
-		for(i=70;i>0;i--)
-		{
-			if(PixelLeft[i]-PixelLeft[i-a_scan]>av[k]&&PixelLeft[i-1]-PixelLeft[i-a_scan-1]>av[k])
-			{
-				al_edge=i-a_halfscan;
-				break;
-			}
-		}
-		for(i=70;i<127;i++)
-		{
-			if(PixelRight[i]-PixelRight[i+b_scan]>bv[k]&&PixelRight[i+1]-PixelRight[i+b_scan+1]>bv[k])
-			{
-				br_edge=i+b_halfscan;
-				break;
-			}
-		}
-		for(i=70;i<127;i++)
-		{
-			if(PixelLeft[i]-PixelLeft[i+a_scan]>av[k]&&PixelLeft[i+1]-PixelLeft[i+a_scan+1]>av[k])
-			{
-				ar_edge=i+a_halfscan;
-				break;
-			}
-		}
-		bs[k]=(bl_edge+br_edge)/2;
-		bscnt+=bs[k];
-		as[k]=(al_edge+ar_edge)/2;
-		ascnt+=as[k];
-	}
-	b_value=bvcnt/10;
-	b_start=bscnt/10;
-	bl_end=b_start-b_PixelNumber;
-	br_end=b_start+b_PixelNumber;
-	b_T=btcnt/10;
-	a_value=avcnt/10;
-	a_start=ascnt/10;
-	al_end=a_start-a_PixelNumber;
-	ar_end=a_start+a_PixelNumber;
-	a_T=atcnt/10;
+//	int k;
+//	int bs[10],bscnt=0;
+//	int bv[10],bvcnt=0;
+//	int bt[10],btcnt=0;
+//	int as[10],ascnt=0;
+//	int av[10],avcnt=0;
+//	int at[10],atcnt=0;
+//	stop_flag=0;
+//	ImageCapture(PixelLeft,PixelRight);
+//	mdelay(1);
+//	for(k=0;k<10;k++)
+//	{
+//		mdelay(3);
+//		ImageCapture(PixelLeft,PixelRight);
+//		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
+//		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
+//		bvcnt+=bv[k];
+//		avcnt+=av[k];
+//		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
+//		at[k]=(PixelLeft[70]+PixelLeft[71]+PixelLeft[20]+PixelLeft[21])/4.5;
+//		btcnt+=bt[k];
+//		atcnt+=at[k];
+//		for(i=70;i>0;i--)
+//		{
+//			if(PixelRight[i]-PixelRight[i-b_scan]>bv[k]&&PixelRight[i-1]-PixelRight[i-b_scan-1]>bv[k])
+//			{
+//				bl_edge=i-b_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i>0;i--)
+//		{
+//			if(PixelLeft[i]-PixelLeft[i-a_scan]>av[k]&&PixelLeft[i-1]-PixelLeft[i-a_scan-1]>av[k])
+//			{
+//				al_edge=i-a_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i<127;i++)
+//		{
+//			if(PixelRight[i]-PixelRight[i+b_scan]>bv[k]&&PixelRight[i+1]-PixelRight[i+b_scan+1]>bv[k])
+//			{
+//				br_edge=i+b_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i<127;i++)
+//		{
+//			if(PixelLeft[i]-PixelLeft[i+a_scan]>av[k]&&PixelLeft[i+1]-PixelLeft[i+a_scan+1]>av[k])
+//			{
+//				ar_edge=i+a_halfscan;
+//				break;
+//			}
+//		}
+//		bs[k]=(bl_edge+br_edge)/2;
+//		bscnt+=bs[k];
+//		as[k]=(al_edge+ar_edge)/2;
+//		ascnt+=as[k];
+//	}
+//	b_value=bvcnt/10;
+//	b_start=bscnt/10;
+//	bl_end=b_start-b_PixelNumber;
+//	br_end=b_start+b_PixelNumber;
+//	b_T=btcnt/10;
+//	a_value=avcnt/10;
+//	a_start=ascnt/10;
+//	al_end=a_start-a_PixelNumber;
+//	ar_end=a_start+a_PixelNumber;
+//	a_T=atcnt/10;
 }
 
 void PixelScan(void)

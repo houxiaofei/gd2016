@@ -5,12 +5,12 @@ int main(void) {
 	//mdelay(1000);
 	//DataSet();
 	stop_flag=0;
-	targetspeed=180;
+	targetspeed=100;
 //	tsl=105;
 //	tsr=120;
 //	TargetSteer=3892;
 
-//	SET_motor(targetspeed,targetspeed);
+	SET_motor(targetspeed,targetspeed);
 	
 	initPIT();
 
@@ -20,7 +20,7 @@ int main(void) {
 		if(steer_flag==1)
 		{
 			steer_flag=0;
-			ImageCapture(A,B);
+			ImageCapture(A,B,C);
 			PixelScan();
 			PixelScan_A();
 			ErrorCalculate_A();
