@@ -20,6 +20,9 @@ extern unsigned char Y[25],Z[11];
 
 extern int X[16];
 
+extern unsigned char RX_data;
+extern unsigned char Y[25],Z[11];
+
 extern unsigned char S3_last;
 extern unsigned char S4_last;
 extern unsigned char S5_last;

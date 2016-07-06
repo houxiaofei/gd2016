@@ -22,13 +22,18 @@ extern int wrong_flag;
 extern int stop_flag;
 extern int al_edge,ar_edge,bl_edge,br_edge;//Ã¯±‰—ÿ
 extern int error,a_error,b_error,pre_error;
+extern int b_value2,b_scan2;//÷’µ„
 extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,ar_bar_flag;//’œ∞≠ŒÔ
+extern int b_bar_value,b_bar_cnttop;
+extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;
 
 extern void DataSet(void);
 extern void PixelScan(void);
 extern void PixelScan_A(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
+void TrendCalculate(void);
+void EnterJudge(void);
 void EndJudge(void);
 void BarrierJudge(void);
 void BarrierControl(void);

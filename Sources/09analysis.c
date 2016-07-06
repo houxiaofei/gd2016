@@ -9,9 +9,13 @@
 
 int A[128]={0};
 int B[128]={0};
+//int al_end=43,ar_end=97,bl_end=23,br_end=111;
+//int a_start=70,b_start=67;
+//int a_value=120,b_value=100;                          //判断跳变沿的差值标准
+//int a_T=360,b_T=300;                                  //黑白阈值
 int al_end=40,ar_end=94,bl_end=26,br_end=114;
 int a_start=67,b_start=70;
-int a_value=100,b_value=130;                          //判断跳变沿的差值标准120 100
+int a_value=100,b_value=120;                          //判断跳变沿的差值标准
 int a_T=300,b_T=360;                                  //黑白阈值
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
@@ -24,7 +28,10 @@ int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
 int error=0,a_error=0,b_error=0,pre_error=0;
-int aa_error[4]={0,0,0,0};
+int aa_error[4]={0,0,0,0},bb_error[4]={0,0,0,0};
+int error_his[30]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int his_num=8,trend=0,trend_value=3,trend_value2=3,b_error_value=5,b_error_value2=0;
+int enter_flag=0;//入弯flag
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //补线值
 int i=0,j=0;
 int b_value2=30,b_scan2=10;//终点
@@ -109,7 +116,7 @@ void PixelScan(void)
 	bl_count=0,br_count=0;
 	bl_flag=4,br_flag=4;
 	bl_edge=0,br_edge=0;
-	error=0;
+	//error=0;
 	wrong_flag=0;
 	for(i=b_start;i>(bl_end+b_scan);i--)
 	{
@@ -304,7 +311,7 @@ void ErrorCalculate(void)
 
 void ErrorCalculate_A(void)
 {
-	a_error=0;
+	//a_error=0;
 	a_wrong_flag=1;
 	if(a_flag==11)
 	{
@@ -519,6 +526,38 @@ void BarrierControl(void)
 	}
 }
 
+void TrendCalculate(void)
+{
+	int i,a,b;
+	int his1=0,his2=0;
+	a=his_num;
+	b=his_num/2;
+	for(i=0;i<a-1;i++)
+	{
+		error_his[i]=error_his[i+1];
+	}
+	error_his[a-1]=error;
+	for(i=0;i<b;i++)
+	{
+		his1+=error_his[i];
+		his2+=error_his[i+b];
+	}
+	trend=(his2-his1)/b;
+}
+void EnterJudge(void)
+{
+	if(ABS(trend)>=trend_value&&ABS(b_error)<=b_error_value)
+	{
+		if(b_error>0&&trend>0)
+			enter_flag=1;
+		else if(b_error<0&&trend<0)
+			enter_flag=1;
+	}
+	else if(ABS(trend)<=trend_value2&&ABS(b_error)>=b_error_value2)
+	{
+		enter_flag=0;
+	}
+}
 
 //ImageCopy(AA,PixelLeft);
 //ImageCopy(BB,PixelRight);

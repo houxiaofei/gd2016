@@ -12,6 +12,8 @@ int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=480,Motor_PWM_MIN=-480;
 float csxs=0.6;//差速系数
+//**********************变速参数***************************/
+int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=160,barspeed=150;
 //**********************差速参数***************************/
 signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000
 signed int wheel_distance=9;//半车距8
@@ -22,9 +24,6 @@ int ErrorLeft=0,PreErrorLeft=0,Pre2ErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreEr
 int intErrorLeft=0,intErrorRight=0;
 float Pwm_Delta_Left=0,Pwm_Delta_Right=0; 
 int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
-
-//**********************变速参数***************************/
-int straightspeed=250,transspeed=180,turnspeed=180,deadspeed=280,barspeed=180;
 
 //float Speed_kp_Left=6,Speed_ki_Left=0.1,Speed_kd_Left=0;//16
 //float Speed_kp_Right=0.1,Speed_ki_Right=0.01,Speed_kd_Right=0;	//电机增量式PID
@@ -57,14 +56,12 @@ float KP_speed=15,KI_speed=0.01,KD_speed=0.1;//4,0.8,0.1
 int Sum_Speed_Err=0,Speed_Err=0,Pre_Speed_Err=0;
 int Pwm_Delta=0;
 int MotorPWM=0;
-
 float KP_DifSpd=15,KI_DifSpd=0.6,KD_DifSpd=0.1;//0.8，0.01，0.2
 int Cur_DifSpd=0,Tar_DifSpd=0;
 int DifSpd_Err=0,Sum_DifSpd_Err=0,Pre_DifSpd_Err=0;
 int DifferPWM_Delta=0;
 int DifferPWM=0;
 int LMotorPWM=0,RMotorPWM=0;
-
 
 
 /*************************电机接口函数*********************/
@@ -77,7 +74,7 @@ void SET_motor(int leftSpeed,int rightSpeed)
 }
 
 //**********************双PID差速控制*******************************************
-void Speed_PID(void)
+void Speed_PID(void)//外环增量式
 {
 //	Speed_Err=targetspeed-((csl+csr)/2);
 //	//Pwm_Delta=KP_speed*(Speed_Err-Speed_Err_his)+KI_speed*Speed_Err+KD_speed*(Speed_Err+Speed_Err_his2-2*Speed_Err_his);
@@ -91,7 +88,7 @@ void Speed_PID(void)
 //	SET_motor(MotorPWM,MotorPWM);
 	//SET_motor(100,100);
 }
-void DifferSpeed_PID(void)
+void DifferSpeed_PID(void)//内环增量式
 {
 //	RPID=CENTER-Steer_PWM[3];
 //	r=Speed_kc1/RPID;
@@ -100,12 +97,20 @@ void DifferSpeed_PID(void)
 //	Cur_DifSpd=csl-csr;
 //	Tar_DifSpd=tsl-tsr;
 //	DifSpd_Err=Tar_DifSpd-Cur_DifSpd;
-//	DifferPWM_Delta=KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his);
+//	DifferPWM_Delta=(int)(KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his));
 //	DifSpd_Err_his2=DifSpd_Err_his;
 //	DifSpd_Err_his=DifSpd_Err;
 //	DifferPWM+=DifferPWM_Delta;
-//	LMotorPWM=MotorPWM+DifferPWM;
-//	RMotorPWM=MotorPWM-DifferPWM;
+//	if(DifferPWM>=0)
+//	{
+//		LMotorPWM=MotorPWM+DifferPWM;
+//		RMotorPWM=MotorPWM-DifferPWM;
+//	}
+//	else
+//	{
+//		LMotorPWM=MotorPWM+DifferPWM;
+//		RMotorPWM=MotorPWM-DifferPWM;
+//	}
 //	SET_motor(LMotorPWM,RMotorPWM);
 }
 
@@ -134,7 +139,6 @@ void Speed_Set(void)
 		targetspeed=deadspeed;
 	else
 		targetspeed=turnspeed;
-	
 //	RPID=CENTER-Steer_PWM[3];
 //	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID);
 }
@@ -168,7 +172,7 @@ void Speed_PID2(void) //外环位置式
 	//SET_motor(100,100);
 }
 
-void DifferSpeed_PID2(void)
+void DifferSpeed_PID2(void)//内环位置式
 {
 	RPID=CENTER-Steer_PWM[3];
 	r=Speed_kc1/RPID;

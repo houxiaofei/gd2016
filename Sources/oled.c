@@ -157,7 +157,7 @@ void OLED_Test(void)
 	OLED_Str("  ");
 	OLED_Str("kc1: ");
 	OLED_Num(Speed_kc1/100);
-
+	
 	OLED_SetPointer(2,5);
 	OLED_Str("flag: ");
     OLED_Num(al_flag);
