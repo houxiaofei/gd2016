@@ -12,6 +12,8 @@ extern int target_offset,last_offset;
 extern unsigned int Steer_PWM[4];
 extern double Steer_kp,Steer_kd;
 extern unsigned int LEFT,RIGHT;
+extern unsigned char sp_x2,sp_x3;
+extern double sp_x1;
 
 void SET_steer(unsigned int steer);
 extern void Steer_PDSet(void);

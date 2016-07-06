@@ -27,16 +27,16 @@ int aa_flag[4]={0,0,0,0},all_flag[10]={0,0,0,0,0,0,0,0,0,0};
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
-int error=0,a_error=0,b_error=0;
+int error=0,a_error=0,b_error=0,pre_error=0;
 int aa_error[4]={0,0,0,0},bb_error[4]={0,0,0,0};
 int error_his[30]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int his_num=8,trend=0,trend_value=3,trend_value2=3,b_error_value=5,b_error_value2=0;
 int enter_flag=0;//入弯flag
 int al_rem=0,ar_rem=0,b_rem=-13,ab_rem=16,ab_rem1=5;                  //补线值
 int i=0,j=0;
-int b_value2=40,b_scan2=10;//终点
-int a_edg_err=0,a_bar_value=12,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=35,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
+int b_value2=30,b_scan2=10;//终点
+int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 void DataSet(void)
 {
@@ -247,7 +247,8 @@ void ErrorCalculate(void)
 	}
 	if(bl_flag==2&&br_flag==2)                              //22直道
 	{
-		//EndJudge();
+		if(end_judge_flag)
+			EndJudge();
 		if(a_flag==22)
 		{
 			BarrierJudge();
@@ -305,6 +306,7 @@ void ErrorCalculate(void)
 		return;
 	}
 	wrong_flag=1;
+	error=pre_error;  //出问题时error给历史值
 }
 
 void ErrorCalculate_A(void)
@@ -382,7 +384,7 @@ void EndJudge(void)
 {
 	int k=0;
 	int cnt=0;
-	for(i=bl_edge-20;i<br_edge+20;i++)
+	for(i=b_start-30;i<b_start+30;i++)
 	{
 		switch(k){
 		case 0:
@@ -460,15 +462,15 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start+3);
+			error=br_edge-(b_start-8);
 			if(error>=0)
-				error=error*3;
+				error=error*2;
 			else
-				error=error*4;
+				error=error*3;
 		}
 		else if(br_flag==1)
 		{
-			error=(br_end-b_scan-(b_start+3))*3;
+			error=(br_end-b_scan-(b_start-8))*2;
 		}
 		else
 		{

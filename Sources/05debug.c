@@ -21,7 +21,8 @@ unsigned long time3=0;
 unsigned char RX_data;
 unsigned char RX_flag=0;
 unsigned char RX_i=0,RX_j=0;
-unsigned char X[16]={0},Y[25]={0},Z[11]={0};
+unsigned char Y[25]={0},Z[11]={0};
+int X[16]={0};
 
 unsigned char S3_last=1;
 unsigned char S4_last=1;
@@ -232,35 +233,35 @@ void LINFlex_TX_Interrupt(void)
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(trend));        //发送a_error
+		LINFlex_TX(SendInt1(tsl));        //发送a_error
 		Ts=33;
 		break;
 	case 33:
-		LINFlex_TX(SendInt2(trend));
+		LINFlex_TX(SendInt2(tsl));
 		Ts=34;
 		break;
 	case 34: 
-		LINFlex_TX(SendInt3(trend));      
+		LINFlex_TX(SendInt3(tsl));      
 		Ts=35;
 		break;
 	case 35:
-		LINFlex_TX(SendInt4(trend));
+		LINFlex_TX(SendInt4(tsl));
 		Ts=36;
 		break;
 	case 36: 
-		LINFlex_TX(SendInt1(b_error));        //发送b_error
+		LINFlex_TX(SendInt1(tsr));        //发送b_error
 		Ts=37;
 		break;
 	case 37:
-		LINFlex_TX(SendInt2(b_error));
+		LINFlex_TX(SendInt2(tsr));
 		Ts=38;
 		break;
 	case 38: 
-		LINFlex_TX(SendInt3(b_error));      
+		LINFlex_TX(SendInt3(tsr));      
 		Ts=39;
 		break;
 	case 39:
-		LINFlex_TX(SendInt4(b_error));
+		LINFlex_TX(SendInt4(tsr));
 		Ts=40;
 		break;
 	case 40:
@@ -281,13 +282,18 @@ void LINFlex_RX_Interrupt(void)
 		switch(RX_flag){
 		case 1:
 			straightspeed=X[1]*100+X[2]*10+X[3];
-			transspeed=X[4]*100+X[4]*10+X[6];
-			turnspeed=X[7]*100+X[8]*10+X[9];
-			deadspeed=X[10]*100+X[11]*10+X[12];
+			//transspeed=X[4]*100+X[5]*10+X[6];
+			//turnspeed=X[7]*100+X[8]*10+X[9];
+			//deadspeed=X[10]*100+X[11]*10+X[12];
+			sp_x1=((double)(X[4]*100+X[5]*10+X[6]))/10000;
+			Speed_kc1=X[7]*10000+X[8]*1000+X[9]*100;
+			targetspeed=X[10]*100+X[11]*10+X[12];
 			barspeed=X[13]*100+X[14]*10+X[15];
 			RX_flag=0;
 			break;
 		case 2:
+//			Speed_kp_Left=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
+//			Speed_kp_Right=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
 			KP_speed=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
 			KI_speed=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
 			KD_speed=(float)(Y[9]*10+Y[10])+((float)(Y[11]*10+Y[12]))/100;
@@ -297,11 +303,13 @@ void LINFlex_RX_Interrupt(void)
 			RX_flag=0;
 			break;
 		case 3:
-			trend_value=Z[1]*10+Z[2];
-			b_error_value=Z[3]*10+Z[4];
-			trend_value2=Z[5]*10+Z[6];
-			his_num=Z[7]*10+Z[8];
-			b_error_value2=Z[9]*10+Z[10];
+			sp_x2=Z[1]*10+Z[2];
+			sp_x3=Z[3]*10+Z[4];
+//			trend_value=Z[1]*10+Z[2];
+//			b_error_value=Z[3]*10+Z[4];
+//			trend_value2=Z[5]*10+Z[6];
+//			his_num=Z[7]*10+Z[8];
+//			b_error_value2=Z[9]*10+Z[10];
 			RX_flag=0;
 			break;
 		}

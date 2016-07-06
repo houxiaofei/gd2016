@@ -5,18 +5,17 @@ int main(void) {
 	//mdelay(1000);
 	//DataSet();
 	stop_flag=0;
-	
-	targetspeed=100;
+	targetspeed=180;
 //	tsl=105;
 //	tsr=120;
 //	TargetSteer=3892;
 
-
-	SET_motor(targetspeed,targetspeed);
+//	SET_motor(targetspeed,targetspeed);
+	
 	initPIT();
-	
+
 	BlueTx();
-	
+
 	for(;;){
 		if(steer_flag==1)
 		{
@@ -26,8 +25,15 @@ int main(void) {
 			PixelScan_A();
 			ErrorCalculate_A();
 			ErrorCalculate();
-			TrendCalculate();
-			EnterJudge();
+
+//			if(ABS(error-pre_error)>10)
+//			{
+//				error=pre_error;  //跳变时error给历史值
+//			}
+			
+			pre_error=error;  //传递error值
+			//TrendCalculate();
+			//EnterJudge();
 			//Steer_PDSet();
 			//SteerControl();
 		}

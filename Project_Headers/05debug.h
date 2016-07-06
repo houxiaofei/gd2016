@@ -15,9 +15,13 @@ extern unsigned char putstring[];
 extern unsigned int Ts;
 extern unsigned int Tc;
 extern int CurrentSteer;
+extern unsigned char RX_data;
+extern unsigned char Y[25],Z[11];
+
+extern int X[16];
 
 extern unsigned char RX_data;
-extern unsigned char X[16],Y[25],Z[11];
+extern unsigned char Y[25],Z[11];
 
 extern unsigned char S3_last;
 extern unsigned char S4_last;
