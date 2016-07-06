@@ -18,7 +18,7 @@ void initPIT(void)
   PIT.CH[2].TCTRL.R = 0x000000003; // Enable PIT2 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR2,61,5); 
   udelay(10);
-  PIT.CH[1].LDVAL.R = 800000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
+  PIT.CH[1].LDVAL.R = 500000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec 
   PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
   INTC_InstallINTCInterruptHandler(PitISR,60,4); 
 }
@@ -50,7 +50,7 @@ void PitISR2(void)
 	if(stop_flag==1)
 	{
 		targetspeed=0;
-		SET_motor(0,0);
+		//SET_motor(0,0);
 		timecount=0;
 	}
 //	
@@ -71,10 +71,10 @@ void PitISR2(void)
 //		}
 //	}
 	SpeedCount();
-	Speed_Set();
+//	Speed_Set();
 //	SpeedControl(); 
-	Speed_PID2();
-	DifferSpeed_PID();
+//	Speed_PID2();
+//	DifferSpeed_PID();
 //	if(pitcount4>=3)
 //	{
 //		pitcount4=0;

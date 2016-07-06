@@ -6,13 +6,13 @@ int main(void) {
 	//DataSet();
 	stop_flag=0;
 	
-	targetspeed=150;
+	targetspeed=100;
 //	tsl=105;
 //	tsr=120;
 //	TargetSteer=3892;
 
 
-	//SET_motor(targetspeed,targetspeed);
+	SET_motor(targetspeed,targetspeed);
 	initPIT();
 	
 	BlueTx();
@@ -26,8 +26,10 @@ int main(void) {
 			PixelScan_A();
 			ErrorCalculate_A();
 			ErrorCalculate();
-			Steer_PDSet();
-			SteerControl();
+			TrendCalculate();
+			EnterJudge();
+			//Steer_PDSet();
+			//SteerControl();
 		}
 		if(oled_flag==1)
 		{

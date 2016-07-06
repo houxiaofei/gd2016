@@ -19,6 +19,7 @@ extern int csl,csr;
 extern int tsl,tsr;
 extern int csl_cnt[3],csr_cnt[3];
 extern int targetspeed;
+extern int straightspeed,transspeed,turnspeed,deadspeed,barspeed;
 extern int tsl_PWM,tsr_PWM,tsr_Delta,error_Delta;
 extern int ErrorRight,PreErrorRight;
 extern signed int Speed_kc1;

@@ -18,6 +18,11 @@ unsigned long time1=0;
 unsigned long time2=0;
 unsigned long time3=0;
 
+unsigned char RX_data;
+unsigned char RX_flag=0;
+unsigned char RX_i=0,RX_j=0;
+unsigned char X[16]={0},Y[25]={0},Z[11]={0};
+
 unsigned char S3_last=1;
 unsigned char S4_last=1;
 unsigned char S5_last=1;
@@ -70,7 +75,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=9;
+				Ts=1;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -195,7 +200,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=24;
 		break;
 	case 24: 
-		LINFlex_TX(SendInt4(al_flag));        //发送A_flag
+		LINFlex_TX(SendInt4(enter_flag));        //发送A_flag
 		Ts=25;
 		break;
 	case 25: 
@@ -227,19 +232,19 @@ void LINFlex_TX_Interrupt(void)
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(a_error));        //发送a_error
+		LINFlex_TX(SendInt1(trend));        //发送a_error
 		Ts=33;
 		break;
 	case 33:
-		LINFlex_TX(SendInt2(a_error));
+		LINFlex_TX(SendInt2(trend));
 		Ts=34;
 		break;
 	case 34: 
-		LINFlex_TX(SendInt3(a_error));      
+		LINFlex_TX(SendInt3(trend));      
 		Ts=35;
 		break;
 	case 35:
-		LINFlex_TX(SendInt4(a_error));
+		LINFlex_TX(SendInt4(trend));
 		Ts=36;
 		break;
 	case 36: 
@@ -268,6 +273,73 @@ void LINFlex_TX_Interrupt(void)
 	}
 }
 
+void LINFlex_RX_Interrupt(void)
+{
+	RX_data=LINFLEX_0.BDRM.B.DATA4;
+	if(RX_data==69)
+	{
+		switch(RX_flag){
+		case 1:
+			straightspeed=X[1]*100+X[2]*10+X[3];
+			transspeed=X[4]*100+X[4]*10+X[6];
+			turnspeed=X[7]*100+X[8]*10+X[9];
+			deadspeed=X[10]*100+X[11]*10+X[12];
+			barspeed=X[13]*100+X[14]*10+X[15];
+			RX_flag=0;
+			break;
+		case 2:
+			KP_speed=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
+			KI_speed=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
+			KD_speed=(float)(Y[9]*10+Y[10])+((float)(Y[11]*10+Y[12]))/100;
+			KP_DifSpd=(float)(Y[13]*10+Y[14])+((float)(Y[15]*10+Y[16]))/100;
+			KI_DifSpd=(float)(Y[17]*10+Y[18])+((float)(Y[19]*10+Y[20]))/100;
+			KD_DifSpd=(float)(Y[21]*10+Y[22])+((float)(Y[23]*10+Y[24]))/100;
+			RX_flag=0;
+			break;
+		case 3:
+			trend_value=Z[1]*10+Z[2];
+			b_error_value=Z[3]*10+Z[4];
+			trend_value2=Z[5]*10+Z[6];
+			his_num=Z[7]*10+Z[8];
+			b_error_value2=Z[9]*10+Z[10];
+			RX_flag=0;
+			break;
+		}
+	}
+	else if(RX_data==88)
+	{
+		RX_flag=1;
+		RX_i=0;
+	}
+	else if(RX_data==89)
+	{
+		RX_flag=2;
+		RX_i=0;
+	}
+	else if(RX_data==90)
+	{
+		RX_flag=3;
+		RX_i=0;
+	}
+	switch(RX_flag){
+	case 0:
+		break;
+	case 1:
+		X[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	case 2:
+		Y[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	case 3:
+		Z[RX_i]=RX_data-48;
+		RX_i++;
+		break;
+	}
+	LINFLEX_0.UARTSR.B.DRF=1;
+}
+
 //********************************************************************************************************
 //****************************************按键调试函数*****************************************************
 //********************************************************************************************************
@@ -284,9 +356,9 @@ void KeyJudge(void)
 //		targetspeed+=10;
 //		Speed_kp_Left+=1;
 //		Speed_kp_Right+=1;
-//		TargetSteer+=100;
+		TargetSteer+=100;
 //		KI_DifSpd-=0.01;
-		Speed_kc1+=1000;
+//		Speed_kc1+=1000;
 //		tsr-=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
@@ -299,9 +371,9 @@ void KeyJudge(void)
 //	    targetspeed-=10;
 //	    Speed_kp_Left-=1;
 //	    Speed_kp_Right-=1;
-//	    TargetSteer-=100;
+	    TargetSteer-=100;
 //	    KI_DifSpd+=0.01;
-	    Speed_kc1-=1000;
+//	    Speed_kc1-=1000;
 //	    tsr+=1;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
@@ -316,8 +388,8 @@ void KeyJudge(void)
 //		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left+=0.1;
 //		Speed_ki_Right+=0.1;
-//		TargetSteer+=10;
-		Steer_kd+=1;
+		TargetSteer+=10;
+//		Steer_kd+=1;
 //		KI_DifSpd+=0.1;
 //		tsl-=1;
 		}
@@ -333,9 +405,9 @@ void KeyJudge(void)
 //		SET_motor(targetspeed,targetspeed);
 //		Speed_ki_Left-=0.1;
 //		Speed_ki_Right-=0.1;
-//		TargetSteer-=10;
+		TargetSteer-=10;
 //		KI_DifSpd-=0.1;
-		Steer_kd-=1;
+//		Steer_kd-=1;
 //		tsl+=1;
 		}
 	S3_last=S3;             //保存按键的状态

@@ -10,8 +10,10 @@
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
-int targetspeed=0,Motor_PWM_MAX=300,Motor_PWM_MIN=-300;
+int targetspeed=0,Motor_PWM_MAX=400,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
+//**********************变速参数***************************/
+int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=160,barspeed=150;
 //**********************差速参数***************************/
 signed int Speed_kc1=17000,Speed_kc2=1300;//170-17000
 signed int wheel_distance=9;//半车距8
@@ -40,7 +42,7 @@ unsigned int Counter_Error_Left=0,Counter_Error_Right=0;		//光编接触不牢靠错误计
 int Speed_Err=0,Speed_Err_his=0,Speed_Err_his2=0;
 int Pwm_Delta=0;
 int MotorPWM=0;
-float KP_DifSpd=2,KI_DifSpd=0.02,KD_DifSpd=0.1;//0.8，0.01，0.2
+float KP_DifSpd=0.8,KI_DifSpd=0.01,KD_DifSpd=0.2;//0.8，0.01，0.2
 int Cur_DifSpd=0,Tar_DifSpd=0;
 int DifSpd_Err=0,DifSpd_Err_his=0,DifSpd_Err_his2=0;
 int DifferPWM_Delta=0;
@@ -48,7 +50,7 @@ int DifferPWM=0;
 int LMotorPWM=0,RMotorPWM=0;
 
 //**********************双PID差速控制参数(外环位置式)**********************************************;	
-float KP_speed=4,KI_speed=0.8,KD_speed=0.1;
+float KP_speed=4,KI_speed=0.8,KD_speed=0.1;//4, 0.8, 0.1
 int Sum_Speed_Err=0,Pre_Speed_Err=0;
 
 
@@ -84,12 +86,20 @@ void DifferSpeed_PID(void)
 	Cur_DifSpd=csl-csr;
 	Tar_DifSpd=tsl-tsr;
 	DifSpd_Err=Tar_DifSpd-Cur_DifSpd;
-	DifferPWM_Delta=KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his);
+	DifferPWM_Delta=(int)(KP_DifSpd*(DifSpd_Err-DifSpd_Err_his)+KI_DifSpd*DifSpd_Err+KD_DifSpd*(DifSpd_Err+DifSpd_Err_his2-2*DifSpd_Err_his));
 	DifSpd_Err_his2=DifSpd_Err_his;
 	DifSpd_Err_his=DifSpd_Err;
 	DifferPWM+=DifferPWM_Delta;
-	LMotorPWM=MotorPWM+DifferPWM;
-	RMotorPWM=MotorPWM-DifferPWM;
+	if(DifferPWM>=0)
+	{
+		LMotorPWM=MotorPWM+DifferPWM;
+		RMotorPWM=MotorPWM-DifferPWM;
+	}
+	else
+	{
+		LMotorPWM=MotorPWM+DifferPWM;
+		RMotorPWM=MotorPWM-DifferPWM;
+	}
 	SET_motor(LMotorPWM,RMotorPWM);
 }
 
@@ -108,16 +118,16 @@ void Speed_Set(void)
 	if(stop_flag==1)
 		targetspeed=0;
 	else if(a_bar_flag==1)
-		targetspeed=150;
+		targetspeed=barspeed;
     else if(j==0||a_flag==11||b_flag==11)
-		targetspeed=230;
+		targetspeed=straightspeed;
 	else if((a_flag==21||a_flag==12)&&b_flag==22)
-		targetspeed=180;
+		targetspeed=transspeed;
 	//else if(error>=45)
 	else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
-		targetspeed=160;
+		targetspeed=deadspeed;
 	else
-		targetspeed=180;
+		targetspeed=turnspeed;
 }
 
 void Speed_PID2(void) //外环位置式
