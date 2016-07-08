@@ -142,7 +142,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬C9,C15¹â±àÕ
 	EMIOS_0.CH[24].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[24].CADR.R=0xffff;
 	SIU.PCR[60].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[41].R = 0x0102;  //PD11×óÂÖ¹â±àÕı·´×ª £¬¸ßµçÆ½Õı×ª£¬µÍµçÆ½·´×ª
+	SIU.PCR[41].R = 0x0102;  //C9×óÂÖ¹â±àÕı·´×ª £¬¸ßµçÆ½Õı×ª£¬µÍµçÆ½·´×ª
 	 
 	 //A8 
 	EMIOS_0.CH[8].CCR.B.MODE = 0x51; // Mode is MCB, 
@@ -154,7 +154,7 @@ void initEMIOS_0ModulusCounter(void) //D12,A8Ä£Êı¼ÆÊıÆ÷Èë¿Ú£¬ÉÏÉıÑØ£¬C9,C15¹â±àÕ
 	EMIOS_0.CH[8].CCR.B.EDPOL=1; //Edge Select rising edge
 	EMIOS_0.CH[8].CADR.R=0xffff;
 	SIU.PCR[8].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input
-	SIU.PCR[47].R=0x0102;  //A6ÓÒÂÖ¹â±àÕı·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õı×ª
+	SIU.PCR[47].R=0x0102;  //C15ÓÒÂÖ¹â±àÕı·´×ª£¬¸ßµçÆ½·´×ª£¬µÍµçÆ½Õı×ª
 }
 
 //*****************************************************************************************************************

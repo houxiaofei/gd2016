@@ -20,11 +20,11 @@ int main(void) {
 		if(steer_flag==1)
 		{
 			steer_flag=0;
-			ImageCapture(A,B,C);
-			PixelScan();
-			PixelScan_A();
-			ErrorCalculate_A();
-			ErrorCalculate();
+			ImageCapture(A,B,C);  //采图像，A-60，B-30，C-最远
+			PixelScan(); //图像处理-B
+			PixelScan_A();//图像处理-A
+			ErrorCalculate_A();//偏差值计算-A
+			ErrorCalculate();//偏差值计算-B
 
 //			if(ABS(error-pre_error)>10)
 //			{
@@ -32,10 +32,10 @@ int main(void) {
 //			}
 			
 			pre_error=error;  //传递error值
-			//TrendCalculate();
-			//EnterJudge();
-			//Steer_PDSet();
-			//SteerControl();
+			//TrendCalculate(); //ERROR趋势计算
+			//EnterJudge();  //入弯判断
+			//Steer_PDSet();  //舵机PD参数
+			//SteerControl(); //舵机控制
 		}
 		if(oled_flag==1)
 		{

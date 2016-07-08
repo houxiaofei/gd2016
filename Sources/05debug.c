@@ -10,6 +10,7 @@
 unsigned char *send;
 unsigned char putstring[]="Image";
 int Left[128];
+int Middle[128];
 int Right[128];
 unsigned int Ts=0;
 unsigned int Tc=0;
@@ -61,7 +62,8 @@ void LINFlex_TX(unsigned char data)
 void LINFlex_TX_Interrupt(void)
 {
 	unsigned char aa='L';
-	unsigned char bb='R';
+	unsigned char bb='M';
+	unsigned char cc='R';
 	unsigned char steer='X';
 	unsigned char edge='Y';
 	unsigned char data='Z';
@@ -76,7 +78,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=1;
+				Ts=14;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -84,7 +86,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=2;
 		break;
 	case 2: 
-		LINFlex_TX(SendInt2(Left[Tc]));        //·¢ËÍ×óCCDÍ¼Ïñ
+		LINFlex_TX(SendInt2(Left[Tc]));        //·¢ËÍA-CCDÍ¼Ïñ
 		Ts=3;
 		break;
 	case 3: 
@@ -102,19 +104,19 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 5: 
 		LINFlex_TX(bb);
-		ImageCopy(Right,B);
+		ImageCopy(Middle,B);
 		Ts=6;
 		break;
 	case 6: 
-		LINFlex_TX(SendInt2(Right[Tc]));        //·¢ËÍÓÒCCDÍ¼Ïñ
+		LINFlex_TX(SendInt2(Middle[Tc]));        //·¢ËÍB-CCDÍ¼Ïñ
 		Ts=7;
 		break;
 	case 7: 
-		LINFlex_TX(SendInt3(Right[Tc]));
+		LINFlex_TX(SendInt3(Middle[Tc]));
 		Ts=8;
 		break;
 	case 8:
-		LINFlex_TX(SendInt4(Right[Tc]));
+		LINFlex_TX(SendInt4(Middle[Tc]));
 		if(Tc<127){
 			Tc++;
 			Ts=6;}
@@ -124,26 +126,49 @@ void LINFlex_TX_Interrupt(void)
 		}
 		break;
 	case 9: 
-		CurrentSteer=TargetSteer;
-		LINFlex_TX(steer);
+		LINFlex_TX(cc);
+		ImageCopy(Right,C);
 		Ts=10;
 		break;
 	case 10: 
-		LINFlex_TX(SendInt1(CurrentSteer));        //·¢ËÍ¶æ»úÖµ
+		LINFlex_TX(SendInt2(Right[Tc]));        //·¢ËÍC-CCDÍ¼Ïñ
 		Ts=11;
 		break;
 	case 11: 
-		LINFlex_TX(SendInt2(CurrentSteer));
+		LINFlex_TX(SendInt3(Right[Tc]));
 		Ts=12;
 		break;
-	case 12: 
-		LINFlex_TX(SendInt3(CurrentSteer));
-		Ts=13;
+	case 12:
+		LINFlex_TX(SendInt4(Right[Tc]));
+		if(Tc<127){
+			Tc++;
+			Ts=10;}
+		else{
+			Tc=0;
+			Ts=14;
+		}
 		break;
-	case 13:
-		LINFlex_TX(SendInt4(CurrentSteer));
-		Ts=14;
-		break;
+//	case 9: 
+//		CurrentSteer=TargetSteer;
+//		LINFlex_TX(steer);
+//		Ts=10;
+//		break;
+//	case 10: 
+//		LINFlex_TX(SendInt1(CurrentSteer));        //·¢ËÍ¶æ»úÖµ
+//		Ts=11;
+//		break;
+//	case 11: 
+//		LINFlex_TX(SendInt2(CurrentSteer));
+//		Ts=12;
+//		break;
+//	case 12: 
+//		LINFlex_TX(SendInt3(CurrentSteer));
+//		Ts=13;
+//		break;
+//	case 13:
+//		LINFlex_TX(SendInt4(CurrentSteer));
+//		Ts=14;
+//		break;
 	case 14: 
 		LINFlex_TX(edge);
 		Ts=15;

@@ -40,9 +40,9 @@ void ImageCapture(int L[],int M[],int R[])
   Result1= ADC.CDR[33].B.CDATA; /* 读取ANS0的转换结果数据*/
   Result2= ADC.CDR[34].B.CDATA; /* 读取ANS1的转换结果数据*/
 
-  L[0]=Result0;
+  L[0]=Result2;
   M[0]=Result1;
-  R[0]=Result2;
+  R[0]=Result0;
   CCDL_CLK=0;   //CLK=0
   CCDM_CLK=0;
   CCDR_CLK=0;
@@ -62,9 +62,9 @@ void ImageCapture(int L[],int M[],int R[])
      Result0= ADC.CDR[32].B.CDATA; /* 读取ANS0的转换结果数据*/
      Result1= ADC.CDR[33].B.CDATA;
      Result2= ADC.CDR[34].B.CDATA; /* 读取ANS1的转换结果数据*/
-     L[i+1]=Result0;
+     L[i+1]=Result2;
      M[i+1]=Result1;
-     R[i+1]=Result2;
+     R[i+1]=Result0;
      CCDL_CLK = 0;    // CLK = 0 
      CCDM_CLK = 0;
      CCDR_CLK = 0;
@@ -103,10 +103,10 @@ void SpeedCount(void)
 	}
 	else 
 		csl=speedcounter1-speedcounter2;
-	if(backwardleft)
-		csl=-csl;
-	else 
+	if(forwardleft)
 		csl=csl;
+	else 
+		csl=-csl;
 	speedcounter2=speedcounter1;
 	
 	speedcounter3=EMIOS_0.CH[8].CCNTR.R;               //右A8
