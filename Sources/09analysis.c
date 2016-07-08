@@ -115,49 +115,55 @@ void DataSet(void)
 void PixelScan(void)
 {
 	bl_count=0,br_count=0;
-	bl_flag=4,br_flag=4;
-	bl_edge=0,br_edge=0;
+	bl_flag=4,br_flag=4;	//左右标志，初始值为错误标志
+	bl_edge=0,br_edge=0;	//跳变沿坐标
 	//error=0;
 	wrong_flag=0;
-	for(i=b_start;i>(bl_end+b_scan);i--)
+												//0,1,2,3,4;黑，白，白-黑，黑-白，错误
+	for(i=b_start;i>(bl_end+b_scan);i--)		//从中心b_start向左侧，扫到bl_end+b_scan
 	{
 		if(B[i]>b_T)
 			bl_count++;
-		if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)
+		if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)	//白-黑
 		{
 			bl_flag=2;
-			bl_edge=i-b_halfscan;
+			bl_edge=i-b_halfscan;				//获取跳变沿坐标
 			break;
 		}
-		if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)
+		if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)	//黑-白
 		{
 			bl_flag=3;
-			bl_edge=i-b_halfscan;
+			bl_edge=i-b_halfscan;			//获取跳变沿坐标
 			break;
 		}
-		if(bl_count>(b_allwhite-b_scan))
+	// a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;   全白,全黑判断标准
+	//al_end=40,ar_end=94,bl_end=26,br_end=114;
+	//由于从中间向左向右各扫描44-12【（br_end-bl_end）/2-b_scan】个点；但是只要白点数大于22个点就判断为全白
+		if(bl_count>(b_allwhite-b_scan))	
 			bl_flag=1;
-		else if(bl_count<b_allblack)
+		else if(bl_count<b_allblack)	//要白点数小于10个点就判断为全黑
 			bl_flag=0;
 		else
 			bl_flag=4;
 	}
+	
 	for(i=b_start;i<(br_end-b_scan);i++)
 	{
 		if(B[i]>b_T)
 			br_count++;
-		if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)
+		if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)	//白-黑
 		{
 			br_flag=2;
 			br_edge=i+b_halfscan;
 			break;
 		}
-		if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)
+		if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)	//黑-白
 		{
 			br_flag=3;
 			br_edge=i+b_halfscan;
 			break;
 		}
+
 		if(br_count>(b_allwhite-b_scan))
 			br_flag=1;
 		else if(br_count<b_allblack)
@@ -221,17 +227,27 @@ void PixelScan_A(void)
 	}
 	a_flag=al_flag*10+ar_flag;
 	aa_flag[3]=a_flag;
+	//先依次将前面9次的判断情况往前一个数组元素存，即all_flag[n]->all_flag[n-1]
+	all_flag[0]=all_flag[1];
+	all_flag[1]=all_flag[2];
+	all_flag[2]=all_flag[3];
+	all_flag[3]=all_flag[4];
+	all_flag[4]=all_flag[5];
+	all_flag[5]=all_flag[6];
+	all_flag[6]=all_flag[7];
+	all_flag[7]=all_flag[8];
+	all_flag[8]=all_flag[9];
+	//每一次扫描将最新的判断情况存在all_flag[9]
 	all_flag[9]=a_flag*100+b_flag;
-	all_flag[8]=all_flag[9];all_flag[7]=all_flag[8];all_flag[6]=all_flag[7];all_flag[5]=all_flag[6];
-	all_flag[4]=all_flag[5];all_flag[3]=all_flag[4];all_flag[2]=all_flag[3];all_flag[1]=all_flag[2];all_flag[0]=all_flag[1];
 }
 
 void ErrorCalculate(void)
 {
-	if(bl_flag==0&&br_flag==0&al_flag==0&&ar_flag==0)
+	//0,1,2,3,4;黑，白，白-黑，黑-白，错误
+	if(bl_flag==0&&br_flag==0&al_flag==0&&ar_flag==0)	//全黑情况
 	{
 		stop_cnt++;
-		if(stop_cnt>3)
+		if(stop_cnt>3)		//判断到3次全黑情况就停车
 		{
 			stop_cnt=0;
 			stop_flag=1;
@@ -246,7 +262,7 @@ void ErrorCalculate(void)
 		BarrierControl();
 		return;
 	}
-	if(bl_flag==2&&br_flag==2)                              //22直道
+	if(bl_flag==2&&br_flag==2)                              //白-黑；22直道
 	{
 		if(end_judge_flag)
 			EndJudge();
@@ -258,7 +274,7 @@ void ErrorCalculate(void)
 		error=a_error*0.5+b_error;
 		return;
 	}
-	if(bl_flag==1&&br_flag==1)                              //11十字
+	if(bl_flag==1&&br_flag==1)                              //11十字，由于没有跳变沿，直走
 	{
 		b_error=0;
 		error=a_error*0.7+b_error;
@@ -376,9 +392,13 @@ void ErrorCalculate_A(void)
 	{
 		a_error=(aa_error[2]+aa_error[1])*0.5;
 	}
+	aa_error[0]=aa_error[1];
+	aa_error[1]=aa_error[2];
+	aa_error[2]=aa_error[3];
 	aa_error[3]=a_error;
-	aa_error[0]=aa_error[1];aa_error[1]=aa_error[2];aa_error[2]=aa_error[3];
-	aa_flag[0]=aa_flag[1];aa_flag[1]=aa_flag[2];aa_flag[2]=aa_flag[3];
+	aa_flag[0]=aa_flag[1];
+	aa_flag[1]=aa_flag[2];
+	aa_flag[2]=aa_flag[3];
 }
 
 void EndJudge(void)
@@ -411,7 +431,7 @@ void EndJudge(void)
 	}
 }
 
-void BarrierJudge(void)
+void BarrierJudge(void)		//障碍物判断
 {
 	if(a_bar_flag==1)
 		return;
@@ -425,7 +445,7 @@ void BarrierJudge(void)
 		i=0;j=0;
 		for(i=al_edge;i>al_end;i--)
 		{
-			if(A[i]-A[i-4]>a_bar_value2)
+			if(A[i-4]-A[i]>a_bar_value2)
 			{
 				for(j=al_end;j<i;j++)
 				{
@@ -463,17 +483,17 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start-8);
+			error=br_edge-(b_start-8);		//改基准
 			if(error>=0)
 				error=error*2;
-			else
+			else		//实际不会出现
 				error=error*3;
 		}
 		else if(br_flag==1)
 		{
 			error=(br_end-b_scan-(b_start-8))*2;
 		}
-		else
+		else		//右侧图像全黑，往左打
 		{
 			error=-25;
 		}
