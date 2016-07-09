@@ -39,126 +39,58 @@ int b_value2=30,b_scan2=10;//终点
 int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
-void DataSet(void)
-{
-//	int k;
-//	int bs[10],bscnt=0;
-//	int bv[10],bvcnt=0;
-//	int bt[10],btcnt=0;
-//	int as[10],ascnt=0;
-//	int av[10],avcnt=0;
-//	int at[10],atcnt=0;
-//	stop_flag=0;
-//	ImageCapture(PixelLeft,PixelRight);
-//	mdelay(1);
-//	for(k=0;k<10;k++)
-//	{
-//		mdelay(3);
-//		ImageCapture(PixelLeft,PixelRight);
-//		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
-//		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
-//		bvcnt+=bv[k];
-//		avcnt+=av[k];
-//		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
-//		at[k]=(PixelLeft[70]+PixelLeft[71]+PixelLeft[20]+PixelLeft[21])/4.5;
-//		btcnt+=bt[k];
-//		atcnt+=at[k];
-//		for(i=70;i>0;i--)
-//		{
-//			if(PixelRight[i]-PixelRight[i-b_scan]>bv[k]&&PixelRight[i-1]-PixelRight[i-b_scan-1]>bv[k])
-//			{
-//				bl_edge=i-b_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i>0;i--)
-//		{
-//			if(PixelLeft[i]-PixelLeft[i-a_scan]>av[k]&&PixelLeft[i-1]-PixelLeft[i-a_scan-1]>av[k])
-//			{
-//				al_edge=i-a_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i<127;i++)
-//		{
-//			if(PixelRight[i]-PixelRight[i+b_scan]>bv[k]&&PixelRight[i+1]-PixelRight[i+b_scan+1]>bv[k])
-//			{
-//				br_edge=i+b_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i<127;i++)
-//		{
-//			if(PixelLeft[i]-PixelLeft[i+a_scan]>av[k]&&PixelLeft[i+1]-PixelLeft[i+a_scan+1]>av[k])
-//			{
-//				ar_edge=i+a_halfscan;
-//				break;
-//			}
-//		}
-//		bs[k]=(bl_edge+br_edge)/2;
-//		bscnt+=bs[k];
-//		as[k]=(al_edge+ar_edge)/2;
-//		ascnt+=as[k];
-//	}
-//	b_value=bvcnt/10;
-//	b_start=bscnt/10;
-//	bl_end=b_start-b_PixelNumber;
-//	br_end=b_start+b_PixelNumber;
-//	b_T=btcnt/10;
-//	a_value=avcnt/10;
-//	a_start=ascnt/10;
-//	al_end=a_start-a_PixelNumber;
-//	ar_end=a_start+a_PixelNumber;
-//	a_T=atcnt/10;
-}
-
 void PixelScan(void)
 {
 	bl_count=0,br_count=0;
 	bl_flag=4,br_flag=4;
 	bl_edge=0,br_edge=0;
-	//error=0;
 	wrong_flag=0;
-	for(i=b_start;i>(bl_end+b_scan);i--)
+	for(i=b_start;i>bl_end;i--)
 	{
 		if(B[i]>b_T)
 			bl_count++;
-		if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)
+		if(i>(bl_end+b_scan))
 		{
-			bl_flag=2;
-			bl_edge=i-b_halfscan;
-			break;
+			if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)
+			{
+				bl_flag=2;
+				bl_edge=i-b_halfscan;
+				break;
+			}
+			if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)
+			{
+				bl_flag=3;
+				bl_edge=i-b_halfscan;
+				break;
+			}
 		}
-		if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)
-		{
-			bl_flag=3;
-			bl_edge=i-b_halfscan;
-			break;
-		}
-		if(bl_count>(b_allwhite-b_scan))
+		if(bl_count>b_allwhite)
 			bl_flag=1;
 		else if(bl_count<b_allblack)
 			bl_flag=0;
 		else
 			bl_flag=4;
 	}
-	for(i=b_start;i<(br_end-b_scan);i++)
+	for(i=b_start;i<br_end;i++)
 	{
 		if(B[i]>b_T)
 			br_count++;
-		if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)
+		if(i<(br_end-b_scan))
 		{
-			br_flag=2;
-			br_edge=i+b_halfscan;
-			break;
+			if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)
+			{
+				br_flag=2;
+				br_edge=i+b_halfscan;
+				break;
+			}
+			if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)
+			{
+				br_flag=3;
+				br_edge=i+b_halfscan;
+				break;
+			}
 		}
-		if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)
-		{
-			br_flag=3;
-			br_edge=i+b_halfscan;
-			break;
-		}
-		if(br_count>(b_allwhite-b_scan))
+		if(br_count>b_allwhite)
 			br_flag=1;
 		else if(br_count<b_allblack)
 			br_flag=0;
@@ -220,15 +152,47 @@ void PixelScan_A(void)
 			ar_flag=4;
 	}
 	a_flag=al_flag*10+ar_flag;
-	aa_flag[3]=a_flag;
+	all_flag[0]=all_flag[1];all_flag[1]=all_flag[2];all_flag[2]=all_flag[3];all_flag[3]=all_flag[4];all_flag[4]=all_flag[5];
+	all_flag[5]=all_flag[6];all_flag[6]=all_flag[7];all_flag[7]=all_flag[8];all_flag[8]=all_flag[9];
 	all_flag[9]=a_flag*100+b_flag;
-	all_flag[8]=all_flag[9];all_flag[7]=all_flag[8];all_flag[6]=all_flag[7];all_flag[5]=all_flag[6];
-	all_flag[4]=all_flag[5];all_flag[3]=all_flag[4];all_flag[2]=all_flag[3];all_flag[1]=all_flag[2];all_flag[0]=all_flag[1];
+}
+
+void ErrorCalculate_A(void)
+{
+	a_wrong_flag=0;
+	switch(a_flag){
+	case 22: a_error=(al_edge-a_start+ar_edge-a_start)*1.55; break;
+	case 11: a_error=0; break;
+	case 21: a_error=(al_edge-al_end+al_rem); break;
+	case 01: a_error=(a_start-al_end+al_rem); break;
+	case 03: a_error=(ar_edge-al_end+al_rem); break;
+	case 12: a_error=(ar_edge-ar_end-ar_rem); break;
+	case 10: a_error=(a_start-ar_end-ar_rem); break;
+	case 30: a_error=(al_edge-ar_end-ar_rem); break;
+	case 33:
+		if(aa_flag[3]==30)
+		{
+			a_error=(al_edge-ar_end-ar_rem);
+			a_flag=30;
+		}
+		else if(aa_flag[3]==3)
+		{
+			a_error=(ar_edge-al_end+al_rem);
+			a_flag=3;
+		}
+		else
+			a_wrong_flag=1;
+	default: a_wrong_flag=1; break;
+	}
+	if(a_wrong_flag==1)
+		a_error=(aa_error[3]+aa_error[2])*0.5;
+	aa_error[0]=aa_error[1];aa_error[1]=aa_error[2];aa_error[2]=aa_error[3];aa_error[3]=a_error;
+	aa_flag[0]=aa_flag[1];aa_flag[1]=aa_flag[2];aa_flag[2]=aa_flag[3];aa_flag[3]=a_flag;
 }
 
 void ErrorCalculate(void)
 {
-	if(bl_flag==0&&br_flag==0&al_flag==0&&ar_flag==0)
+	if(b_flag==0&&a_flag==0)
 	{
 		stop_cnt++;
 		if(stop_cnt>3)
@@ -238,148 +202,44 @@ void ErrorCalculate(void)
 		}
 	}
 	else
-	{
 		stop_cnt=0;
-	}
 	if(a_bar_flag==1)                                        //障碍物
 	{
 		BarrierControl();
 		return;
 	}
-	if(bl_flag==2&&br_flag==2)                              //22直道
-	{
+	switch(b_flag){
+	case 22:
 		if(end_judge_flag)
 			EndJudge();
 		if(a_flag==22)
-		{
 			BarrierJudge();
-		}
 		b_error=(bl_edge-b_start+br_edge-b_start);
 		error=a_error*0.5+b_error;
-		return;
-	}
-	if(bl_flag==1&&br_flag==1)                              //11十字
-	{
-		b_error=0;
-		error=a_error*0.7+b_error;
-		return;
-	}
-	if(bl_flag==1&&br_flag==2)                              //12左转小
-	{
+		break;
+	case 11: b_error=0; error=a_error*0.7+b_error; break;
+	case 12:
 		b_error=br_edge-br_end-b_rem;
-		if(a_flag==0||a_flag==3||a_flag==1||a_flag==21)               //00,03,01
+		if(a_flag==0||a_flag==3||a_flag==1||a_flag==21)               //00,03,01,21
 			error=b_error-12-ab_rem1;
 		else
 			error=a_error*0.3+b_error-ab_rem1;
-		return;
-	}
-	if(bl_flag==1&&br_flag==0)                              //10左转中
-	{
-		b_error=b_start-br_end-b_rem;
-		error=b_error-ab_rem;
-		return;
-	}
-	if(bl_flag==3&&br_flag==0)                              //30左转大
-	{
-		b_error=bl_edge-br_end-b_rem;
-		error=b_error-ab_rem;
-		return;
-	}
-	if(bl_flag==2&&br_flag==1)                              //21右转小
-	{
+		break;
+	case 10: b_error=b_start-br_end-b_rem; error=b_error-ab_rem; break;
+	case 30: b_error=bl_edge-br_end-b_rem; error=b_error-ab_rem; break;
+	case 21:
 		b_error=bl_edge-bl_end+b_rem;
 		if(a_flag==0||a_flag==30||a_flag==10||a_flag==12)           //00,30,10
 			error=b_error+12+ab_rem1;
 		else
 			error=a_error*0.3+b_error+ab_rem1;
-		return;
+		break;
+	case 01: b_error=b_start-bl_end+b_rem; error=b_error+ab_rem; break;
+	case 03: b_error=br_edge-bl_end+b_rem; error=b_error+ab_rem; break;
+	default: wrong_flag=1; break;
 	}
-	if(bl_flag==0&&br_flag==1)                              //01右转中
-	{
-		b_error=b_start-bl_end+b_rem;
-		error=b_error+ab_rem;
-		return;
-	}
-	if(bl_flag==0&&br_flag==3)                              //03右转大
-	{
-		b_error=br_edge-bl_end+b_rem;
-		error=b_error+ab_rem;
-		return;
-	}
-	wrong_flag=1;
-	error=pre_error;  //出问题时error给历史值
 }
 
-void ErrorCalculate_A(void)
-{
-	//a_error=0;
-	a_wrong_flag=1;
-	if(a_flag==11)
-	{
-		a_error=0;
-		a_wrong_flag=0;
-	}
-	if(al_flag==2&&ar_flag==2)//全直
-	{
-		a_error=(al_edge-a_start+ar_edge-a_start)*1.55;
-		a_wrong_flag=0;
-	}
-	if(al_flag==2&&ar_flag==1)//即将进入右转
-	{
-		a_error=(al_edge-al_end+al_rem);
-		a_wrong_flag=0;
-	}
-	if(al_flag==0&&ar_flag==1)
-	{
-		a_error=(a_start-al_end+al_rem);
-		a_wrong_flag=0;
-	}
-	if(al_flag==0&&ar_flag==3)
-	{
-		a_error=(ar_edge-al_end+al_rem);
-		a_wrong_flag=0;
-	}
-	if(al_flag==1&&ar_flag==2)//即将进入左转
-	{
-		a_error=(ar_edge-ar_end-ar_rem);
-		a_wrong_flag=0;
-	}
-	if(al_flag==1&&ar_flag==0)
-	{
-		a_error=(a_start-ar_end-ar_rem);
-		a_wrong_flag=0;
-	}
-	if(al_flag==3&&ar_flag==0)
-	{
-		a_error=(al_edge-ar_end-ar_rem);
-		a_wrong_flag=0;
-	}
-	if(a_flag==33)
-	{
-		a_wrong_flag=0;
-		if(aa_flag[2]==30)
-		{
-			a_error=(al_edge-ar_end-ar_rem);
-			a_flag=30;
-			aa_flag[3]=30;
-		}
-		else if(aa_flag[2]==3)
-		{
-			a_error=(ar_edge-al_end+al_rem);
-			a_flag=3;
-			aa_flag[3]=3;
-		}
-		else
-			a_wrong_flag=1;
-	}
-	if(a_wrong_flag==1)
-	{
-		a_error=(aa_error[2]+aa_error[1])*0.5;
-	}
-	aa_error[3]=a_error;
-	aa_error[0]=aa_error[1];aa_error[1]=aa_error[2];aa_error[2]=aa_error[3];
-	aa_flag[0]=aa_flag[1];aa_flag[1]=aa_flag[2];aa_flag[2]=aa_flag[3];
-}
 
 void EndJudge(void)
 {
@@ -558,6 +418,79 @@ void EnterJudge(void)
 	{
 		enter_flag=0;
 	}
+}
+
+void DataSet(void)
+{
+//	int k;
+//	int bs[10],bscnt=0;
+//	int bv[10],bvcnt=0;
+//	int bt[10],btcnt=0;
+//	int as[10],ascnt=0;
+//	int av[10],avcnt=0;
+//	int at[10],atcnt=0;
+//	stop_flag=0;
+//	ImageCapture(PixelLeft,PixelRight);
+//	mdelay(1);
+//	for(k=0;k<10;k++)
+//	{
+//		mdelay(3);
+//		ImageCapture(PixelLeft,PixelRight);
+//		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
+//		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
+//		bvcnt+=bv[k];
+//		avcnt+=av[k];
+//		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
+//		at[k]=(PixelLeft[70]+PixelLeft[71]+PixelLeft[20]+PixelLeft[21])/4.5;
+//		btcnt+=bt[k];
+//		atcnt+=at[k];
+//		for(i=70;i>0;i--)
+//		{
+//			if(PixelRight[i]-PixelRight[i-b_scan]>bv[k]&&PixelRight[i-1]-PixelRight[i-b_scan-1]>bv[k])
+//			{
+//				bl_edge=i-b_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i>0;i--)
+//		{
+//			if(PixelLeft[i]-PixelLeft[i-a_scan]>av[k]&&PixelLeft[i-1]-PixelLeft[i-a_scan-1]>av[k])
+//			{
+//				al_edge=i-a_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i<127;i++)
+//		{
+//			if(PixelRight[i]-PixelRight[i+b_scan]>bv[k]&&PixelRight[i+1]-PixelRight[i+b_scan+1]>bv[k])
+//			{
+//				br_edge=i+b_halfscan;
+//				break;
+//			}
+//		}
+//		for(i=70;i<127;i++)
+//		{
+//			if(PixelLeft[i]-PixelLeft[i+a_scan]>av[k]&&PixelLeft[i+1]-PixelLeft[i+a_scan+1]>av[k])
+//			{
+//				ar_edge=i+a_halfscan;
+//				break;
+//			}
+//		}
+//		bs[k]=(bl_edge+br_edge)/2;
+//		bscnt+=bs[k];
+//		as[k]=(al_edge+ar_edge)/2;
+//		ascnt+=as[k];
+//	}
+//	b_value=bvcnt/10;
+//	b_start=bscnt/10;
+//	bl_end=b_start-b_PixelNumber;
+//	br_end=b_start+b_PixelNumber;
+//	b_T=btcnt/10;
+//	a_value=avcnt/10;
+//	a_start=ascnt/10;
+//	al_end=a_start-a_PixelNumber;
+//	ar_end=a_start+a_PixelNumber;
+//	a_T=atcnt/10;
 }
 
 //ImageCopy(AA,PixelLeft);

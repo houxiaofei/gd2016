@@ -14,6 +14,7 @@ extern unsigned char *send;
 extern unsigned char putstring[];
 extern unsigned int Ts;
 extern unsigned int Tc;
+extern unsigned char Image_or_not,Speed_or_not;
 extern int CurrentSteer;
 extern unsigned char RX_data;
 extern unsigned char Y[25],Z[11];
@@ -28,6 +29,7 @@ extern unsigned char S4_last;
 extern unsigned char S5_last;
 extern unsigned char S6_last;
 extern unsigned char keymode;
+extern unsigned char mode;
 
 extern unsigned long time1;
 extern unsigned long time2;
@@ -39,5 +41,6 @@ void LINFlex_TX_Interrupt(void);
 extern void KeyJudge(void);
 extern unsigned long TimeMesure(void);
 void LINFlex_RX_Interrupt(void);
+void ChooseMode(void);
 
 #endif /* 05DEBUG_H_ */

@@ -134,13 +134,10 @@ void OLED_Test(void)
 	OLED_Str("ts: ");
 	OLED_Num(targetspeed);
 	OLED_Str("  ");
-//	OLED_Str("tsl: ");
 	OLED_Num(tsl);
 	OLED_Str("  ");
-//	OLED_Str("tsr: ");
 	OLED_Num(tsr);
-//	OLED_Num(backwardright);
-//	
+
 	OLED_SetPointer(1,5);
 //	OLED_Str("stop: ");
 //	OLED_Num(stop_flag);
@@ -169,14 +166,6 @@ void OLED_Test(void)
     OLED_Num(br_flag);
     
 	OLED_SetPointer(3,5);
-//	OLED_Str("ts: ");
-//	CurrentSteer=TargetSteer;
-//	OLED_Num(CurrentSteer);
-//	OLED_Str("lp: ");
-//    OLED_Num(Speed_kp_Left*100);
-//    OLED_Str("  ");
-//	OLED_Str("rp: ");
-//    OLED_Num(Speed_kp_Right*100);
 	OLED_Str("alb: ");
 	OLED_Num(al_bar_flag);
 	OLED_Str(" ");
@@ -198,14 +187,6 @@ void OLED_Test(void)
     OLED_Num(br_edge);
     
 	OLED_SetPointer(5,5);
-//	OLED_Str("ts: ");
-//	CurrentSteer=TargetSteer;
-//	OLED_Num(CurrentSteer);
-//	OLED_Str("li: ");
-//    OLED_Num(Speed_ki_Left*10);
-//    OLED_Str("  ");
-//	OLED_Str("ri: ");
-//    OLED_Num(Speed_ki_Right*10);
 	OLED_Str("  ");
 	OLED_Str("rx ");
 	OLED_Num(RX_data);
@@ -223,15 +204,12 @@ void OLED_Test(void)
 	OLED_Str("cs: ");
 	CurrentSteer=TargetSteer;
 	OLED_Num(CurrentSteer);
-	OLED_Str("bw: ");
-	OLED_Num(forwardleft);
 	OLED_Str("  ");
-	OLED_Num(backwardright);
-//	OLED_Str("ld: ");
-//    OLED_Num(Speed_kd_Left*1000);
-//    OLED_Str("  ");
-//	OLED_Str("rd: ");
-//    OLED_Num(Speed_kd_Right*1000);
+	OLED_Num(mode);
+//	OLED_Str("bw: ");
+//	OLED_Num(forwardleft);
+//	OLED_Str("  ");
+//	OLED_Num(backwardright);
 }
 
 /**

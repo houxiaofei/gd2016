@@ -20,7 +20,6 @@ void initALL(void)
 	initAD();                     //ADC  £¨¸Ä£©
 //	initKeys_Switchs_Infrared();
 	initIO();
-	OLED_Init();
 }
 
 /*********************************************************************************************/

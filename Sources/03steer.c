@@ -21,6 +21,7 @@ double sp_x1=0.0060;
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
 {EMIOS_0.CH[4].CBDR.R = steer;}
+
 /*************************舵机PD参数设置***********************/
 void Steer_PDSet(void)
 {

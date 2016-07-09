@@ -14,10 +14,12 @@ int Middle[128];
 int Right[128];
 unsigned int Ts=0;
 unsigned int Tc=0;
+unsigned char Image_or_not=1,Speed_or_not=35;
 int CurrentSteer=0;
 unsigned long time1=0;
 unsigned long time2=0;
 unsigned long time3=0;
+unsigned char mode=0;
 
 unsigned char RX_data;
 unsigned char RX_flag=0;
@@ -65,7 +67,7 @@ void LINFlex_TX_Interrupt(void)
 	unsigned char bb='M';
 	unsigned char cc='R';
 	unsigned char steer='X';
-	unsigned char edge='Y';
+	unsigned char speed='Y';
 	unsigned char data='Z';
 //		if(*send!=0x00&&Ts==0)
 //			LINFlex_TX(*send++);
@@ -78,7 +80,7 @@ void LINFlex_TX_Interrupt(void)
 				LINFlex_TX(*send++);
 				break;}
 			else{
-				Ts=14;
+				Ts=Image_or_not;
 				break;}
 	case 1:
 		LINFlex_TX(aa);
@@ -145,151 +147,167 @@ void LINFlex_TX_Interrupt(void)
 			Ts=10;}
 		else{
 			Tc=0;
-			Ts=14;
+			Ts=13;
 		}
 		break;
-//	case 9: 
-//		CurrentSteer=TargetSteer;
-//		LINFlex_TX(steer);
-//		Ts=10;
-//		break;
-//	case 10: 
-//		LINFlex_TX(SendInt1(CurrentSteer));        //发送舵机值
-//		Ts=11;
-//		break;
-//	case 11: 
-//		LINFlex_TX(SendInt2(CurrentSteer));
-//		Ts=12;
-//		break;
-//	case 12: 
-//		LINFlex_TX(SendInt3(CurrentSteer));
-//		Ts=13;
-//		break;
-//	case 13:
-//		LINFlex_TX(SendInt4(CurrentSteer));
-//		Ts=14;
-//		break;
+	case 13: 
+		LINFlex_TX(data);
+		Ts=14;
+		break;
 	case 14: 
-		LINFlex_TX(edge);
+		LINFlex_TX(SendInt4(al_flag));        //发送A_flag
 		Ts=15;
 		break;
 	case 15: 
-		LINFlex_TX(SendInt1(csl));
-		//LINFlex_TX(SendInt2(a_value));        //发送B跳变沿标准
-		//LINFlex_TX(SendInt1(tsl));
+		LINFlex_TX(SendInt4(ar_flag));
 		Ts=16;
 		break;
 	case 16: 
-		LINFlex_TX(SendInt2(csl));
-		//LINFlex_TX(SendInt3(a_value));
-		//LINFlex_TX(SendInt2(tsl));
+		LINFlex_TX(SendInt4(bl_flag));        //发送B_flag
 		Ts=17;
 		break;
 	case 17: 
-		LINFlex_TX(SendInt3(csl));
-		//LINFlex_TX(SendInt4(a_value));
-		//LINFlex_TX(SendInt3(tsl));
+		LINFlex_TX(SendInt4(br_flag));
 		Ts=18;
 		break;
-	case 18:
-		LINFlex_TX(SendInt4(csl));
-		//LINFlex_TX(SendInt3(a_start));        //发送B起始位
-		//LINFlex_TX(SendInt4(tsl));
+	case 18: 
+		LINFlex_TX(SendInt1(error));        //发送error
 		Ts=19;
 		break;
-	case 19: 
-		LINFlex_TX(SendInt1(csr));
-		//LINFlex_TX(SendInt4(a_start));
-		//LINFlex_TX(SendInt1(tsr));
+	case 19:
+		LINFlex_TX(SendInt2(error));
 		Ts=20;
 		break;
 	case 20: 
-		LINFlex_TX(SendInt2(csr));
-		//LINFlex_TX(SendInt2(a_T));           //发送B阈值
-		//LINFlex_TX(SendInt2(tsr));
+		LINFlex_TX(SendInt3(error));        
 		Ts=21;
 		break;
-	case 21: 
-		LINFlex_TX(SendInt3(csr));
-		//LINFlex_TX(SendInt3(a_T));
-		//LINFlex_TX(SendInt3(tsr));
+	case 21:
+		LINFlex_TX(SendInt4(error));
 		Ts=22;
 		break;
-	case 22:
-		LINFlex_TX(SendInt4(csr));
-		//LINFlex_TX(SendInt4(a_T));
-		//LINFlex_TX(SendInt4(tsr));
+	case 22: 
+		LINFlex_TX(SendInt1(a_error));        //发送a_error
 		Ts=23;
 		break;
-	case 23: 
-		LINFlex_TX(data);
+	case 23:
+		LINFlex_TX(SendInt2(a_error));
 		Ts=24;
 		break;
 	case 24: 
-		LINFlex_TX(SendInt4(enter_flag));        //发送A_flag
+		LINFlex_TX(SendInt3(a_error));      
 		Ts=25;
 		break;
-	case 25: 
-		LINFlex_TX(SendInt4(ar_flag));
+	case 25:
+		LINFlex_TX(SendInt4(a_error));
 		Ts=26;
 		break;
 	case 26: 
-		LINFlex_TX(SendInt4(bl_flag));        //发送B_flag
+		LINFlex_TX(SendInt1(b_error));        //发送b_error
 		Ts=27;
 		break;
-	case 27: 
-		LINFlex_TX(SendInt4(br_flag));
+	case 27:
+		LINFlex_TX(SendInt2(b_error));
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt1(error));        //发送error
+		LINFlex_TX(SendInt3(b_error));      
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt2(error));
+		LINFlex_TX(SendInt4(b_error));
 		Ts=30;
 		break;
 	case 30: 
-		LINFlex_TX(SendInt3(error));        
+		CurrentSteer=TargetSteer;
+		LINFlex_TX(steer);
 		Ts=31;
 		break;
-	case 31:
-		LINFlex_TX(SendInt4(error));
+	case 31: 
+		LINFlex_TX(SendInt1(CurrentSteer));        //发送舵机值
 		Ts=32;
 		break;
 	case 32: 
-		LINFlex_TX(SendInt1(tsl));        //发送a_error
+		LINFlex_TX(SendInt2(CurrentSteer));
 		Ts=33;
 		break;
-	case 33:
-		LINFlex_TX(SendInt2(tsl));
+	case 33: 
+		LINFlex_TX(SendInt3(CurrentSteer));
 		Ts=34;
 		break;
-	case 34: 
-		LINFlex_TX(SendInt3(tsl));      
-		Ts=35;
+	case 34:
+		LINFlex_TX(SendInt4(CurrentSteer));
+		Ts=Speed_or_not;
 		break;
-	case 35:
-		LINFlex_TX(SendInt4(tsl));
+	case 35: 
+		LINFlex_TX(speed);
 		Ts=36;
 		break;
 	case 36: 
-		LINFlex_TX(SendInt1(tsr));        //发送b_error
+		LINFlex_TX(SendInt1(csl));   //发送左轮当前速度
 		Ts=37;
 		break;
-	case 37:
-		LINFlex_TX(SendInt2(tsr));
+	case 37: 
+		LINFlex_TX(SendInt2(csl));
 		Ts=38;
 		break;
 	case 38: 
-		LINFlex_TX(SendInt3(tsr));      
+		LINFlex_TX(SendInt3(csl));
 		Ts=39;
 		break;
 	case 39:
-		LINFlex_TX(SendInt4(tsr));
+		LINFlex_TX(SendInt4(csl));
 		Ts=40;
 		break;
-	case 40:
+	case 40: 
+		LINFlex_TX(SendInt1(csr));   //发送右轮当前速度
+		Ts=41;
+		break;
+	case 41: 
+		LINFlex_TX(SendInt2(csr));
+		Ts=42;
+		break;
+	case 42: 
+		LINFlex_TX(SendInt3(csr));
+		Ts=43;
+		break;
+	case 43:
+		LINFlex_TX(SendInt4(csr));
+		Ts=44;
+		break;
+	case 44: 
+		LINFlex_TX(SendInt1(tsl));        //发送a_error
+		Ts=45;
+		break;
+	case 45:
+		LINFlex_TX(SendInt2(tsl));
+		Ts=46;
+		break;
+	case 46: 
+		LINFlex_TX(SendInt3(tsl));      
+		Ts=47;
+		break;
+	case 47:
+		LINFlex_TX(SendInt4(tsl));
+		Ts=48;
+		break;
+	case 48: 
+		LINFlex_TX(SendInt1(tsr));        //发送b_error
+		Ts=49;
+		break;
+	case 49:
+		LINFlex_TX(SendInt2(tsr));
+		Ts=50;
+		break;
+	case 50: 
+		LINFlex_TX(SendInt3(tsr));      
+		Ts=51;
+		break;
+	case 51:
+		LINFlex_TX(SendInt4(tsr));
+		Ts=52;
+		break;
+	case 52:
 		send = putstring;
 		Ts=0;
 //		LINFLEX_0.LINCR1.B.INIT=1;
@@ -381,67 +399,27 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-//		csxs+=0.1;
-//		Speed_ki_Right+=0.01;
-//		Speed_ki_Left+=0.1;
-//	    Speed_kp_Right+=1;
-//	    Speed_kd_Right+=0.1;
-//		targetspeed+=10;
-//		Speed_kp_Left+=1;
-//		Speed_kp_Right+=1;
-		TargetSteer+=100;
-//		KI_DifSpd-=0.01;
-//		Speed_kc1+=1000;
-//		tsr-=1;
+		targetspeed+=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer+=100;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-//		csxs-=0.1;
-//		Speed_ki_Right-=0.01;
-//		Speed_ki_Left-=0.1;
-//		Speed_kp_Right-=1;
-//		Speed_kd_Right-=0.1;
-//	    targetspeed-=10;
-//	    Speed_kp_Left-=1;
-//	    Speed_kp_Right-=1;
-	    TargetSteer-=100;
-//	    KI_DifSpd+=0.01;
-//	    Speed_kc1-=1000;
-//	    tsr+=1;
+	    targetspeed-=10;
+		SET_motor(targetspeed,targetspeed);
+//	    TargetSteer-=100;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-//		csxs+=0.01;
-//		Speed_ki_Right+=0.1;
-//		Speed_ki_Left+=0.1;
-//    	Speed_kp_Right+=0.1;
-//		Speed_kd_Left+=0.001;
-//		Speed_kd_Right+=0.001;
-//		targetspeed+=10;
-//		SET_motor(targetspeed,targetspeed);
-//		Speed_ki_Left+=0.1;
-//		Speed_ki_Right+=0.1;
-		TargetSteer+=10;
-//		Steer_kd+=1;
-//		KI_DifSpd+=0.1;
-//		tsl-=1;
+		targetspeed+=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer-=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
-//		csxs-=0.01;
-//		Speed_ki_Right-=0.1;
-//		Speed_ki_Left-=0.1;
-//		Speed_kp_Right-=0.1;
-//		Speed_kd_Left-=0.001;
-//		Speed_kd_Right-=0.001;
-//		targetspeed-=10;
-//		SET_motor(targetspeed,targetspeed);
-//		Speed_ki_Left-=0.1;
-//		Speed_ki_Right-=0.1;
-		TargetSteer-=10;
-//		KI_DifSpd-=0.1;
-//		Steer_kd-=1;
-//		tsl+=1;
+		targetspeed-=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer-=10;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;
@@ -458,5 +436,12 @@ unsigned long TimeMesure(void)
 		return 0xFFFFFFFF+time2-time1;
 	else
 		return time2-time1;
+}
+//*****************************************************************************************************************
+//****************************************拨码开关函数*****************************************************    	  *
+//*****************************************************************************************************************
+void ChooseMode(void)
+{//拨码开关拨到下是1，拨到上是0
+	mode=31-(switch1*16+switch2*8+switch3*4+switch4*2+switch5);
 }
 

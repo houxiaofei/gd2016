@@ -9,6 +9,7 @@
 #define PIT_H_
 
 void initPIT(void);
+void initPIT2(void);
 void PitISR(void);
 void PitISR2(void);
 
