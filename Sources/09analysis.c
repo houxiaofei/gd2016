@@ -147,7 +147,7 @@ void PixelScan(void)
 			bl_flag=4;
 	}
 	
-	for(i=b_start;i<(br_end-b_scan);i++)
+	for(i=b_start;i<(br_end-b_scan);i++)	//从中心b_start向右侧，扫到br_end-b_scan
 	{
 		if(B[i]>b_T)
 			br_count++;
