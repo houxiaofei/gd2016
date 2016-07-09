@@ -166,14 +166,22 @@ void OLED_Test(void)
     OLED_Num(br_flag);
     
 	OLED_SetPointer(3,5);
-	OLED_Str("alb: ");
-	OLED_Num(al_bar_flag);
-	OLED_Str(" ");
-	OLED_Str("arb: ");
-	OLED_Num(ar_bar_flag);
-	OLED_Str(" ");
-	OLED_Str("ab: ");
-	OLED_Num(a_bar_flag);
+//	OLED_Str("alb: ");
+//	OLED_Num(al_bar_flag);
+//	OLED_Str(" ");
+//	OLED_Str("arb: ");
+//	OLED_Num(ar_bar_flag);
+//	OLED_Str(" ");
+//	OLED_Str("ab: ");
+//	OLED_Num(a_bar_flag);
+	OLED_Str("aedg: ");
+    OLED_Num(al_edge_left);
+    OLED_Str("  ");
+    OLED_Num(al_edge_right);
+    OLED_Str("  ");
+    OLED_Num(ar_edge_left);
+    OLED_Str("  ");
+    OLED_Num(ar_edge_right);
 
     
 	OLED_SetPointer(4,5);
@@ -187,9 +195,17 @@ void OLED_Test(void)
     OLED_Num(br_edge);
     
 	OLED_SetPointer(5,5);
-	OLED_Str("  ");
-	OLED_Str("rx ");
-	OLED_Num(RX_data);
+//	OLED_Str("  ");
+//	OLED_Str("rx ");
+//	OLED_Num(RX_data);
+	OLED_Str("bedg: ");
+    OLED_Num(bl_edge_left);
+    OLED_Str("  ");
+    OLED_Num(bl_edge_right);
+    OLED_Str("  ");
+    OLED_Num(br_edge_left);
+    OLED_Str("  ");
+    OLED_Num(br_edge_right);
     
     OLED_SetPointer(6,5);
     OLED_Str("error: ");

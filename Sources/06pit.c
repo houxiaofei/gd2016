@@ -15,7 +15,7 @@ unsigned int end_judge_flag=0;
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
     PIT.PITMCR.R = 0x00000001;       // Enable PIT and configure timers to stop in debug mode 
-    PIT.CH[1].LDVAL.R = 1000000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec //电信50万 无偏正片60
+    PIT.CH[1].LDVAL.R = 1200000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec //电信50万 无偏正片60
     PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
     INTC_InstallINTCInterruptHandler(PitISR,60,4); 
 }

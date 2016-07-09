@@ -18,7 +18,7 @@ int main(void) {
 void Direction_Control(void) //转向控制函数
 {
 	ImageCapture(A,B,C);  //采图像，A-60，B-30，C-最远
-	PixelScan(); //图像处理-B
+	PixelScan_B(); //图像处理-B
 	PixelScan_A();//图像处理-A
 	ErrorCalculate_A();//偏差值计算-A
 	ErrorCalculate();//偏差值计算-B
@@ -49,7 +49,7 @@ void ModeGo(void)//出发
 
 void ModeBlueImage(void)//看CCD图像
 {
-	Image_or_not=1;//从CCD图像开始，发送图像，error,a_error,b_error,CurrentSteer
+	Image_or_not=1;//从CCD图像开始，发送图像，flag,error,a_error,b_error,CurrentSteer
 	Speed_or_not=52;//发送完舵机值后结束
 	OLED_Init();//OLED初始化
 	BlueTx();//蓝牙发送开始

@@ -1,7 +1,7 @@
 /*
- * analysis.c
+ * analysis_new.c
  *
- *  Created on: Feb 25, 2016
+ *  Created on: Jul 9, 2016
  *      Author: lenovo
  */
 
@@ -10,33 +10,26 @@
 int A[128]={0};
 int B[128]={0};
 int C[128]={0};
-//int al_end=43,ar_end=97,bl_end=23,br_end=111;
-//int a_start=70,b_start=67;
-//int a_value=120,b_value=100;                          //判断跳变沿的差值标准
-//int a_T=360,b_T=300;                                  //黑白阈值
-//校内赛版本
-//int al_end=40,ar_end=94,bl_end=26,br_end=114;
-//int a_start=67,b_start=70;
-//int a_value=100,b_value=120;                          //判断跳变沿的差值标准
-//int a_T=300,b_T=360;                                  //黑白阈值
-//新版本
 int al_end=36,ar_end=96,bl_end=22,br_end=110;
-int a_start=66,b_start=66;
+int al_start=70,ar_start=62,a_start=66,a_offset=2,bl_start=72,br_start=60,b_start=66,b_offset=4;
 int a_value=100,b_value=120;                          //判断跳变沿的差值标准
 int a_T=295,b_T=284;                                  //黑白阈值
 
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
-int a_scan=7,a_halfscan=0,b_scan=12,b_halfscan=0;
+int a_scan=7,a_expand=5,b_scan=12,b_expand=5;
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
 int a_flag=44,b_flag=44;
 int aa_flag[4]={0,0,0,0},all_flag[10]={0,0,0,0,0,0,0,0,0,0};
 int wrong_flag=0,a_wrong_flag=0;
 int stop_flag=0,stop_cnt=0;
 int al_edge=0,ar_edge=0,bl_edge=0,br_edge=0;//跳变沿
+int al_edge_left=0,al_edge_right=0,ar_edge_left=0,ar_edge_right=0;
+int bl_edge_left=0,bl_edge_right=0,br_edge_left=0,br_edge_right=0;
 int error=0,a_error=0,b_error=0,pre_error=0;
 int aa_error[4]={0,0,0,0},bb_error[4]={0,0,0,0};
+
 int error_his[30]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int his_num=8,trend=0,trend_value=3,trend_value2=3,b_error_value=5,b_error_value2=0;
 int enter_flag=0;//入弯flag
@@ -46,92 +39,69 @@ int b_value2=30,b_scan2=10;//终点
 int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
-void PixelScan(void)
+
+int EdgeCalculate(int a, int b, int c[])
 {
-	bl_count=0,br_count=0;
-	bl_flag=4,br_flag=4;	//左右标志，初始值为错误标志
-	bl_edge=0,br_edge=0;	//跳变沿坐标
-	wrong_flag=0;           //0,1,2,3,4;黑，白，白-黑，黑-白，错误
-	for(i=b_start;i>bl_end;i--)//从中心b_start向左侧，扫到bl_end+b_scan
+	int max=0,min=0,avg=0;
+	int err_min=0;
+	int i=0,j=0;
+	max=c[a];
+	min=c[a];
+	for(i=a;i<=b;i++)
 	{
-		if(B[i]>b_T)
-			bl_count++;
-		if(i>(bl_end+b_scan))
-		{
-			if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)	//白-黑
-			{
-				bl_flag=2;
-				bl_edge=i-b_halfscan;				//获取跳变沿坐标
-				break;
-			}
-			if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)	//黑-白
-			{
-				bl_flag=3;
-				bl_edge=i-b_halfscan;			//获取跳变沿坐标
-				break;
-			}
-		}
-		// a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;   全白,全黑判断标准
-			//al_end=40,ar_end=94,bl_end=26,br_end=114;
-			//由于从中间向左向右各扫描44-12【（br_end-bl_end）/2-b_scan】个点；但是只要白点数大于22个点就判断为全白
-		if(bl_count>b_allwhite)
-			bl_flag=1;
-		else if(bl_count<b_allblack)	//要白点数小于10个点就判断为全黑
-			bl_flag=0;
-		else
-			bl_flag=4;
+		if(c[i]>max)
+			max=c[i];
+		if(c[i]<min)
+			min=c[i];
 	}
-	for(i=b_start;i<br_end;i++)	//从中心b_start向右侧，扫到br_end-b_scan
+	avg=(max+min)/2;
+	err_min=max-min;
+	for(i=a;i<=b;i++)
 	{
-		if(B[i]>b_T)
-			br_count++;
-		if(i<(br_end-b_scan))
+		if(ABS(c[i]-avg)<err_min)
 		{
-			if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)	//白-黑
-			{
-				br_flag=2;
-				br_edge=i+b_halfscan;
-				break;
-			}
-			if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)	//黑-白
-			{
-				br_flag=3;
-				br_edge=i+b_halfscan;
-				break;
-			}
+			err_min=ABS(c[i]-avg);
+			j=i;
 		}
-		if(br_count>b_allwhite)
-			br_flag=1;
-		else if(br_count<b_allblack)
-			br_flag=0;
-		else
-			br_flag=4;
 	}
-	b_flag=bl_flag*10+br_flag;
+	return j;	
 }
+
 
 void PixelScan_A(void)
 {
 	al_count=0,ar_count=0;
 	al_flag=4,ar_flag=4;
 	al_edge=0,ar_edge=0;
-	for(i=a_start;i>al_end;i--)
+	for(i=al_start;i>al_end;i--)
 	{
-		if(A[i]>a_T)
+		if(i<=a_start&&A[i]>a_T)
+		{
 			al_count++;
+		}
 		if(i>(al_end+a_scan))
 		{
 			if(A[i]-A[i-a_scan]>a_value&&A[i-1]-A[i-a_scan-1]>a_value)
 			{
-				al_flag=2;
-				al_edge=i-a_halfscan;
-				break;
+				al_edge_left=i-a_scan-a_expand;
+				al_edge_right=i+a_expand;
+				al_edge=EdgeCalculate((i-a_scan-a_expand),(i+a_expand),A);
+				if(al_edge<a_start+a_offset)
+				{
+					al_flag=2;
+					break;
+				}
 			}
 			if(A[i-a_scan]-A[i]>a_value&&A[i-a_scan-1]-A[i-1]>a_value)
 			{
-				al_flag=3;
-				al_edge=i-a_halfscan;
-				break;
+				al_edge_left=i-a_scan-a_expand;
+				al_edge_right=i+a_expand;
+				al_edge=EdgeCalculate((i-a_scan-a_expand),(i+a_expand),A);
+				if(al_edge<a_start+a_offset)
+				{
+					al_flag=3;
+					break;
+				}
 			}
 		}
 		if(al_count>a_allwhite)
@@ -141,23 +111,33 @@ void PixelScan_A(void)
 		else
 			al_flag=4;
 	}
-	for(i=a_start;i<ar_end;i++)
+	for(i=ar_start;i<ar_end;i++)
 	{
-		if(A[i]>a_T)
+		if(i>=a_start&&A[i]>a_T)
 			ar_count++;
 		if(i<(ar_end-a_scan))
 		{
 			if(A[i]-A[i+a_scan]>a_value&&A[i+1]-A[i+a_scan+1]>a_value)
 			{
-				ar_flag=2;
-				ar_edge=i+a_halfscan;
-				break;
+				ar_edge_left=i-a_expand;
+				ar_edge_right=i+a_scan+a_expand;
+				ar_edge=EdgeCalculate((i-a_expand),(i+a_scan+a_expand),A);
+				if(ar_edge>a_start-a_offset)
+				{
+					ar_flag=2;
+					break;
+				}
 			}
 			if(A[i+a_scan]-A[i]>a_value&&A[i+a_scan+1]-A[i+1]>a_value)
 			{
-				ar_flag=3;
-				ar_edge=i+a_halfscan;
-				break;
+				ar_edge_left=i-a_expand;
+				ar_edge_right=i+a_scan+a_expand;
+				ar_edge=EdgeCalculate((i-a_expand),(i+a_scan+a_expand),A);
+				if(ar_edge>a_start-a_offset)
+				{
+					ar_flag=3;
+					break;
+				}
 			}
 		}
 		if(ar_count>a_allwhite)
@@ -168,7 +148,88 @@ void PixelScan_A(void)
 			ar_flag=4;
 	}
 	a_flag=al_flag*10+ar_flag;
-		//先依次将前面9次的判断情况往前一个数组元素存，即all_flag[n]->all_flag[n-1]
+}
+
+void PixelScan_B(void)
+{
+	bl_count=0,br_count=0;
+	bl_flag=4,br_flag=4;	//左右标志，初始值为错误标志
+	bl_edge=0,br_edge=0;	//跳变沿坐标
+	wrong_flag=0;           //0,1,2,3,4;黑，白，白-黑，黑-白，错误
+	for(i=bl_start;i>bl_end;i--)//从中心b_start向左侧，扫到bl_end+b_scan
+	{
+		if(i<=b_start&&B[i]>b_T)
+			bl_count++;
+		if(i>(bl_end+b_scan))
+		{
+			if(B[i]-B[i-b_scan]>b_value&&B[i-1]-B[i-b_scan-1]>b_value)	//白-黑
+			{
+				bl_edge_left=i-b_scan-b_expand;
+				bl_edge_right=i+b_expand;
+				bl_edge=EdgeCalculate((i-b_scan-b_expand),(i+b_expand),B);				//获取跳变沿坐标
+				if(bl_edge<b_start+b_offset)
+				{
+					bl_flag=2;
+					break;
+				}
+			}
+			if(B[i-b_scan]-B[i]>b_value&&B[i-b_scan-1]-B[i-1]>b_value)	//黑-白
+			{
+				bl_edge_left=i-b_scan-b_expand;
+				bl_edge_right=i+b_expand;
+				bl_edge=EdgeCalculate((i-b_scan-b_expand),(i+b_expand),B);			//获取跳变沿坐标
+				if(bl_edge<b_start+b_offset)
+				{
+					bl_flag=3;
+					break;
+				}
+			}
+		}
+		if(bl_count>b_allwhite)
+			bl_flag=1;
+		else if(bl_count<b_allblack)	//要白点数小于10个点就判断为全黑
+			bl_flag=0;
+		else
+			bl_flag=4;
+	}
+	for(i=br_start;i<br_end;i++)	//从中心b_start向右侧，扫到br_end-b_scan
+	{
+		if(i>=b_start&&B[i]>b_T)
+			br_count++;
+		if(i<(br_end-b_scan))
+		{
+			if(B[i]-B[i+b_scan]>b_value&&B[i+1]-B[i+b_scan+1]>b_value)	//白-黑
+			{
+				br_edge_left=i-b_expand;
+				br_edge_right=i+b_scan+b_expand;
+				br_edge=EdgeCalculate((i-b_expand),(i+b_scan+b_expand),B);
+				if(br_edge>b_start-b_offset)
+				{
+					br_flag=2;
+					break;
+				}
+			}
+			if(B[i+b_scan]-B[i]>b_value&&B[i+b_scan+1]-B[i+1]>b_value)	//黑-白
+			{
+				br_edge_left=i-b_expand;
+				br_edge_right=i+b_scan+b_expand;
+				br_edge=EdgeCalculate((i-b_expand),(i+b_scan+b_expand),B);
+				if(br_edge>b_start-b_offset)
+				{
+					br_flag=3;
+					break;
+				}
+			}
+		}
+		if(br_count>b_allwhite)
+			br_flag=1;
+		else if(br_count<b_allblack)
+			br_flag=0;
+		else
+			br_flag=4;
+	}
+	b_flag=bl_flag*10+br_flag;
+	//先依次将前面9次的判断情况往前一个数组元素存，即all_flag[n]->all_flag[n-1]
 	all_flag[0]=all_flag[1];all_flag[1]=all_flag[2];all_flag[2]=all_flag[3];all_flag[3]=all_flag[4];all_flag[4]=all_flag[5];
 	all_flag[5]=all_flag[6];all_flag[6]=all_flag[7];all_flag[7]=all_flag[8];all_flag[8]=all_flag[9];
 	all_flag[9]=a_flag*100+b_flag;//每一次扫描将最新的判断情况存在all_flag[9]
@@ -178,14 +239,14 @@ void ErrorCalculate_A(void)
 {
 	a_wrong_flag=0;
 	switch(a_flag){
-	case 22: a_error=(al_edge-a_start+ar_edge-a_start)*1.55; break;
-	case 11: a_error=0; break;
-	case 21: a_error=(al_edge-al_end+al_rem); break;
-	case 01: a_error=(a_start-al_end+al_rem); break;
-	case 03: a_error=(ar_edge-al_end+al_rem); break;
-	case 12: a_error=(ar_edge-ar_end-ar_rem); break;
-	case 10: a_error=(a_start-ar_end-ar_rem); break;
-	case 30: a_error=(al_edge-ar_end-ar_rem); break;
+	case 22: a_error=(al_edge-al_end+ar_edge-ar_end); break;//直道
+	case 11: a_error=0; break;                              //十字路口
+	case 21: a_error=(al_edge-al_end+al_rem); break;        //右转
+	case 23: a_error=(al_edge-al_end+al_rem); break;        //右转
+	case 03: a_error=(ar_edge-al_end+al_rem); break;        //右转大
+	case 12: a_error=(ar_edge-ar_end-ar_rem); break;        //左转
+	case 32: a_error=(ar_edge-ar_end-ar_rem); break;        //左转
+	case 30: a_error=(al_edge-ar_end-ar_rem); break;        //左转大
 	case 33:
 		if(aa_flag[3]==30)
 		{
@@ -231,27 +292,27 @@ void ErrorCalculate(void)
 			EndJudge();
 		if(a_flag==22)
 			BarrierJudge();
-		b_error=(bl_edge-b_start+br_edge-b_start);
+		b_error=(bl_edge-bl_end+br_edge-br_end);
 		error=a_error*0.5+b_error;
 		break;
 	case 11: b_error=0; error=a_error*0.7+b_error; break;//11十字，由于没有跳变沿，直走
-	case 12://12左转小
+	case 12://12左转
 		b_error=br_edge-br_end-b_rem;
-		if(a_flag==0||a_flag==3||a_flag==1||a_flag==21)               //00,03,01,21
+		if(a_flag==0||a_flag==3||a_flag==23||a_flag==21)               //00,03,23,21
 			error=b_error-12-ab_rem1;
 		else
 			error=a_error*0.3+b_error-ab_rem1;
 		break;
-	case 10: b_error=b_start-br_end-b_rem; error=b_error-ab_rem; break;
+	case 32: b_error=br_edge-br_end-b_rem; error=b_error-ab_rem; break;
 	case 30: b_error=bl_edge-br_end-b_rem; error=b_error-ab_rem; break;
-	case 21:
+	case 21://21右转
 		b_error=bl_edge-bl_end+b_rem;
-		if(a_flag==0||a_flag==30||a_flag==10||a_flag==12)           //00,30,10,12
+		if(a_flag==0||a_flag==30||a_flag==32||a_flag==12)           //00,30,32,12
 			error=b_error+12+ab_rem1;
 		else
 			error=a_error*0.3+b_error+ab_rem1;
 		break;
-	case 01: b_error=b_start-bl_end+b_rem; error=b_error+ab_rem; break;
+	case 23: b_error=bl_edge-bl_end+b_rem; error=b_error+ab_rem; break;
 	case 03: b_error=br_edge-bl_end+b_rem; error=b_error+ab_rem; break;
 	default: wrong_flag=1; break;
 	}
@@ -438,76 +499,7 @@ void EnterJudge(void)
 
 void DataSet(void)
 {
-//	int k;
-//	int bs[10],bscnt=0;
-//	int bv[10],bvcnt=0;
-//	int bt[10],btcnt=0;
-//	int as[10],ascnt=0;
-//	int av[10],avcnt=0;
-//	int at[10],atcnt=0;
-//	stop_flag=0;
-//	ImageCapture(PixelLeft,PixelRight);
-//	mdelay(1);
-//	for(k=0;k<10;k++)
-//	{
-//		mdelay(3);
-//		ImageCapture(PixelLeft,PixelRight);
-//		bv[k]=(PixelRight[70]+PixelRight[71]-PixelRight[20]-PixelRight[21])/5;
-//		av[k]=(PixelLeft[70]+PixelLeft[71]-PixelLeft[20]-PixelLeft[21])/5;
-//		bvcnt+=bv[k];
-//		avcnt+=av[k];
-//		bt[k]=(PixelRight[70]+PixelRight[71]+PixelRight[20]+PixelRight[21])/4.5;
-//		at[k]=(PixelLeft[70]+PixelLeft[71]+PixelLeft[20]+PixelLeft[21])/4.5;
-//		btcnt+=bt[k];
-//		atcnt+=at[k];
-//		for(i=70;i>0;i--)
-//		{
-//			if(PixelRight[i]-PixelRight[i-b_scan]>bv[k]&&PixelRight[i-1]-PixelRight[i-b_scan-1]>bv[k])
-//			{
-//				bl_edge=i-b_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i>0;i--)
-//		{
-//			if(PixelLeft[i]-PixelLeft[i-a_scan]>av[k]&&PixelLeft[i-1]-PixelLeft[i-a_scan-1]>av[k])
-//			{
-//				al_edge=i-a_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i<127;i++)
-//		{
-//			if(PixelRight[i]-PixelRight[i+b_scan]>bv[k]&&PixelRight[i+1]-PixelRight[i+b_scan+1]>bv[k])
-//			{
-//				br_edge=i+b_halfscan;
-//				break;
-//			}
-//		}
-//		for(i=70;i<127;i++)
-//		{
-//			if(PixelLeft[i]-PixelLeft[i+a_scan]>av[k]&&PixelLeft[i+1]-PixelLeft[i+a_scan+1]>av[k])
-//			{
-//				ar_edge=i+a_halfscan;
-//				break;
-//			}
-//		}
-//		bs[k]=(bl_edge+br_edge)/2;
-//		bscnt+=bs[k];
-//		as[k]=(al_edge+ar_edge)/2;
-//		ascnt+=as[k];
-//	}
-//	b_value=bvcnt/10;
-//	b_start=bscnt/10;
-//	bl_end=b_start-b_PixelNumber;
-//	br_end=b_start+b_PixelNumber;
-//	b_T=btcnt/10;
-//	a_value=avcnt/10;
-//	a_start=ascnt/10;
-//	al_end=a_start-a_PixelNumber;
-//	ar_end=a_start+a_PixelNumber;
-//	a_T=atcnt/10;
+	
 }
 
-//ImageCopy(AA,PixelLeft);
-//ImageCopy(BB,PixelRight);
+
