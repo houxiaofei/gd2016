@@ -217,11 +217,17 @@ void OLED_Test(void)
 
     
 	OLED_SetPointer(7,5);
-	OLED_Str("cs: ");
-	CurrentSteer=TargetSteer;
-	OLED_Num(CurrentSteer);
-	OLED_Str("  ");
-	OLED_Num(mode);
+    OLED_Str("T: ");
+    OLED_Num(a_T);
+    OLED_Str("  ");
+    OLED_Num(b_T);
+    OLED_Str("  ");
+    OLED_Num(c_T);
+//	OLED_Str("cs: ");
+//	CurrentSteer=TargetSteer;
+//	OLED_Num(CurrentSteer);
+//	OLED_Str("  ");
+//	OLED_Num(mode);
 //	OLED_Str("bw: ");
 //	OLED_Num(forwardleft);
 //	OLED_Str("  ");

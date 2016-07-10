@@ -11,6 +11,7 @@
 extern int A[128];
 extern int B[128];
 extern int C[128];
+extern int a_T,b_T,c_T; 
 extern int al_count,ar_count,bl_count,br_count;  //°×µã¼ÆÊý
 extern int al_flag,ar_flag,bl_flag,br_flag,allflag,a_flag,b_flag;//0,1,2,3,4;ºÚ£¬°×£¬°×-ºÚ£¬ºÚ-°×£¬´íÎó
 extern int aa_flag[4],all_flag[10];
@@ -25,6 +26,8 @@ extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,a
 extern int b_bar_value,b_bar_cnttop;
 extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;
 
+int AverageCalculate(int a, int b, int c[]);
+int EdgeCalculate(int a, int b, int c[],int avg);
 extern void DataSet(void);
 extern void PixelScan_B(void);
 extern void PixelScan_A(void);
