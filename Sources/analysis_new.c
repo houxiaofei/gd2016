@@ -420,10 +420,10 @@ void BarrierControl(void)
 				error=a_error;
 			else
 				error=b_error;
-			if(error<0)
+			if(error>0)
 				error=error*3;
 			else		//实际不会出现
-				error=error*1.5;
+				error=error*3/2;
 		}
 		else if(br_flag==1)
 		{
@@ -458,10 +458,10 @@ void BarrierControl(void)
 				error=a_error;
 			else
 				error=b_error;
-			if(error>0)
+			if(error<0)
 				error=error*3;
 			else				//实际不应出现
-				error=error*1.5;
+				error=error*3/2;
 		}
 		else if(bl_flag==1)
 		{
