@@ -91,8 +91,9 @@ void ModeBlueSpeed(void)//看速度图像
 }
 void ModeOpenGo(void)//开环跑
 {
-	targetspeed=150;
+	targetspeed=240;
 	SET_motor(targetspeed,targetspeed);
+	OLED_Init();//OLED初始化
 	initPIT();
 	for(;;){
 		if(steer_flag==1)
@@ -100,7 +101,12 @@ void ModeOpenGo(void)//开环跑
 			steer_flag=0;
 			Direction_Control();
 		}
+		if(oled_flag==1)
+		{
+			oled_flag=0;
+			OLED_Test();
+		}
+		KeyJudge();
 	}
-	KeyJudge();
 }
 
