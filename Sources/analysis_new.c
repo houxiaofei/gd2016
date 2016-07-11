@@ -37,8 +37,8 @@ int enter_flag=0;//入弯flag
 int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 int b_value2=30,b_scan2=10;//终点
-int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=50,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
+int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=100,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//障碍物
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -365,12 +365,17 @@ void EndJudge(void)
 void BarrierJudge(void)		//障碍物判断
 {
 	a_edg_err=ar_edge-al_edge;
+//	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
 	if(a_bar_flag==1)
 		return;
 	if(a_edg_err<a_bar_value)
 	{
 		a_bar_cnt++;	
 	}
+//	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
+//	{
+//		a_bar_cnt++;	
+//	}
 	if(((ABS(al_edge-a_start)-ABS(ar_edge-a_start))<0)&&al_bar_flag==0&&a_bar_cnt>0)//障碍物在左边
 	{
 		i=0;j=0;
