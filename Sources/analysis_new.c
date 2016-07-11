@@ -458,7 +458,7 @@ void BarrierControl(void)
 				error=a_error;
 			else
 				error=b_error;
-			if(error<=0)
+			if(error>0)
 				error=error*3;
 			else				//实际不应出现
 				error=error*1.5;
