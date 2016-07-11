@@ -40,7 +40,7 @@ int enter_flag=0;//入弯flag
 int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 int b_value_end=30,b_scan_end=10;//终点30,10
-int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=50,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 
@@ -81,7 +81,7 @@ void PixelScan_A(void)
 {
 	al_count=0,ar_count=0;
 	al_flag=4,ar_flag=4;
-	al_edge=0,ar_edge=0;
+	//al_edge=0,ar_edge=0;
 	for(i=al_start;i>al_end;i--)
 	{
 		if(i>al_scan_i)
@@ -415,9 +415,9 @@ void EndJudge(void)
 
 void BarrierJudge(void)		//障碍物判断
 {
+	a_edg_err=ar_edge-al_edge;
 	if(a_bar_flag==1)
 		return;
-	a_edg_err=ar_edge-al_edge;
 	if(a_edg_err<a_bar_value)
 	{
 		a_bar_cnt++;	
@@ -465,11 +465,16 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start-8);		//改基准
-			if(error>=0)
-				error=error*2;
-			else		//实际不会出现
+			a_error=al_edge+ar_edge-2*a_start;
+			b_error=bl_edge+br_edge-2*b_start;
+			if(a_error>b_error)
+				error=a_error;
+			else
+				error=b_error;
+			if(error>0)
 				error=error*3;
+			else		//实际不会出现
+				error=error*3/2;
 		}
 		else if(br_flag==1)
 		{
@@ -498,11 +503,16 @@ void BarrierControl(void)
 	{
 		if(bl_flag==2)
 		{
-			error=bl_edge-(b_start-3);
-			if(error<=0)
-				error=error*3;
+			a_error=al_edge+ar_edge-2*a_start;
+			b_error=bl_edge+br_edge-2*b_start;
+			if(a_error<b_error)
+				error=a_error;
 			else
-				error=error*4;
+				error=b_error;
+			if(error<0)
+				error=error*3;
+			else				//实际不应出现
+				error=error*3/2;
 		}
 		else if(bl_flag==1)
 		{

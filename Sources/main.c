@@ -91,7 +91,7 @@ void ModeBlueSpeed(void)//看速度图像
 }
 void ModeOpenGo(void)//开环跑
 {
-	targetspeed=100;
+	targetspeed=150;
 	SET_motor(targetspeed,targetspeed);
 	initPIT();
 	for(;;){
