@@ -12,7 +12,7 @@ int B[128]={0};
 int C[128]={0};
 int al_end=36,ar_end=96,bl_end=22,br_end=110;
 int al_start=70,ar_start=62,a_start=66,a_offset=2,bl_start=72,br_start=60,b_start=66,b_offset=4;
-int a_value=80,b_value=120;                          //判断跳变沿的差值标准
+int a_value=120,b_value=120;                          //判断跳变沿的差值标准
 int a_T=295,b_T=284;                                  //黑白阈值
 int c_T=262;
 int a_PixelNumber=30,b_PixelNumber=44;
@@ -37,7 +37,7 @@ int enter_flag=0;//入弯flag
 int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 int b_value2=30,b_scan2=10;//终点
-int a_edg_err=0,a_bar_value=10,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=30,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=50,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1;//障碍物
 
 
@@ -78,7 +78,7 @@ void PixelScan_A(void)
 {
 	al_count=0,ar_count=0;
 	al_flag=4,ar_flag=4;
-	al_edge=0,ar_edge=0;
+	//al_edge=0,ar_edge=0;
 	for(i=al_start;i>al_end;i--)
 	{
 		if(i<=a_start&&A[i]>a_T)
@@ -364,9 +364,9 @@ void EndJudge(void)
 
 void BarrierJudge(void)		//障碍物判断
 {
+	a_edg_err=ar_edge-al_edge;
 	if(a_bar_flag==1)
 		return;
-	a_edg_err=ar_edge-al_edge;
 	if(a_edg_err<a_bar_value)
 	{
 		a_bar_cnt++;	
@@ -414,11 +414,16 @@ void BarrierControl(void)
 	{
 		if(br_flag==2)
 		{
-			error=br_edge-(b_start-8);		//改基准
-			if(error>=0)
-				error=error*2;
-			else		//实际不会出现
+			a_error=al_edge+ar_edge-2*a_start;
+			b_error=bl_edge+br_edge-2*b_start;
+			if(a_error>b_error)
+				error=a_error;
+			else
+				error=b_error;
+			if(error<0)
 				error=error*3;
+			else		//实际不会出现
+				error=error*1.5;
 		}
 		else if(br_flag==1)
 		{
@@ -447,11 +452,16 @@ void BarrierControl(void)
 	{
 		if(bl_flag==2)
 		{
-			error=bl_edge-(b_start-3);
+			a_error=al_edge+ar_edge-2*a_start;
+			b_error=bl_edge+br_edge-2*b_start;
+			if(a_error<b_error)
+				error=a_error;
+			else
+				error=b_error;
 			if(error<=0)
 				error=error*3;
-			else
-				error=error*4;
+			else				//实际不应出现
+				error=error*1.5;
 		}
 		else if(bl_flag==1)
 		{

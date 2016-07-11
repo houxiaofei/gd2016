@@ -33,7 +33,7 @@ void PitISR(void)//10ms一个控制周期
 	pitcount1++;
 	pitcount2++;
 	steer_flag=1;
-	if(pitcount2>=1600)
+	if(pitcount2>=1600)//1600
 		end_judge_flag=1;
 	//time1=TIME;
 	//time2=TIME;
