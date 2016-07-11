@@ -33,11 +33,11 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<159)//120(150)-5 8 8 12 12 10//130-170
 	{
-		if(ABS(target_offset)<30)  {Steer_kp=2;Steer_kd=8;}
-		else if(ABS(target_offset)<40)  {Steer_kp=(ABS(target_offset)-30)*0.3+2;Steer_kd=8;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-40)*0.3+5;Steer_kd=8;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+6.5;Steer_kd=8;}
-		else                            {Steer_kp=7.5;Steer_kd=8;}
+		if(ABS(target_offset)<25)        {Steer_kp=2;Steer_kd=5;}
+		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-25)*0.1+2;Steer_kd=5;}
+		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-35)*0.2+4;Steer_kd=5;}
+		else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-45)*0.1+6;Steer_kd=5;}
+		else                            {Steer_kp=8;Steer_kd=5;}
 		return;
 	}
 	else if(targetspeed<280)//140-180//150-190//160 5 8 8 10 10 10
