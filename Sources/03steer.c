@@ -10,13 +10,13 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3100;//新2820 老3310,右极限值
-unsigned int LEFT=3900;//新3630 老4110,左极限值
+unsigned int RIGHT=3110;//新2820 老3310,右极限值
+unsigned int LEFT=3890;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
 unsigned char sp_x2=3,sp_x3=20;
-double sp_x1=0.0060;
+double sp_x1=0.0062;//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -54,6 +54,11 @@ void Steer_PDSet(void)
 //		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.3+7;Steer_kd=10;}
 //		else                            {Steer_kp=10;Steer_kd=10;}
 		
+		//校内赛版本
+//		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
+//		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
+//		else                            {Steer_kp=10;Steer_kd=12;}//14    
+		
 //		if(ABS(target_offset)<15)        {Steer_kp=4;Steer_kd=10;}
 //		else if(ABS(target_offset)<25)   {Steer_kp=5;Steer_kd=10;}
 //		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.2+5;Steer_kd=10;}
@@ -82,10 +87,6 @@ void Steer_PDSet(void)
 //		if(ABS(target_offset)<40) {Steer_kp=-0.011*(ABS(target_offset)-30)*(ABS(target_offset)-30)+10;Steer_kd=10;}//
 //		else                            {Steer_kp=9.2;Steer_kd=10;}
 
-
-//		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
-//		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
-//		else                            {Steer_kp=10;Steer_kd=12;}//14
 		
 //		if(ABS(target_offset)<60)  {Steer_kp=0.0034*ABS(target_offset)*ABS(target_offset)+4;Steer_kd=8;}//0.0024 4
 //		else                            {Steer_kp=10;Steer_kd=8;}//14

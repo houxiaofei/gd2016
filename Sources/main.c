@@ -94,6 +94,7 @@ void ModeOpenGo(void)//开环跑
 	targetspeed=240;
 	SET_motor(targetspeed,targetspeed);
 	OLED_Init();//OLED初始化
+	initPIT2();
 	initPIT();
 	for(;;){
 		if(steer_flag==1)

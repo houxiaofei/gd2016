@@ -48,7 +48,15 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-	
+	if(mode>=2&&mode<4)
+	{
+		if(stop_flag==1)  //停车
+		{
+			targetspeed=0;
+			SET_motor(0,0);
+		}
+	}
+	else{
 	SpeedCount();  //光编计数，采速度值
 	Speed_Set();   //速度设置，变速
 //	if(stop_flag==1)  //停车
@@ -101,5 +109,6 @@ void PitISR2(void)
 //		Speed_PID();
 //		SpeedControl(); 
 //	} 
+	}
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位
 }
