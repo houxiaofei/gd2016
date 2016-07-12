@@ -66,6 +66,7 @@ void ModeBlueImage(void)//看CCD图像
 			oled_flag=0;
 			OLED_Test();
 		}
+		KeyJudge();
 	}
 }
 void ModeBlueSpeed(void)//看速度图像
