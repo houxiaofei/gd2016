@@ -478,7 +478,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*3;
+				error=error*4;
 			else		//实际不会出现
 				error=error*3/2;
 		}
@@ -516,7 +516,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error<0)
-				error=error*3;
+				error=error*4;
 			else				//实际不应出现
 				error=error*3/2;
 		}

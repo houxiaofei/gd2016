@@ -27,8 +27,8 @@ void Direction_Control(void) //转向控制函数
 	//TrendCalculate(); //ERROR趋势计算
 	//EnterJudge();  //入弯判断
 	
-//	Steer_PDSet();  //舵机PD参数
-//	SteerControl(); //舵机控制
+	Steer_PDSet();  //舵机PD参数
+	SteerControl(); //舵机控制
 }
 
 void ModeGo(void)//出发
@@ -66,8 +66,8 @@ void ModeBlueImage(void)//看CCD图像
 			oled_flag=0;
 			OLED_Test();
 		}
+		KeyJudge();
 	}
-	KeyJudge();
 }
 void ModeBlueSpeed(void)//看速度图像
 {
@@ -101,7 +101,7 @@ void ModeOpenGo(void)//开环跑
 			steer_flag=0;
 			Direction_Control();
 		}
-	}
 	KeyJudge();
+	}
 }
 
