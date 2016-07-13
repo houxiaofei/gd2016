@@ -70,6 +70,7 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
+	
 	int i=0,j=0;
 	for(i=0,j=0;i<10;i++)
 	{
@@ -94,6 +95,13 @@ void Speed_Set(void)
 		targetspeed=turnspeed;
 //	RPID=CENTER-Steer_PWM[3];
 //	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID);
+	if(c_edge<96)
+	{
+		targetspeed=100;
+	}
+	else
+	    targetspeed=200;
+	
 }
 
 //**********************双PID差速控制*******************************************
