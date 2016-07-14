@@ -44,7 +44,7 @@ int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=100,al_bar_
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//障碍物
 
 int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
-int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值
+int c_start=50,c_end=115,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算

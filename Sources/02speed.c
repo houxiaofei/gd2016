@@ -71,30 +71,32 @@ void SET_motor(int leftSpeed,int rightSpeed)
 void Speed_Set(void)
 {
 	
-	int i=0,j=0;
-	for(i=0,j=0;i<10;i++)
-	{
-		if(all_flag[i]!=2222)
-		{
-			j=1;
-			break;
-		}
-	}
-	if(stop_flag==1)
-		targetspeed=0;
-	else if(a_bar_flag==1)
-		targetspeed=barspeed;
-    else if(j==0||a_flag==11||b_flag==11)
-		targetspeed=straightspeed;
-	else if((a_flag==21||a_flag==12)&&b_flag==22)
-		targetspeed=transspeed;
-	//else if(error>=45)
-	else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
-		targetspeed=deadspeed;
-	else
-		targetspeed=turnspeed;
+//	int i=0,j=0;
+//	for(i=0,j=0;i<10;i++)
+//	{
+//		if(all_flag[i]!=2222)
+//		{
+//			j=1;
+//			break;
+//		}
+//	}
+//	if(stop_flag==1)
+//		targetspeed=0;
+//	else if(a_bar_flag==1)
+//		targetspeed=barspeed;
+//    else if(j==0||a_flag==11||b_flag==11)
+//		targetspeed=straightspeed;
+//	else if((a_flag==21||a_flag==12)&&b_flag==22)
+//		targetspeed=transspeed;
+//	//else if(error>=45)
+//	else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
+//		targetspeed=deadspeed;
+//	else
+//		targetspeed=turnspeed;
+	
 //	RPID=CENTER-Steer_PWM[3];
-//	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID);
+//	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID); //连续变化
+	
 	if(c_edge<96)
 	{
 		targetspeed=100;

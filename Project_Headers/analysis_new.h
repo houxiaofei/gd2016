@@ -31,6 +31,7 @@ int EdgeCalculate(int a, int b, int c[],int avg);
 extern void DataSet(void);
 extern void PixelScan_B(void);
 extern void PixelScan_A(void);
+extern void PixelScan_C(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
 void TrendCalculate(void);
