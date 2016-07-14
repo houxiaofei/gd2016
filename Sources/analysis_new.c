@@ -40,7 +40,7 @@ int a_rem=16,ab_rem=24,b_rem=9;                  //²¹ÏßÖµ
 int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//ÖÕµã30,10
-int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=100,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
+int a_bar_value=22,a_bar_value2=100,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//ÕÏ°­Îï
 
 int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
@@ -383,7 +383,7 @@ void ErrorCalculate(void)
 		stop_cnt=0;
 	if(a_bar_flag==1)                                        //ÕÏ°­Îï
 	{
-		BarrierControl();
+		//BarrierControl();
 		return;
 	}
 	switch(b_flag){
@@ -451,17 +451,17 @@ void EndJudge(void)
 void BarrierJudge(void)		//ÕÏ°­ÎïÅĞ¶Ï
 {
 	a_edg_err=ar_edge-al_edge;
-//	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
+	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
 	if(a_bar_flag==1)
 		return;
 	if(a_edg_err<a_bar_value)
 	{
 		a_bar_cnt++;	
 	}
-//	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
-//	{
-//		a_bar_cnt++;	
-//	}
+	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
+	{
+		a_bar_cnt++;	
+	}
 	if(((ABS(al_edge-a_start)-ABS(ar_edge-a_start))<0)&&al_bar_flag==0&&a_bar_cnt>0)//ÕÏ°­ÎïÔÚ×ó±ß
 	{
 		i=0;j=0;

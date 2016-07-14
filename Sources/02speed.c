@@ -13,7 +13,7 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=-200;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=200,transspeed=160,turnspeed=160,deadspeed=160,barspeed=160;//250,190,180
+int straightspeed=230,transspeed=170,turnspeed=170,deadspeed=170,barspeed=170;//250,190,180
 //**********************差速参数***************************/
 signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
@@ -28,8 +28,8 @@ int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
 //float Speed_kp_Left=6,Speed_ki_Left=0.1,Speed_kd_Left=0;//16
 //float Speed_kp_Right=0.1,Speed_ki_Right=0.01,Speed_kd_Right=0;	//电机增量式PID
 
-float Speed_kp_Left=5,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
-float Speed_kp_Right=5,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID 10,0.2,1
+float Speed_kp_Left=8,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
+float Speed_kp_Right=8,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID 10,0.2,1
 
 //**********************双PID差速控制参数(内外环增量式)**********************************************;	
 //float KP_speed=3,KI_speed=0.01,KD_speed=0.4;//1,0.02，0.4
@@ -95,12 +95,12 @@ void Speed_Set(void)
 		targetspeed=turnspeed;
 //	RPID=CENTER-Steer_PWM[3];
 //	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID);
-	if(c_edge<96)
-	{
-		targetspeed=100;
-	}
-	else
-	    targetspeed=200;
+//	if(c_edge<96)
+//	{
+//		targetspeed=100;
+//	}
+//	else
+//	    targetspeed=200;
 	
 }
 
