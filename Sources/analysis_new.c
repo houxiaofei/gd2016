@@ -13,7 +13,6 @@ int C[128]={0};
 int al_end=36,ar_end=96,bl_end=22,br_end=110;
 int al_start=70,ar_start=62,a_start=66,a_offset=2,bl_start=72,br_start=60,b_start=66,b_offset=4;
 int a_T=320,b_T=324;                                  //黑白阈值
-int c_T=262;
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
 int a_scan=6,a_scan1=6,a_scan2=10,a_scan3=10,a_expand=5,a_expand1=0,a_expand2=5;
@@ -43,6 +42,9 @@ int i=0,j=0;
 int b_value_end=30,b_scan_end=10;//终点30,10
 int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=100,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//障碍物
+
+int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
+int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -299,6 +301,38 @@ void PixelScan_B(void)
 	all_flag[0]=all_flag[1];all_flag[1]=all_flag[2];all_flag[2]=all_flag[3];all_flag[3]=all_flag[4];all_flag[4]=all_flag[5];
 	all_flag[5]=all_flag[6];all_flag[6]=all_flag[7];all_flag[7]=all_flag[8];all_flag[8]=all_flag[9];
 	all_flag[9]=a_flag*100+b_flag;//每一次扫描将最新的判断情况存在all_flag[9]
+}
+
+void PixelScan_C(void)
+{
+	c_count=0;
+	c_flag=4;
+	c_edge=0;
+	for(i=c_start;i>c_end;i++)
+	{
+		if(C[i]>c_T)
+		{
+			c_count++;
+		}
+		if(i<(c_end-c_scan))
+		{
+			if(C[i]-C[i+c_scan]>c_value&&C[i+1]-C[i+c_scan+1]>c_value)
+			{
+				c_edge_left=i;
+				c_edge_right=i+c_scan+c_expand;
+				c_T=AverageCalculate(i,(i+c_scan+c_expand),C);
+				c_edge=EdgeCalculate(i,(i+c_scan+c_expand),C,c_T);
+				c_flag=2;
+				break;
+			}
+		}
+		if(c_count>c_allwhite)
+			c_flag=1;
+		else if(c_count<c_allblack)
+			c_flag=0;
+		else
+			c_flag=4;
+	}
 }
 
 void ErrorCalculate_A(void)
