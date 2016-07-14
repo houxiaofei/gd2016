@@ -18,8 +18,8 @@ int main(void) {
 void Direction_Control(void) //转向控制函数
 {
 	ImageCapture(A,B,C);  //采图像，A-60，B-30，C-最远
-	PixelScan_B(); //图像处理-B
 	PixelScan_A();//图像处理-A
+	PixelScan_B(); //图像处理-B
 	ErrorCalculate_A();//偏差值计算-A
 	ErrorCalculate();//偏差值计算-B
 	
@@ -92,8 +92,8 @@ void ModeBlueSpeed(void)//看速度图像
 }
 void ModeOpenGo(void)//开环跑
 {
-	targetspeed=240;
-	SET_motor(targetspeed,targetspeed);
+	targetspeed=230;
+	SET_motor(-100,0);
 	OLED_Init();//OLED初始化
 	initPIT2();
 	initPIT();

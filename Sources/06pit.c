@@ -33,7 +33,7 @@ void PitISR(void)//10ms一个控制周期
 	pitcount1++;
 	pitcount2++;
 	steer_flag=1;
-	if(pitcount2>=1600)//1600
+	if(pitcount2>=100)//1600
 		end_judge_flag=1;
 	//time1=TIME;
 	//time2=TIME;
@@ -50,36 +50,37 @@ void PitISR2(void)
 {
 	if(mode>=2&&mode<4)
 	{
-		if(stop_flag==1)  //停车
-		{
-			targetspeed=0;
-			SET_motor(0,0);
-		}
+		SpeedCount();  //光编计数，采速度值
+//		if(stop_flag==1)  //停车
+//		{
+//			targetspeed=0;
+//			SET_motor(0,0);
+//		}
 	}
 	else{
 	SpeedCount();  //光编计数，采速度值
 	Speed_Set();   //速度设置，变速
-//	if(stop_flag==1)  //停车
-//	{
-//		targetspeed=0;
-//		if(((csl+csr)/2)>15)
-//		{
-//		    SpeedControl(); 
-////			Speed_PID2();
-////		    DifferSpeed_PID2();
-//		}
-//		else
-//		{
-//		SET_motor(0,0);
-//		}
-//		timecount=0;
-//	}
-//	else
-//	{
-////		SpeedControl(); //位置式控制
+	if(stop_flag==1)  //停车
+	{
+		targetspeed=0;
+		if(((csl+csr)/2)>15)
+		{
+		    SpeedControl(); 
+//			Speed_PID2();
+//		    DifferSpeed_PID2();
+		}
+		else
+		{
+		SET_motor(0,0);
+		}
+		timecount=0;
+	}
+	else
+	{
+		SpeedControl(); //位置式控制
 //		Speed_PID2();   //外环位置式
 //		DifferSpeed_PID2(); //内环位置式
-//	}
+	}
 	
 	
 //	pitcount2++;

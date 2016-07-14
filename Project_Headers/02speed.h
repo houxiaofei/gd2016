@@ -22,7 +22,7 @@ extern int csl_cnt[3],csr_cnt[3];
 extern int targetspeed;
 extern int straightspeed,transspeed,turnspeed,deadspeed,barspeed;
 extern int tsl_PWM,tsr_PWM,tsr_Delta,error_Delta;
-extern int ErrorRight,PreErrorRight;
+extern int ErrorLeft,ErrorRight,PreErrorRight;
 extern signed int Speed_kc1;
 extern signed int RPID;
 
@@ -31,5 +31,8 @@ extern float Speed_kp_Right,Speed_ki_Right,Speed_kd_Right;	//µç»úPID
 
 extern float KP_speed,KI_speed,KD_speed;
 extern float KP_DifSpd,KI_DifSpd,KD_DifSpd;
+
+extern int MotorPWM,LMotorPWM,RMotorPWM;
+extern int SumErrorLeft,SumErrorRight;
 
 #endif /* 02SPEED_H_ */

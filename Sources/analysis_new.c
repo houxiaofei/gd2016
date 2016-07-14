@@ -339,7 +339,7 @@ void ErrorCalculate(void)
 	if(b_flag==0&&a_flag==0)	//全黑情况
 	{
 		stop_cnt++;
-		if(stop_cnt>3)		//判断到3次全黑情况就停车
+		if(stop_cnt>10)		//判断到3次全黑情况就停车
 		{
 			stop_cnt=0;
 			stop_flag=1;
