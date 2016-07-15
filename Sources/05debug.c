@@ -152,7 +152,10 @@ void LINFlex_TX_Interrupt(void)
 		break;
 	case 13: 
 		LINFlex_TX(data);
-		Ts=14;
+		if(basic_mode==8)
+			Ts=18;
+		else
+			Ts=14;
 		break;
 	case 14: 
 		LINFlex_TX(SendInt4(al_flag));        //发送A_flag
@@ -171,54 +174,54 @@ void LINFlex_TX_Interrupt(void)
 		Ts=18;
 		break;
 	case 18: 
-		//LINFlex_TX(SendInt1(error));        //发送error
-		LINFlex_TX(SendInt1(a_edg_err));
+		LINFlex_TX(SendInt1(error));        //发送error
 		Ts=19;
 		break;
 	case 19:
-		LINFlex_TX(SendInt2(a_edg_err));
+		LINFlex_TX(SendInt2(error));
 		Ts=20;
 		break;
 	case 20: 
-		LINFlex_TX(SendInt3(a_edg_err));        
+		LINFlex_TX(SendInt3(error));        
 		Ts=21;
 		break;
 	case 21:
-		LINFlex_TX(SendInt4(a_edg_err));
-		Ts=22;
+		LINFlex_TX(SendInt4(error));
+		if(basic_mode==8)
+			Ts=30;
+		else
+			Ts=22;
 		break;
 	case 22: 
-//		LINFlex_TX(SendInt1(a_error));        //发送a_error
-		LINFlex_TX(SendInt1(al_edge)); 
+		LINFlex_TX(SendInt1(a_error));        //发送a_error
 		Ts=23;
 		break;
 	case 23:
-		LINFlex_TX(SendInt2(al_edge));
+		LINFlex_TX(SendInt2(a_error));
 		Ts=24;
 		break;
 	case 24: 
-		LINFlex_TX(SendInt3(al_edge));      
+		LINFlex_TX(SendInt3(a_error));      
 		Ts=25;
 		break;
 	case 25:
-		LINFlex_TX(SendInt4(al_edge));
+		LINFlex_TX(SendInt4(a_error));
 		Ts=26;
 		break;
-	case 26: 
-		//LINFlex_TX(SendInt1(b_error));        //发送b_error
-		LINFlex_TX(SendInt1(ar_edge));
+	case 26:                          //发送b_error
+		LINFlex_TX(SendInt1(b_error));
 		Ts=27;
 		break;
 	case 27:
-		LINFlex_TX(SendInt2(ar_edge));
+		LINFlex_TX(SendInt2(b_error));
 		Ts=28;
 		break;
 	case 28: 
-		LINFlex_TX(SendInt3(ar_edge));      
+		LINFlex_TX(SendInt3(b_error));      
 		Ts=29;
 		break;
 	case 29:
-		LINFlex_TX(SendInt4(ar_edge));
+		LINFlex_TX(SendInt4(b_error));
 		Ts=30;
 		break;
 	case 30: 

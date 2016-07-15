@@ -10,7 +10,7 @@
 int csl=0,csr=0;//currentspeedleft=0,currentspeedright=0;
 int tsl=0,tsr=0;//targetspeedleft=0,targetspeedright=0;
 int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
-int targetspeed=0,Motor_PWM_MAX=200,Motor_PWM_MIN=-200;
+int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
 int straightspeed=230,transspeed=170,turnspeed=170,deadspeed=170,barspeed=170;//250,190,180

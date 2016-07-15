@@ -41,7 +41,7 @@ int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//终点30,10
 int a_bar_value=22,a_bar_value2=100,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//障碍物
+int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=10;//障碍物
 
 int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
 int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值

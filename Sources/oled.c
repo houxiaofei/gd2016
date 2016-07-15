@@ -227,7 +227,7 @@ void OLED_Test(void)
 	CurrentSteer=TargetSteer;
 	OLED_Num(CurrentSteer);
 	OLED_Str("  ");
-	OLED_Num(mode);
+	OLED_Num(ab_difference);
 //	OLED_Str("bw: ");
 //	OLED_Num(forwardleft);
 //	OLED_Str("  ");
