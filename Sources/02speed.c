@@ -13,9 +13,9 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=230,transspeed=170,turnspeed=170,deadspeed=170,barspeed=170;//250,190,180
+int straightspeed=230,transspeed=200,turnspeed=180,deadspeed=180,barspeed=180;//250,190,180
 //**********************差速参数***************************/
-signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=15000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
@@ -28,9 +28,10 @@ int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
 //float Speed_kp_Left=6,Speed_ki_Left=0.1,Speed_kd_Left=0;//16
 //float Speed_kp_Right=0.1,Speed_ki_Right=0.01,Speed_kd_Right=0;	//电机增量式PID
 
-float Speed_kp_Left=8,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
-float Speed_kp_Right=8,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID 10,0.2,1
-
+float Speed_kp_Left=10,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
+					//8
+float Speed_kp_Right=10,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID 10,0.2,1
+					//8
 //**********************双PID差速控制参数(内外环增量式)**********************************************;	
 //float KP_speed=3,KI_speed=0.01,KD_speed=0.4;//1,0.02，0.4
 //int Speed_Err=0,Speed_Err_his=0,Speed_Err_his2=0;
@@ -71,10 +72,14 @@ void SET_motor(int leftSpeed,int rightSpeed)
 void Speed_Set(void)
 {
 	
-	int i=0,j=0;
-	for(i=0,j=0;i<10;i++)
+	int i=0,j=0,all_flag_count=0;
+	for(i=0;i<10;i++)
 	{
 		if(all_flag[i]!=2222)
+		{
+			all_flag_count++;
+		}
+		if(all_flag_count>=3)
 		{
 			j=1;
 			break;

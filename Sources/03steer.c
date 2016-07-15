@@ -15,8 +15,8 @@ unsigned int LEFT=3905;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
-unsigned char sp_x2=3,sp_x3=20;
-double sp_x1=0.0062;//0.0060
+unsigned char sp_x2=3,sp_x3=35;
+double sp_x1=0.0067;//0.0062//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -28,7 +28,7 @@ void Steer_PDSet(void)
 	target_offset=error;
 	if(targetspeed<100)//120
 	{
-		Steer_kp=8;Steer_kd=0;
+		Steer_kp=8;Steer_kd=0; 
 		return;
 	}
 	else if(targetspeed<159)//120(150)-5 8 8 12 12 10//130-170
@@ -42,6 +42,12 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<280)//140-180//150-190//160 5 8 8 10 10 10
 	{
+//		if(ABS(target_offset)<35)        {Steer_kp=3;Steer_kd=10;}
+//		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.1+3;Steer_kd=10;}
+//		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+4;Steer_kd=10;}
+//		else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.2+6;Steer_kd=10;}
+//		else                            {Steer_kp=8;Steer_kd=10;}
+//		return;
 //		if(ABS(target_offset)<25)        {Steer_kp=2;Steer_kd=5;}
 //		else if(ABS(target_offset)<50)  {Steer_kp=(ABS(target_offset)-25)*0.1+2;Steer_kd=5;}
 //		else if(ABS(target_offset)<60)  {Steer_kp=(ABS(target_offset)-50)*0.2+4.5;Steer_kd=5;}
@@ -54,12 +60,12 @@ void Steer_PDSet(void)
 //		else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.1+6;Steer_kd=5;}
 //		else                            {Steer_kp=7;Steer_kd=5;}
 //		return;
-		if(ABS(target_offset)<35)        {Steer_kp=3;Steer_kd=10;}
-		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.1+3;Steer_kd=10;}
-		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+4;Steer_kd=10;}
-		else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.2+6;Steer_kd=10;}
-		else                            {Steer_kp=8;Steer_kd=10;}
-		return;
+//		if(ABS(target_offset)<35)        {Steer_kp=3;Steer_kd=10;}
+//		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.1+3;Steer_kd=10;}
+//		else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.2+4;Steer_kd=10;}
+//		else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.2+6;Steer_kd=10;}
+//		else                            {Steer_kp=8;Steer_kd=10;}
+//		return;
 //		if(ABS(target_offset)<25)        {Steer_kp=4;Steer_kd=10;}
 //		else if(ABS(target_offset)<35)  {Steer_kp=(ABS(target_offset)-25)*0.1+4;Steer_kd=10;}
 //		else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.2+5;Steer_kd=10;}
@@ -67,9 +73,9 @@ void Steer_PDSet(void)
 //		else                            {Steer_kp=10;Steer_kd=10;}
 		
 		//校内赛版本
-//		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
-//		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
-//		else                            {Steer_kp=10;Steer_kd=12;}//14    
+		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
+		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
+		else                            {Steer_kp=10;Steer_kd=12;}//14    
 		
 //		if(ABS(target_offset)<15)        {Steer_kp=4;Steer_kd=10;}
 //		else if(ABS(target_offset)<25)   {Steer_kp=5;Steer_kd=10;}
