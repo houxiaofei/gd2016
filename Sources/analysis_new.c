@@ -17,7 +17,7 @@ int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=20,a_allblack=8,b_allwhite=34,b_allblack=10;                  //全白,全黑判断标准
 int a_scan=6,a_scan1=6,a_scan2=10,a_scan3=10,a_expand=5,a_expand1=0,a_expand2=5;
 int b_scan=8,b_scan1=8,b_scan2=12,b_scan3=12,b_expand=5,b_expand1=0,b_expand2=5;
-int al_scan_i=56,ar_scan_i=76,bl_scan_i=48,br_scan_i=84;
+int al_scan_i=56,ar_scan_i=76,bl_scan_i=48,br_scan_i=84;//分区坐标
 int a_value2=110,a_value3=110,a_value_T1=120,a_value_T2=110,a_value_T3=80;   //判断跳变沿的差值标准
 int b_value2=150,b_value3=150,b_value_T1=160,b_value_T2=140,b_value_T3=120;      //判断跳变沿的差值标准
 
@@ -43,8 +43,13 @@ int b_value_end=30,b_scan_end=10;//终点30,10
 int a_bar_value=22,a_bar_value2=100,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=10;//障碍物
 
-int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
-int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值
+//int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
+//int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//C-CCD竖直
+
+int cl_count=0,cr_count=0,c_flag=0,cl_flag=0,cr_flag=0,cl_edge=0,cr_edge=0,cl_edge_left=0,cl_edge_right=0,cr_edge_left=0,cr_edge_right=0;
+int c_start=66,cl_start=69,cr_start=63,cl_end=40,cr_end=92,c_allwhite=20,c_allblack=6,c_T=300;
+int c_value2=0,c_value3=0,c_value_T1=140,c_value_T2=100,c_value_T3=70;
+int c_scan=5,c_scan1=5,c_scan2=9,cl_scan_i=56,cr_scan_i=76,c_expand1=0,c_expand2=5,c_offset=2;//value跳变沿标准 c_T黑白阈值
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -305,35 +310,145 @@ void PixelScan_B(void)
 
 void PixelScan_C(void)
 {
-	c_count=0;
-	c_flag=4;
-	c_edge=0;
-	for(i=c_start;i>c_end;i++)
+	cl_count=0,cr_count=0;
+	cl_flag=4,cr_flag=4;
+	cl_edge=0,cr_edge=0;
+	for(i=cl_start;i>cl_end;i--)
 	{
-		if(C[i]>c_T)
+		if(i>cl_scan_i)
 		{
-			c_count++;
+			c_scan=c_scan1;
+			c_value2=c_value_T1;
+			c_value3=c_value_T2;
 		}
-		if(i<(c_end-c_scan))
+		else
 		{
-			if(C[i]-C[i+c_scan]>c_value&&C[i+1]-C[i+c_scan+1]>c_value)
+			c_scan=c_scan2;
+			c_value2=c_value_T2;
+			c_value3=c_value_T3;
+		}
+		if(i<=c_start&&C[i]>c_T)
+		{
+			cl_count++;
+		}
+		if(i>(cl_end+c_scan))
+		{
+			if(C[i]-C[i-c_scan]>c_value2&&C[i-1]-C[i-c_scan-1]>c_value2)
 			{
-				c_edge_left=i;
-				c_edge_right=i+c_scan+c_expand;
-				c_T=AverageCalculate(i,(i+c_scan+c_expand),C);
-				c_edge=EdgeCalculate(i,(i+c_scan+c_expand),C,c_T);
-				c_flag=2;
-				break;
+				cl_edge_left=i-c_scan-a_expand2;
+				cl_edge_right=i+c_expand1;
+				c_T=AverageCalculate((i-c_scan-c_expand2),(i+c_expand1),C);
+				cl_edge=EdgeCalculate((i-c_scan-c_expand2),(i+c_expand1),C,c_T);
+				if(cl_edge<c_start+c_offset)
+				{
+					cl_flag=2;
+					break;
+				}
+			}
+			if(C[i-c_scan]-C[i]>c_value3&&C[i-c_scan-1]-C[i-1]>c_value3)
+			{
+				cl_edge_left=i-c_scan-c_expand2;
+				cl_edge_right=i+c_expand1;
+				c_T=AverageCalculate((i-c_scan-c_expand2),(i+c_expand1),C);
+				cl_edge=EdgeCalculate((i-c_scan-c_expand2),(i+c_expand1),C,c_T);
+				if(cl_edge<c_start+c_offset)
+				{
+					cl_flag=3;
+					break;
+				}
 			}
 		}
-		if(c_count>c_allwhite)
-			c_flag=1;
-		else if(c_count<c_allblack)
-			c_flag=0;
+		if(cl_count>c_allwhite)
+			cl_flag=1;
+		else if(cl_count<c_allblack)
+			cl_flag=0;
 		else
-			c_flag=4;
+			cl_flag=4;
 	}
+	for(i=cr_start;i<cr_end;i++)
+	{
+		if(i<cr_scan_i)
+		{
+			c_scan=c_scan1;
+			c_value2=c_value_T1;
+			c_value3=c_value_T2;
+		}
+		else
+		{
+			c_scan=c_scan2;
+			c_value2=c_value_T2;
+			c_value3=c_value_T3;
+		}
+		if(i>=c_start&&C[i]>c_T)
+			cr_count++;
+		if(i<(cr_end-c_scan))
+		{
+			if(C[i]-C[i+c_scan]>c_value2&&C[i+1]-C[i+c_scan+1]>c_value2)
+			{
+				cr_edge_left=i-c_expand1;
+				cr_edge_right=i+c_scan+c_expand2;
+				c_T=AverageCalculate((i-c_expand1),(i+c_scan+c_expand2),C);
+				cr_edge=EdgeCalculate((i-c_expand1),(i+c_scan+c_expand2),C,c_T);
+				if(cr_edge>c_start-c_offset)
+				{
+					cr_flag=2;
+					break;
+				}
+			}
+			if(C[i+c_scan]-C[i]>c_value3&&C[i+c_scan+1]-C[i+1]>c_value3)
+			{
+				cr_edge_left=i-c_expand1;
+				cr_edge_right=i+c_scan+a_expand2;
+				c_T=AverageCalculate((i-c_expand1),(i+c_scan+c_expand2),C);
+				cr_edge=EdgeCalculate((i-c_expand1),(i+c_scan+c_expand2),C,c_T);
+				if(cr_edge>c_start-c_offset)
+				{
+					cr_flag=3;
+					break;
+				}
+			}
+		}
+		if(cr_count>c_allwhite)
+			cr_flag=1;
+		else if(cr_count<a_allblack)
+			cr_flag=0;
+		else
+			cr_flag=4;
+	}
+	c_flag=cl_flag*10+cr_flag;
 }
+
+//void PixelScan_C(void)
+//{
+//	c_count=0;
+//	c_flag=4;
+//	c_edge=0;
+//	for(i=c_start;i>c_end;i++)
+//	{
+//		if(C[i]>c_T)
+//		{
+//			c_count++;
+//		}
+//		if(i<(c_end-c_scan))
+//		{
+//			if(C[i]-C[i+c_scan]>c_value&&C[i+1]-C[i+c_scan+1]>c_value)
+//			{
+//				c_edge_left=i;
+//				c_edge_right=i+c_scan+c_expand;
+//				c_T=AverageCalculate(i,(i+c_scan+c_expand),C);
+//				c_edge=EdgeCalculate(i,(i+c_scan+c_expand),C,c_T);
+//				c_flag=2;
+//				break;
+//			}
+//		}
+//		if(c_count>c_allwhite)
+//			c_flag=1;
+//		else if(c_count<c_allblack)
+//			c_flag=0;
+//		else
+//			c_flag=4;
+//	}
+//}
 
 void ErrorCalculate_A(void)
 {
