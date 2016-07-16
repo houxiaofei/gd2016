@@ -19,7 +19,7 @@ int a_scan=6,a_scan1=6,a_scan2=10,a_scan3=10,a_expand=5,a_expand1=0,a_expand2=5;
 int b_scan=8,b_scan1=8,b_scan2=12,b_scan3=12,b_expand=5,b_expand1=0,b_expand2=5;
 int al_scan_i=56,ar_scan_i=76,bl_scan_i=48,br_scan_i=84;//分区坐标
 int a_value2=110,a_value3=110,a_value_T1=120,a_value_T2=110,a_value_T3=80;   //判断跳变沿的差值标准
-int b_value2=150,b_value3=150,b_value_T1=160,b_value_T2=140,b_value_T3=120;      //判断跳变沿的差值标准
+int b_value2=150,b_value3=150,b_value_T1=150,b_value_T2=140,b_value_T3=120;      //判断跳变沿的差值标准
 
 int al_count=0,ar_count=0,bl_count=0,br_count=0;  //白点计数
 int al_flag=4,ar_flag=4,bl_flag=4,br_flag=4,allflag=4444;//0,1,2,3,4;黑，白，白-黑，黑-白，错误
@@ -498,7 +498,7 @@ void ErrorCalculate(void)
 		stop_cnt=0;
 	if(a_bar_flag==1)                                        //障碍物
 	{
-		//BarrierControl();
+		BarrierControl();
 		return;
 	}
 	switch(b_flag){
@@ -627,7 +627,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*4;
+				error=error*9;
 			else		//实际不会出现
 				error=error*3/2;
 		}
@@ -665,7 +665,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error<0)
-				error=error*4;
+				error=error*5.5;
 			else				//实际不应出现
 				error=error*3/2;
 		}
