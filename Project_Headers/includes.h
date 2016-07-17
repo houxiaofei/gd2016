@@ -56,7 +56,7 @@ extern int PixelRight[128];
 
 /***************foreward*****************/
 #define forwardleft SIU.GPDI[41].R	//光编检测车实际方向:1左前进 0左倒退
-#define backwardright SIU.GPDI[47].R	//光编检测车实际方向:1右倒退 0右前进
+#define forwardright SIU.GPDI[47].R	//光编检测车实际方向:1右倒退 0右前进
 
 
 /***************switch*****************/

@@ -15,8 +15,8 @@ unsigned int LEFT=3905;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
-unsigned char sp_x2=3,sp_x3=35;
-double sp_x1=0.0062;//0.0062//0.0060
+unsigned char sp_x2=3,sp_x3=30;
+double sp_x1=0.007;//0.0062//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -78,10 +78,10 @@ void Steer_PDSet(void)
 		else                            {Steer_kp=10;Steer_kd=12;}//14    
 		//
 //		if(ABS(target_offset)<25) {Steer_kp=sp_x2;Steer_kd=12;}
-//		else if(ABS(target_offset)<45.56)  {Steer_kp=-0.097*(ABS(target_offset)-45.46)*(ABS(target_offset)-45.46)+6.056;Steer_kd=15;}
+//		else if(ABS(target_offset)<45.56)  {Steer_kp=-0.0080*(ABS(target_offset)-45.46)*(ABS(target_offset)-45.46)+6.056;Steer_kd=15;}
 //												//0.0086_tspeed180//-0.0097
-//		else if(ABS(target_offset)<55)  {Steer_kp=6.056+0.25*(ABS(target_offset)-45.46);Steer_kd=12;}
-//		else							{Steer_kp=8.416;Steer_kd=12;}//+-0.472/0.05
+//		else if(ABS(target_offset)<55)  {Steer_kp=6.056+0*(ABS(target_offset)-45.46);Steer_kd=12;}
+//		else							{Steer_kp=6.056;Steer_kd=12;}//+-0.472/0.05//8.416
 		
 //		if(ABS(target_offset)<15)        {Steer_kp=4;Steer_kd=10;}
 //		else if(ABS(target_offset)<25)   {Steer_kp=5;Steer_kd=10;}

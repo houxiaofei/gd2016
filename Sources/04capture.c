@@ -116,10 +116,10 @@ void SpeedCount(void)
 	}
 	else 
 		csr=speedcounter3-speedcounter4;	
-	if(backwardright) 
-		csr=-csr;
-	else 
+	if(forwardright) 
 		csr=csr;
+	else 
+		csr=-csr;
 	speedcounter4=speedcounter3;
 	
 //	csl_cnt[0]=csl_cnt[1];csl_cnt[1]=csl_cnt[2];csl_cnt[2]=csl;

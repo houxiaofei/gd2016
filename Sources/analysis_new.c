@@ -506,7 +506,7 @@ void ErrorCalculate(void)
 	if(b_flag==0&&a_flag==0)	//全黑情况
 	{
 		stop_cnt++;
-		if(stop_cnt>10)		//判断到3次全黑情况就停车
+		if(stop_cnt>20)		//判断到3次全黑情况就停车
 		{
 			stop_cnt=0;
 			stop_flag=1;
@@ -523,7 +523,7 @@ void ErrorCalculate(void)
 	case 22:
 		if(end_judge_flag)
 			EndJudge();
-		if(a_flag==22||a_flag==23||a_flag==32)
+		if(a_flag==22||a_flag==23||a_flag==32||a_flag==33)
 			BarrierJudge();
 		PixelScan_C();
 		SpeedFlagJudge_C();
