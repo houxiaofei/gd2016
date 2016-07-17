@@ -98,7 +98,7 @@ void ModeOpenGo(void)//开环跑
 {
 	basic_mode=2;
 	targetspeed=230;
-	SET_motor(-100,-100);
+	SET_motor(100,0);
 	OLED_Init();//OLED初始化
 	initPIT2();
 	initPIT();
