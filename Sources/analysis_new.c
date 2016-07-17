@@ -84,7 +84,7 @@ void PixelScan_A(void)
 {
 	al_count=0,ar_count=0;
 	al_flag=4,ar_flag=4;
-	//al_edge=0,ar_edge=0;
+	al_edge=0,ar_edge=0;
 	for(i=al_start;i>al_end;i--)
 	{
 		if(i>al_scan_i)
@@ -512,9 +512,9 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*9;
+				error=error*4;
 			else		//实际不会出现
-				error=error*3/2;
+				error=error*2;
 		}
 		else if(br_flag==1)
 		{
@@ -550,9 +550,9 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error<0)
-				error=error*5.5;
+				error=error*4.5;
 			else				//实际不应出现
-				error=error*3/2;
+				error=error*2.5;
 		}
 		else if(bl_flag==1)
 		{
@@ -562,8 +562,8 @@ void BarrierControl(void)
 		{
 			error=25;
 		}
-		if(a_flag==22&&b_flag==22)
-		{
+//		if(a_flag==22&&b_flag==22)
+//		{
 			b_error=(bl_edge-b_start+br_edge-b_start);
 			if((a_error+b_error)>b_bar_value)
 			{
@@ -575,7 +575,7 @@ void BarrierControl(void)
 					ar_bar_flag=0;
 				}
 			}
-		}
+//		}
 	}
 }
 

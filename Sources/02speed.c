@@ -13,9 +13,9 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=230,transspeed=200,turnspeed=180,deadspeed=180,barspeed=180;//250,190,180
+int straightspeed=230,transspeed=217,turnspeed=217,deadspeed=217,barspeed=190;//250,190,180
 //**********************差速参数***************************/
-signed int Speed_kc1=15000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=12000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
@@ -24,7 +24,7 @@ int ErrorLeft=0,PreErrorLeft=0,Pre2ErrorLeft=0,SumErrorLeft=0,ErrorRight=0,PreEr
 int intErrorLeft=0,intErrorRight=0;
 float Pwm_Delta_Left=0,Pwm_Delta_Right=0; 
 int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
-
+int ramp_flag=0;
 //float Speed_kp_Left=6,Speed_ki_Left=0.1,Speed_kd_Left=0;//16
 //float Speed_kp_Right=0.1,Speed_ki_Right=0.01,Speed_kd_Right=0;	//电机增量式PID
 
@@ -90,7 +90,18 @@ void Speed_Set(void)
 	else if(a_bar_flag==1)
 		targetspeed=barspeed;
     else if(j==0||a_flag==11||b_flag==11)
-		targetspeed=straightspeed;
+    {
+//		if(ABS(ar_edge-al_edge)>42)
+//		{
+//			targetspeed=straightspeed-5*(ABS(ar_edge-al_edge)-42);
+//			ramp_flag=1;
+//		}
+//		else
+//		{
+			targetspeed=straightspeed;
+//			ramp_flag=0;
+//		}
+    }
 	else if((a_flag==21||a_flag==12)&&b_flag==22)
 		targetspeed=transspeed;
 	//else if(error>=45)
