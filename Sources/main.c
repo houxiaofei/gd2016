@@ -75,7 +75,7 @@ void ModeBlueImage(void)//看CCD图像
 {
 	basic_mode=4;
 	Image_or_not=1;//从CCD图像开始，发送图像，flag,error,a_error,b_error,CurrentSteer
-	Speed_or_not=52;//发送完舵机值后结束
+	Speed_or_not=57;//发送完舵机值后结束
 	OLED_Init();//OLED初始化
 	BlueTx();//蓝牙发送开始
 	initPIT2();

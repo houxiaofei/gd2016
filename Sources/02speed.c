@@ -13,7 +13,7 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=230,transspeed=200,turnspeed=180,deadspeed=180,barspeed=180;//250,190,180
+int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=180,barspeed=180;//250,190,180
 //**********************差速参数***************************/
 signed int Speed_kc1=15000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
@@ -71,42 +71,46 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
+//	int i=0,j=0,all_flag_count=0;
+//	for(i=0;i<10;i++)
+//	{
+//		if(all_flag[i]!=2222)
+//		{
+//			all_flag_count++;
+//		}
+//		if(all_flag_count>=3)
+//		{
+//			j=1;
+//			break;
+//		}
+//	}
+//	if(stop_flag==1)
+//		targetspeed=0;
+//	else if(a_bar_flag==1)
+//		targetspeed=barspeed;
+//    else if(j==0||a_flag==11||b_flag==11)
+//		targetspeed=straightspeed;
+//	else if((a_flag==21||a_flag==12)&&b_flag==22)
+//		targetspeed=transspeed;
+//	//else if(error>=45)
+//	else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
+//		targetspeed=deadspeed;
+//	else
+//		targetspeed=turnspeed;	
 	
-	int i=0,j=0,all_flag_count=0;
-	for(i=0;i<10;i++)
-	{
-		if(all_flag[i]!=2222)
-		{
-			all_flag_count++;
-		}
-		if(all_flag_count>=3)
-		{
-			j=1;
-			break;
-		}
-	}
-	if(stop_flag==1)
-		targetspeed=0;
-	else if(a_bar_flag==1)
-		targetspeed=barspeed;
-    else if(j==0||a_flag==11||b_flag==11)
+	//C-CCD版本
+	if(turn_flag)
+		targetspeed=turnspeed;
+	else if(straight_flag)
 		targetspeed=straightspeed;
-	else if((a_flag==21||a_flag==12)&&b_flag==22)
+	else if(trans_enter_flag||trans_out_flag)
 		targetspeed=transspeed;
-	//else if(error>=45)
 	else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
 		targetspeed=deadspeed;
+	else if(a_bar_flag==1)
+		targetspeed=barspeed;
 	else
 		targetspeed=turnspeed;
-//	RPID=CENTER-Steer_PWM[3];
-//	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID);
-//	if(c_edge<96)
-//	{
-//		targetspeed=100;
-//	}
-//	else
-//	    targetspeed=200;
-	
 }
 
 //**********************双PID差速控制*******************************************

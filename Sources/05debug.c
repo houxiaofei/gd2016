@@ -69,6 +69,7 @@ void LINFlex_TX_Interrupt(void)
 	unsigned char steer='X';
 	unsigned char speed='Y';
 	unsigned char data='Z';
+	unsigned char flag='W';
 //		if(*send!=0x00&&Ts==0)
 //			LINFlex_TX(*send++);
 //		else
@@ -313,7 +314,27 @@ void LINFlex_TX_Interrupt(void)
 		LINFlex_TX(SendInt4(tsr));
 		Ts=52;
 		break;
-	case 52:
+	case 52: 
+		LINFlex_TX(flag);        //·¢ËÍspeedflag
+		Ts=53;
+		break;
+	case 53:
+		LINFlex_TX(SendInt4(straight_flag));
+		Ts=54;
+		break;
+	case 54: 
+		LINFlex_TX(SendInt4(trans_enter_flag));      
+		Ts=55;
+		break;
+	case 55:
+		LINFlex_TX(SendInt4(trans_out_flag));
+		Ts=56;
+		break;
+	case 56:
+		LINFlex_TX(SendInt4(turn_flag));
+		Ts=57;
+		break;
+	case 57:
 		send = putstring;
 		Ts=0;
 //		LINFLEX_0.LINCR1.B.INIT=1;

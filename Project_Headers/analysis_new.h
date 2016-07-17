@@ -26,6 +26,10 @@ extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,a
 extern int b_bar_value,b_bar_cnttop,ab_difference,ab_difference_value;//’œ∞≠ŒÔ
 extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;//»ÎÕ‰≈–∂œ
 
+extern int cl_flag,cr_flag,cl_edge,cr_edge;
+
+extern int straight_flag,trans_enter_flag,trans_out_flag,turn_flag;
+
 int AverageCalculate(int a, int b, int c[]);
 int EdgeCalculate(int a, int b, int c[],int avg);
 extern void DataSet(void);
@@ -34,6 +38,7 @@ extern void PixelScan_A(void);
 extern void PixelScan_C(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
+void SpeedFlagJudge_C(void);
 void TrendCalculate(void);
 void EnterJudge(void);
 void EndJudge(void);
