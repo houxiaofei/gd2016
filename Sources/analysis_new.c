@@ -795,7 +795,7 @@ void BarrierControl(void)
 			if(error>0)
 				error=error*4;
 			else		//实际不会出现
-				error=error*3/2;
+				error=error*2;
 		}
 		else if(br_flag==1)
 		{
@@ -833,7 +833,7 @@ void BarrierControl(void)
 			if(error<0)
 				error=error*4;
 			else				//实际不应出现
-				error=error*3/2;
+				error=error*2.5;
 		}
 		else if(bl_flag==1)
 		{
@@ -843,8 +843,8 @@ void BarrierControl(void)
 		{
 			error=25;
 		}
-		if(a_flag==22&&b_flag==22)
-		{
+//		if(a_flag==22&&b_flag==22)
+//		{
 			b_error=(bl_edge-b_start+br_edge-b_start);
 			if((a_error+b_error)>b_bar_value)
 			{
@@ -856,7 +856,7 @@ void BarrierControl(void)
 					ar_bar_flag=0;
 				}
 			}
-		}
+//		}
 	}
 }
 

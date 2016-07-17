@@ -25,6 +25,7 @@ extern int tsl_PWM,tsr_PWM,tsr_Delta,error_Delta;
 extern int ErrorLeft,ErrorRight,PreErrorRight;
 extern signed int Speed_kc1;
 extern signed int RPID;
+extern int ramp_flag;
 
 extern float Speed_kp_Left,Speed_ki_Left,Speed_kd_Left,csxs;
 extern float Speed_kp_Right,Speed_ki_Right,Speed_kd_Right;	//µç»úPID
