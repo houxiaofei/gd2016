@@ -13,7 +13,7 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=230,transspeed=217,turnspeed=217,deadspeed=217,barspeed=190;//250,190,180
+int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=180,barspeed=190;//250,190,180
 //**********************差速参数***************************/
 signed int Speed_kc1=12000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8

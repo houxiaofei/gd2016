@@ -205,22 +205,22 @@ void OLED_Test(void)
 //    OLED_Num(br_edge_right);
     
     OLED_SetPointer(6,5);
-    //    OLED_Str(" ");
-    //    OLED_Num(a_edg_err);
-//    OLED_Str("er: ");
-//    OLED_Num(a_error);
-//    OLED_Str(" ");
-//    OLED_Num(b_error);
-//    OLED_Str(" ");
-//    OLED_Num(error);
-      OLED_Str("s_flag: ");
-      OLED_Num(straight_flag);
-      OLED_Str(" ");
-      OLED_Num(trans_enter_flag);
-      OLED_Str(" ");
-      OLED_Num(trans_out_flag);
-      OLED_Str(" ");
-      OLED_Num(turn_flag);
+//        OLED_Str(" ");
+//        OLED_Num(a_edg_err);
+    OLED_Str("er: ");
+    OLED_Num(a_error);
+    OLED_Str(" ");
+    OLED_Num(b_error);
+    OLED_Str(" ");
+    OLED_Num(error);
+//      OLED_Str("s_flag: ");
+//      OLED_Num(straight_flag);
+//      OLED_Str(" ");
+//      OLED_Num(trans_enter_flag);
+//      OLED_Str(" ");
+//      OLED_Num(trans_out_flag);
+//      OLED_Str(" ");
+//      OLED_Num(turn_flag);
 
     
     

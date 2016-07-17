@@ -78,7 +78,7 @@ void Steer_PDSet(void)
 		else                            {Steer_kp=10;Steer_kd=12;}//14    
 		//
 //		if(ABS(target_offset)<25) {Steer_kp=sp_x2;Steer_kd=12;}
-//		else if(ABS(target_offset)<45.56)  {Steer_kp=-0.01*(ABS(target_offset)-45.46)*(ABS(target_offset)-45.46)+6.056;Steer_kd=15;}
+//		else if(ABS(target_offset)<45.56)  {Steer_kp=-0.097*(ABS(target_offset)-45.46)*(ABS(target_offset)-45.46)+6.056;Steer_kd=15;}
 //												//0.0086_tspeed180//-0.0097
 //		else if(ABS(target_offset)<55)  {Steer_kp=6.056+0.25*(ABS(target_offset)-45.46);Steer_kd=12;}
 //		else							{Steer_kp=8.416;Steer_kd=12;}//+-0.472/0.05
