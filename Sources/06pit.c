@@ -35,6 +35,18 @@ void PitISR(void)//10ms一个控制周期
 	steer_flag=1;
 	if(pitcount2>=1600)//1600
 		end_judge_flag=1;
+	if(a_bar_flag==1)
+	{
+		pitcount3++;
+		if(pitcount3>=50)
+		{
+			a_bar_flag=0;
+			al_bar_flag=0;
+			ar_bar_flag=0;
+		}
+	}
+	else
+		pitcount3=0;
 	//time1=TIME;
 	//time2=TIME;
 	//time3=TimeMesure();

@@ -15,8 +15,8 @@ unsigned int LEFT=3900;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
-unsigned char sp_x2=3,sp_x3=30;
-double sp_x1=0.009;//0.0062//0.0060
+unsigned char sp_x2=2,sp_x3=30;
+double sp_x1=0.006;//0.0062//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
