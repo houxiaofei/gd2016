@@ -516,17 +516,15 @@ void ErrorCalculate(void)
 		stop_cnt=0;
 	if(a_bar_flag==1)                                        //障碍物
 	{
-		//BarrierControl();
+		BarrierControl();
 		return;
 	}
 	switch(b_flag){
 	case 22:
 		if(end_judge_flag)
 			EndJudge();
-		if(a_flag==22||a_flag==23||a_flag==32)
+		if(a_flag==22||a_flag==23||a_flag==32||a_flag==33)
 			BarrierJudge();
-		PixelScan_C();
-		SpeedFlagJudge_C();
 		if(a_flag==0)
 			a_error=0;
 		b_error=(bl_edge-bl_end+br_edge-br_end);
@@ -606,7 +604,7 @@ void SpeedFlagJudge_C(void)
 	}
 	
 	//转换判断，trans_flag
-	if(a_flag==22&&(c_flag[9]!=22&c_flag[2]!=22))//C看到12，21
+	if(all_flag==2222&&(c_flag[9]!=22&&c_flag[8]!=22))//C看到12，21
 	{
 		if(straight_flag==1)
 		{

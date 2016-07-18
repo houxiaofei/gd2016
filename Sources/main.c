@@ -10,7 +10,7 @@ int main(void) {
 	initALL();
 	ChooseMode();
 	if(mode>=16) ModeGo();	//跑车
-	else if(mode>=8)   ModeBlueSpeed(); //看速度图像，mode=8=单环位置式，mode=8+1=双环位置式
+	else if(mode>=8)   ModeBlueSpeed(); //看速度图像，mode=8=单环位置式，mode=8+1=双环位置式,mode=8+2=2个CCD模式
 	else if(mode>=4)   ModeBlueImage(); //看CCD图像
 	else if(mode>=2)   ModeOpenGo();//开环跑
 }
@@ -22,6 +22,11 @@ void Direction_Control(void) //转向控制函数
 	PixelScan_B(); //图像处理-B
 	ErrorCalculate_A();//偏差值计算-A
 	ErrorCalculate();//偏差值计算-B
+	if(mode!=10)
+	{
+		PixelScan_C();
+		SpeedFlagJudge_C();
+	}
 	
 	//pre_error=error;  //传递error值
 	//TrendCalculate(); //ERROR趋势计算
@@ -98,7 +103,7 @@ void ModeOpenGo(void)//开环跑
 {
 	basic_mode=2;
 	targetspeed=230;
-	SET_motor(100,0);
+	SET_motor(100,100);
 	OLED_Init();//OLED初始化
 	initPIT2();
 	initPIT();

@@ -66,7 +66,7 @@ void PitISR2(void)
 			targetspeed=0;
 			if(((csl+csr)/2)>15)
 			{
-				if(mode==8||basic_mode==4)
+				if(mode!=9)
 					SpeedControl(); //位置式控制
 				else if(mode==9)
 				{
@@ -82,7 +82,7 @@ void PitISR2(void)
 		}
 		else
 		{
-			if(mode==8||basic_mode==4)
+			if(mode!=9)
 				SpeedControl(); //位置式控制
 			else if(mode==9)
 			{
