@@ -13,9 +13,9 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-450;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=160,barspeed=150;//250,190,180
+int straightspeed=230,transspeed=170,turnspeed=170,deadspeed=170,barspeed=170;//250,190,180
 //**********************差速参数***************************/
-signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=12000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
@@ -28,8 +28,8 @@ int tsl_PWM=0,tsr_PWM=0,tsr_Delta=0,error_Delta=0;
 //float Speed_kp_Left=6,Speed_ki_Left=0.1,Speed_kd_Left=0;//16
 //float Speed_kp_Right=0.1,Speed_ki_Right=0.01,Speed_kd_Right=0;	//电机增量式PID
 
-float Speed_kp_Left=10,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
-float Speed_kp_Right=10,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID
+float Speed_kp_Left=8,Speed_ki_Left=0.2,Speed_kd_Left=1;//16 I=0.01-1(0.8),d=1-10(0.5)
+float Speed_kp_Right=8,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID 10,0.2,1
 
 //**********************双PID差速控制参数(内外环增量式)**********************************************;	
 //float KP_speed=3,KI_speed=0.01,KD_speed=0.4;//1,0.02，0.4
@@ -45,12 +45,12 @@ float Speed_kp_Right=10,Speed_ki_Right=0.2,Speed_kd_Right=1;	//电机位置式PID
 //int LMotorPWM=0,RMotorPWM=0;
 
 //**********************双PID差速控制参数(内外环位置式)**********************************************;	
-float KP_speed=15,KI_speed=0.01,KD_speed=0.1;//4,0.8,0.1
+float KP_speed=5,KI_speed=0.01,KD_speed=0.1;//4,0.8,0.1//15,0.01,0.1
 int Sum_Speed_Err=0,Speed_Err=0,Pre_Speed_Err=0;
 int Pwm_Delta=0;
 int MotorPWM=0;
 
-float KP_DifSpd=15,KI_DifSpd=0.6,KD_DifSpd=0.1;//0.8，0.01，0.2
+float KP_DifSpd=5,KI_DifSpd=0.01,KD_DifSpd=0.1;//0.8，0.01，0.2//15,0.6,0.1
 int Cur_DifSpd=0,Tar_DifSpd=0;
 int DifSpd_Err=0,Sum_DifSpd_Err=0,Pre_DifSpd_Err=0;
 int DifferPWM_Delta=0;
@@ -61,10 +61,10 @@ int LMotorPWM=0,RMotorPWM=0;
 /*************************电机接口函数*********************/
 void SET_motor(int leftSpeed,int rightSpeed)
 {
-	if(leftSpeed>=0) {EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R =leftSpeed;}
-		else {EMIOS_0.CH[21].CBDR.R = -leftSpeed;EMIOS_0.CH[22].CBDR.R = 0;}//左轮  E5左退   E6左进
-	if(rightSpeed>=0) {EMIOS_0.CH[19].CBDR.R = rightSpeed;EMIOS_0.CH[20].CBDR.R = 0;}
-		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -rightSpeed;}//右轮  E3右进   E4右退
+	if(leftSpeed>=0) {EMIOS_0.CH[19].CBDR.R = leftSpeed;EMIOS_0.CH[20].CBDR.R = 0;}
+		else {EMIOS_0.CH[19].CBDR.R = 0;EMIOS_0.CH[20].CBDR.R = -leftSpeed;}//左轮  E3左进   E4左退
+	if(rightSpeed>=0) {EMIOS_0.CH[21].CBDR.R = 0;EMIOS_0.CH[22].CBDR.R =rightSpeed;}
+		else {EMIOS_0.CH[21].CBDR.R = -rightSpeed;EMIOS_0.CH[22].CBDR.R = 0;}//右轮  E5右退   E6右进
 }
 
 /*************************变速控制函数*********************/
@@ -97,12 +97,12 @@ void Speed_Set(void)
 //	RPID=CENTER-Steer_PWM[3];
 //	targetspeed=240-0.0005375*ABS(RPID)*ABS(RPID); //连续变化
 	
-	if(c_edge<96)
+	if(c_edge<106)
 	{
-		targetspeed=100;
+		targetspeed=180;
 	}
 	else
-	    targetspeed=200;
+	    targetspeed=270;
 	
 }
 
@@ -178,7 +178,7 @@ void Speed_PID2(void) //外环位置式
 //	}
 
 	Pre_Speed_Err=Speed_Err;
-//	SET_motor(MotorPWM,MotorPWM);
+	//SET_motor(MotorPWM,MotorPWM);
 	//SET_motor(100,100);
 }
 
@@ -285,13 +285,13 @@ void SpeedControl()//闭环,加差速位置式1111
 	ErrorLeft=(signed int)(tsl)-(signed int)(csl);
 	ErrorRight=(signed int)(tsr)-(signed int)(csr);
 	
-	if(ErrorLeft/tsl>0.15&&ErrorRight/tsr>0.15)
-	{
-		tsl_PWM=Motor_PWM_MAX;
-		tsr_PWM=Motor_PWM_MAX;
-	}
-	else
-	{
+//	if(ErrorLeft/tsl>0.15&&ErrorRight/tsr>0.15)
+//	{
+//		tsl_PWM=Motor_PWM_MAX;
+//		tsr_PWM=Motor_PWM_MAX;
+//	}
+//	else
+//	{
 	
 	SumErrorLeft+=ErrorLeft;
 	if(SumErrorLeft>200) SumErrorLeft=200;
@@ -307,7 +307,7 @@ void SpeedControl()//闭环,加差速位置式1111
 	else if(tsl_PWM<Motor_PWM_MIN)  tsl_PWM=Motor_PWM_MIN;	    
 	if(tsr_PWM>Motor_PWM_MAX)  tsr_PWM=Motor_PWM_MAX;
 	else if(tsr_PWM<Motor_PWM_MIN)  tsr_PWM=Motor_PWM_MIN;
-	}
+//	}
 
 	SET_motor(tsl_PWM,tsr_PWM);
 	//SET_motor(100,100);

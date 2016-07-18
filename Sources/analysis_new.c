@@ -7,6 +7,10 @@
 
 #include "includes.h"
 
+int a_bar_value=22,a_bar_value2=100,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=10;//障碍物
+int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
+
 int A[128]={0};
 int B[128]={0};
 int C[128]={0};
@@ -40,11 +44,9 @@ int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//终点30,10
-int a_edg_err=0,a_bar_value=22,a_bar_cnt=0,a_bar_flag=0,a_bar_value2=100,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=28,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=4;//障碍物
 
-int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
-int c_start=50,c_end=115,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//value跳变沿标准 c_T黑白阈值
+int c_count=0,c_flag=0,c_edge=120,c_edge_left=0,c_edge_right=0;
+int c_start=50,c_end=120,c_allwhite=60,c_allblack=10,c_T=320,c_value=80,c_scan=6,c_expand=5;//value跳变沿标准 c_T黑白阈值
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -307,8 +309,8 @@ void PixelScan_C(void)
 {
 	c_count=0;
 	c_flag=4;
-	c_edge=0;
-	for(i=c_start;i>c_end;i++)
+	c_edge=c_end;
+	for(i=c_start;i<c_end;i++)
 	{
 		if(C[i]>c_T)
 		{
@@ -373,7 +375,7 @@ void ErrorCalculate(void)
 	if(b_flag==0&&a_flag==0)	//全黑情况
 	{
 		stop_cnt++;
-		if(stop_cnt>3)		//判断到3次全黑情况就停车
+		if(stop_cnt>50)		//判断到3次全黑情况就停车
 		{
 			stop_cnt=0;
 			stop_flag=1;
@@ -381,7 +383,7 @@ void ErrorCalculate(void)
 	}
 	else
 		stop_cnt=0;
-	if(a_bar_flag==1)                                        //障碍物
+    if(a_bar_flag==1)                                        //障碍物
 	{
 		BarrierControl();
 		return;
@@ -390,8 +392,10 @@ void ErrorCalculate(void)
 	case 22:
 		if(end_judge_flag)
 			EndJudge();
-		if(a_flag==22)
+		if(a_flag==22||a_flag==23||a_flag==32||a_flag==33)
 			BarrierJudge();
+		if(a_flag==0)
+			a_error=0;
 		b_error=(bl_edge-bl_end+br_edge-br_end);
 		error=a_error*0.5+b_error;
 		break;
@@ -450,18 +454,93 @@ void EndJudge(void)
 
 void BarrierJudge(void)		//障碍物判断
 {
+	ar_bar_edge=0;a_bar_avg=0;
+	if(a_flag==33)
+	{
+		a_scan=a_scan2;
+		a_value3=a_value_T2;
+		for(i=ar_end;i>ar_edge;i--)
+		{
+			if(i>(al_end+a_scan))
+			{
+				if(A[i-a_scan]-A[i]>a_value3&&A[i-a_scan-1]-A[i-1]>a_value3)
+				{
+					a_bar_avg=AverageCalculate((i-a_scan-a_expand2),(i+a_expand1),A);
+					ar_bar_edge=EdgeCalculate((i-a_scan-a_expand2),(i+a_expand1),A,a_bar_avg);
+				}
+			}
+		}
+		for(i=al_end;i<al_edge;i++)
+		{
+			if(i>(al_end+a_scan))
+			{
+				if(A[i+a_scan]-A[i]>a_value3&&A[i+a_scan+1]-A[i+1]>a_value3)
+				{
+					a_bar_avg=AverageCalculate((i+a_scan+a_expand2),(i-a_expand1),A);
+					al_bar_edge=EdgeCalculate((i-a_scan-a_expand2),(i-a_expand1),A,a_bar_avg);
+				}
+			}
+		}
+		if(al_bar_edge!=0&&ar_bar_edge!=0)
+		{
+			if((a_start-al_bar_edge)<(ar_bar_edge-a_start))
+			{
+				al_edge=ar_edge;
+				ar_edge=ar_bar_edge;
+			}
+			else
+			{
+				ar_edge=al_edge;
+				al_edge=al_bar_edge;
+			}
+		}
+	}
+	else if(a_flag==23)
+	{
+		a_scan=a_scan2;
+		a_value3=a_value_T2;
+		for(i=ar_end;i>ar_edge;i--)
+		{
+			if(i>(al_end+a_scan))
+			{
+				if(A[i-a_scan]-A[i]>a_value3&&A[i-a_scan-1]-A[i-1]>a_value3)
+				{
+					a_bar_avg=AverageCalculate((i-a_scan-a_expand2),(i+a_expand1),A);
+					ar_bar_edge=EdgeCalculate((i-a_scan-a_expand2),(i+a_expand1),A,a_bar_avg);
+					ar_edge=ar_bar_edge;
+				}
+			}
+		}
+	}
+	else if(a_flag==32)
+	{
+		a_scan=a_scan2;
+		a_value3=a_value_T2;
+		for(i=al_end;i<al_edge;i++)
+		{
+			if(i>(al_end+a_scan))
+			{
+				if(A[i+a_scan]-A[i]>a_value3&&A[i+a_scan+1]-A[i+1]>a_value3)
+				{
+					a_bar_avg=AverageCalculate((i+a_scan+a_expand2),(i-a_expand1),A);
+					al_bar_edge=EdgeCalculate((i-a_scan-a_expand2),(i-a_expand1),A,a_bar_avg);
+					al_edge=al_bar_edge;
+				}
+			}
+		}
+	}
 	a_edg_err=ar_edge-al_edge;
-//	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
+	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
 	if(a_bar_flag==1)
 		return;
 	if(a_edg_err<a_bar_value)
 	{
 		a_bar_cnt++;	
 	}
-//	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
-//	{
-//		a_bar_cnt++;	
-//	}
+	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
+	{
+		a_bar_cnt++;	
+	}
 	if(((ABS(al_edge-a_start)-ABS(ar_edge-a_start))<0)&&al_bar_flag==0&&a_bar_cnt>0)//障碍物在左边
 	{
 		i=0;j=0;
@@ -497,6 +576,7 @@ void BarrierJudge(void)		//障碍物判断
 		a_bar_cnt=0;
 		a_bar_flag=1;
 	}
+	
 }
 
 void BarrierControl(void)
@@ -514,7 +594,7 @@ void BarrierControl(void)
 			if(error>0)
 				error=error*4;
 			else		//实际不会出现
-				error=error*3/2;
+				error=error*2;
 		}
 		else if(br_flag==1)
 		{
@@ -552,7 +632,7 @@ void BarrierControl(void)
 			if(error<0)
 				error=error*4;
 			else				//实际不应出现
-				error=error*3/2;
+				error=error*2.5;
 		}
 		else if(bl_flag==1)
 		{
@@ -562,8 +642,8 @@ void BarrierControl(void)
 		{
 			error=25;
 		}
-		if(a_flag==22&&b_flag==22)
-		{
+//		if(a_flag==22&&b_flag==22)
+//		{
 			b_error=(bl_edge-b_start+br_edge-b_start);
 			if((a_error+b_error)>b_bar_value)
 			{
@@ -575,9 +655,12 @@ void BarrierControl(void)
 					ar_bar_flag=0;
 				}
 			}
-		}
+//		}
 	}
 }
+
+
+
 
 void TrendCalculate(void)
 {

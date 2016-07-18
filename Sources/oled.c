@@ -139,21 +139,23 @@ void OLED_Test(void)
 	OLED_Num(tsr);
 
 	OLED_SetPointer(1,5);
-//	OLED_Str("stop: ");
-//	OLED_Num(stop_flag);
-//	OLED_Num(csxs*100);
-//	OLED_Str("   ");
-//	OLED_Num(tsr);
-//	OLED_Str("ts: ");
-//	OLED_Num(targetspeed);
-	OLED_Str("x1: ");
-	OLED_Num(sp_x1*10000);
+	//	OLED_Str("  ");
+	//	OLED_Str("RPID: ");
+	//	OLED_Num(RPID);
+//	OLED_Str("x1: ");
+//	OLED_Num(sp_x1*10000);
 //	OLED_Str("  ");
-//	OLED_Str("RPID: ");
-//	OLED_Num(RPID);
+//	OLED_Str("kc1: ");
+//	OLED_Num(Speed_kc1/100);
+	OLED_Str("bl: ");
+    OLED_Num(backwardleft);
+    OLED_Str(" ");
+	OLED_Str("br: ");
+    OLED_Num(backwardright);
+    OLED_Str(" ");
+	OLED_Num(csl);
 	OLED_Str("  ");
-	OLED_Str("kc1: ");
-	OLED_Num(Speed_kc1/100);
+	OLED_Num(csr);
 	
 	OLED_SetPointer(2,5);
 	OLED_Str("flag: ");
@@ -183,7 +185,7 @@ void OLED_Test(void)
 //    OLED_Str("  ");
 //    OLED_Num(ar_edge_right);
 
-    
+
 	OLED_SetPointer(4,5);
 	OLED_Str("edge: ");
     OLED_Num(al_edge);
@@ -195,27 +197,39 @@ void OLED_Test(void)
     OLED_Num(br_edge);
     
 	OLED_SetPointer(5,5);
+	OLED_Str("ced: ");
+	OLED_Num(c_edge);
+	OLED_Str(" ");
+	OLED_Num(c_flag);
+	OLED_Str(" ");
+	OLED_Num(c_edge_left);
+	OLED_Str(" ");
+	OLED_Num(c_edge_right);
+//	OLED_Str("c: ");
+//	OLED_Num(csl);
+//	OLED_Str("  ");
+//	OLED_Num(csr);
 //	OLED_Str("  ");
 //	OLED_Str("rx ");
 //	OLED_Num(RX_data);
-	OLED_Str("bedg: ");
-    OLED_Num(bl_edge_left);
-    OLED_Str("  ");
-    OLED_Num(bl_edge_right);
-    OLED_Str("  ");
-    OLED_Num(br_edge_left);
-    OLED_Str("  ");
-    OLED_Num(br_edge_right);
+//	OLED_Str("bedg: ");
+//    OLED_Num(bl_edge_left);
+//    OLED_Str("  ");
+//    OLED_Num(bl_edge_right);
+//    OLED_Str("  ");
+//    OLED_Num(br_edge_left);
+//    OLED_Str("  ");
+//    OLED_Num(br_edge_right);
     
     OLED_SetPointer(6,5);
+    //    OLED_Str(" ");
+    //    OLED_Num(a_edg_err);
     OLED_Str("er: ");
     OLED_Num(a_error);
     OLED_Str(" ");
     OLED_Num(b_error);
     OLED_Str(" ");
     OLED_Num(error);
-    OLED_Str(" ");
-    OLED_Num(a_edg_err);
 
     
     
@@ -226,11 +240,11 @@ void OLED_Test(void)
 //    OLED_Num(b_T);
 //    OLED_Str("  ");
 //    OLED_Num(c_T);
-	OLED_Str("cs: ");
+	OLED_Str("csteer: ");
 	CurrentSteer=TargetSteer;
 	OLED_Num(CurrentSteer);
-//	OLED_Str("  ");
-//	OLED_Num(mode);
+	OLED_Str("  ");
+	OLED_Num(mode);
 //	OLED_Str("bw: ");
 //	OLED_Num(forwardleft);
 //	OLED_Str("  ");

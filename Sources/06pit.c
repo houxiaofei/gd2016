@@ -48,67 +48,48 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-	if(mode>=2&&mode<4)
+	if(basic_mode==2)//开环
 	{
+		SpeedCount();  //光编计数，采速度值
 		if(stop_flag==1)  //停车
 		{
 			targetspeed=0;
 			SET_motor(0,0);
 		}
 	}
-	else{
-	SpeedCount();  //光编计数，采速度值
-	Speed_Set();   //速度设置，变速
-//	if(stop_flag==1)  //停车
-//	{
-//		targetspeed=0;
-//		if(((csl+csr)/2)>15)
-//		{
-//		    SpeedControl(); 
-////			Speed_PID2();
-////		    DifferSpeed_PID2();
-//		}
-//		else
-//		{
-//		SET_motor(0,0);
-//		}
-//		timecount=0;
-//	}
-//	else
-//	{
-////		SpeedControl(); //位置式控制
-//		Speed_PID2();   //外环位置式
-//		DifferSpeed_PID2(); //内环位置式
-//	}
-	
-	
-//	pitcount2++;
-//	pitcount4++;
-//	if(pitcount2>=400)                         //4s一次
-//	{
-//		pitcount2=0;
-//		pitcount3++;
-//		if(pitcount3==1)
-//		{
-//		    targetspeed+=40;
-//		}
-//		else if(pitcount3==2)
-//		{
-//			pitcount3=0;
-//		    targetspeed-=40;
-//		}
-//	}
-//	SpeedControl(); 
-//	Speed_PID2();
-//	DifferSpeed_PID();
-//	if(pitcount4>=3)
-//	{
-//		pitcount4=0;
-//		csl=(csl_cnt[0]+csl_cnt[1]+csl_cnt[2])/3;
-//		csr=(csr_cnt[0]+csr_cnt[1]+csr_cnt[2])/3;
-//		Speed_PID();
-//		SpeedControl(); 
-//	} 
+	else//闭环
+	{
+		SpeedCount();  //光编计数，采速度值
+		Speed_Set();   //速度设置，变速
+		if(stop_flag==1)  //停车
+		{
+			targetspeed=0;
+			if(((csl+csr)/2)>15)
+			{
+				if(mode==8||basic_mode==4)
+					SpeedControl(); //位置式控制
+				else if(mode==9)
+				{
+					Speed_PID2();//外环位置式
+					DifferSpeed_PID2();//内环位置式
+				}
+			}
+			else
+			{
+			SET_motor(0,0);
+			}
+			timecount=0;
+		}
+		else
+		{
+			if(mode==8||basic_mode==4)
+				SpeedControl(); //位置式控制
+			else if(mode==9)
+			{
+				Speed_PID2();//外环位置式
+				DifferSpeed_PID2();//内环位置式
+			}
+		}
 	}
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位
 }

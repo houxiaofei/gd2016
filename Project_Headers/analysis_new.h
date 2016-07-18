@@ -21,10 +21,11 @@ extern int al_edge,ar_edge,bl_edge,br_edge;//Ìø±äÑØ
 extern int al_edge_left,al_edge_right,ar_edge_left,ar_edge_right;
 extern int bl_edge_left,bl_edge_right,br_edge_left,br_edge_right;
 extern int error,a_error,b_error,pre_error;
-extern int b_value2,b_scan2,b_cnt;//ÖÕµã
+extern int b_value_end,b_scan_end;//ÖÕµã
 extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,ar_bar_flag;//ÕÏ°­Îï
-extern int b_bar_value,b_bar_cnttop;
-extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;
+extern int b_bar_value,b_bar_cnttop,ab_difference,ab_difference_value;//ÕÏ°­Îï
+extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;//ÈëÍäÅĞ¶Ï
+extern int c_edge,c_flag,c_edge_left,c_edge_right;
 
 int AverageCalculate(int a, int b, int c[]);
 int EdgeCalculate(int a, int b, int c[],int avg);

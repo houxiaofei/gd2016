@@ -19,7 +19,7 @@ int CurrentSteer=0;
 unsigned long time1=0;
 unsigned long time2=0;
 unsigned long time3=0;
-unsigned char mode=0;
+unsigned char mode=0,basic_mode=0;
 
 unsigned char RX_data;
 unsigned char RX_flag=0;
@@ -329,33 +329,40 @@ void LINFlex_RX_Interrupt(void)
 		case 1:
 			straightspeed=X[1]*100+X[2]*10+X[3];
 			//transspeed=X[4]*100+X[5]*10+X[6];
-			//turnspeed=X[7]*100+X[8]*10+X[9];
-			//deadspeed=X[10]*100+X[11]*10+X[12];
-			sp_x1=((double)(X[4]*100+X[5]*10+X[6]))/10000;
-			Speed_kc1=X[7]*10000+X[8]*1000+X[9]*100;
-			targetspeed=X[10]*100+X[11]*10+X[12];
+			Speed_kc1=X[4]*10000+X[5]*1000+X[6]*100;
+			//sp_x1=((double)(X[4]*100+X[5]*10+X[6]))/10000;
+			turnspeed=X[7]*100+X[8]*10+X[9];transspeed=X[7]*100+X[8]*10+X[9];
+			deadspeed=X[10]*100+X[11]*10+X[12];
 			barspeed=X[13]*100+X[14]*10+X[15];
 			RX_flag=0;
 			break;
 		case 2:
-//			Speed_kp_Left=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
-//			Speed_kp_Right=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
-			KP_speed=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
-			KI_speed=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
-			KD_speed=(float)(Y[9]*10+Y[10])+((float)(Y[11]*10+Y[12]))/100;
-			KP_DifSpd=(float)(Y[13]*10+Y[14])+((float)(Y[15]*10+Y[16]))/100;
-			KI_DifSpd=(float)(Y[17]*10+Y[18])+((float)(Y[19]*10+Y[20]))/100;
-			KD_DifSpd=(float)(Y[21]*10+Y[22])+((float)(Y[23]*10+Y[24]))/100;
+			if(mode==8||basic_mode==4)//单环位置式
+			{
+				Speed_kp_Left=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
+				Speed_ki_Left=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
+				Speed_kd_Left=(float)(Y[9]*10+Y[10])+((float)(Y[11]*10+Y[12]))/100;
+				Speed_kp_Right=(float)(Y[13]*10+Y[14])+((float)(Y[15]*10+Y[16]))/100;
+				Speed_ki_Right=(float)(Y[17]*10+Y[18])+((float)(Y[19]*10+Y[20]))/100;
+				Speed_kd_Right=(float)(Y[21]*10+Y[22])+((float)(Y[23]*10+Y[24]))/100;
+			}
+			else if(mode==9)//双环位置式
+			{
+				KP_speed=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
+				KI_speed=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;
+				KD_speed=(float)(Y[9]*10+Y[10])+((float)(Y[11]*10+Y[12]))/100;
+				KP_DifSpd=(float)(Y[13]*10+Y[14])+((float)(Y[15]*10+Y[16]))/100;
+				KI_DifSpd=(float)(Y[17]*10+Y[18])+((float)(Y[19]*10+Y[20]))/100;
+				KD_DifSpd=(float)(Y[21]*10+Y[22])+((float)(Y[23]*10+Y[24]))/100;
+			}
 			RX_flag=0;
 			break;
 		case 3:
 			sp_x2=Z[1]*10+Z[2];
 			sp_x3=Z[3]*10+Z[4];
-//			trend_value=Z[1]*10+Z[2];
-//			b_error_value=Z[3]*10+Z[4];
-//			trend_value2=Z[5]*10+Z[6];
-//			his_num=Z[7]*10+Z[8];
-//			b_error_value2=Z[9]*10+Z[10];
+			ab_difference_value=Z[5]*10+Z[6];
+			a_bar_value=Z[7]*10+Z[8];
+			b_value_end=Z[9]*10+Z[10];
 			RX_flag=0;
 			break;
 		}
@@ -402,27 +409,27 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-//		targetspeed+=10;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=10;
+		targetspeed+=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer+=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-//	    targetspeed-=10;
-//		SET_motor(targetspeed,targetspeed);
-	    TargetSteer-=10;
+	    targetspeed-=10;
+		SET_motor(targetspeed,targetspeed);
+//	    TargetSteer-=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
-//		targetspeed+=10;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer-=1;
+		targetspeed+=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer-=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
-//		targetspeed-=10;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer-=1;
+		targetspeed-=10;
+		SET_motor(targetspeed,targetspeed);
+//		TargetSteer-=1;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;
