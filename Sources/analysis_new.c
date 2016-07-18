@@ -791,7 +791,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*4;
+				error=error*4.5;
 			else		//实际不会出现
 				error=error*4;
 		}
