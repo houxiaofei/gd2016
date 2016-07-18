@@ -25,6 +25,7 @@ extern int b_value_end,b_scan_end;//ÖÕµã
 extern int a_edg_err,a_bar_value,a_bar_cnt,a_bar_flag,a_bar_value2,al_bar_flag,ar_bar_flag;//ÕÏ°­Îï
 extern int b_bar_value,b_bar_cnttop,ab_difference,ab_difference_value;//ÕÏ°­Îï
 extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,enter_flag;//ÈëÍäÅĞ¶Ï
+extern int barleft_kp,barright_kp;
 
 extern int cl_flag,cr_flag,cl_edge,cr_edge;
 

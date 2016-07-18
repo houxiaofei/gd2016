@@ -40,9 +40,10 @@ int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//终点30,10
-int a_bar_value=22,a_bar_value2=100,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
-int b_bar_value=25,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=10;//障碍物
+int a_bar_value=25,a_bar_value2=60,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
+int b_bar_value=25,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=6;//障碍物
 int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
+int barleft_kp=6,barright_kp=4;
 
 //int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
 //int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//C-CCD竖直
@@ -653,6 +654,7 @@ void EndJudge(void)
 
 void BarrierJudge(void)		//障碍物判断
 {
+ 
 	ar_bar_edge=0;a_bar_avg=0;
 	if(a_flag==33)
 	{
@@ -729,13 +731,11 @@ void BarrierJudge(void)		//障碍物判断
 		}
 	}
 	a_edg_err=ar_edge-al_edge;
-	ab_difference=ABS(ar_edge-a_start-(a_start-al_edge));
-	if(a_bar_flag==1)
-		return;
-	if(a_edg_err<a_bar_value)
-	{
-		a_bar_cnt++;	
-	}
+	ab_difference=ABS(ABS(ar_edge-a_start)-ABS(a_start-al_edge));
+//	if(a_edg_err<a_bar_value)
+//	{
+//		a_bar_cnt++;	
+//	}
 	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
 	{
 		a_bar_cnt++;	
@@ -791,9 +791,9 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*4.5;
+				error=error*barleft_kp;
 			else		//实际不会出现
-				error=error*4;
+				error=error*2;
 		}
 		else if(br_flag==1)
 		{
@@ -829,9 +829,9 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error<0)
-				error=error*4;
+				error=error*barright_kp;
 			else				//实际不应出现
-				error=error*4;
+				error=error*2;
 		}
 		else if(bl_flag==1)
 		{
