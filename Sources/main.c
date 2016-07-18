@@ -59,7 +59,7 @@ void ModeBlueSpeed(void)//看速度图像
 	Image_or_not=13;//从data开始，发送error,CurrentSteer,csl,csr,tsl,tsr
 	Speed_or_not=35;//发送舵机值后，接着发送速度数据
 	OLED_Init();//OLED初始化
-	BlueTx();//蓝牙发送开始
+	//BlueTx();//蓝牙发送开始
 	initPIT2();
 	initPIT();
 	for(;;){

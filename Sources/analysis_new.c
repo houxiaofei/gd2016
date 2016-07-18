@@ -506,7 +506,7 @@ void ErrorCalculate(void)
 	if(b_flag==0&&a_flag==0)	//全黑情况
 	{
 		stop_cnt++;
-		if(stop_cnt>10)		//判断到3次全黑情况就停车
+		if(stop_cnt>20)		//判断到3次全黑情况就停车
 		{
 			stop_cnt=0;
 			stop_flag=1;
@@ -604,7 +604,7 @@ void SpeedFlagJudge_C(void)
 	}
 	
 	//转换判断，trans_flag
-	if(all_flag==2222&&(c_flag[9]!=22&&c_flag[8]!=22))//C看到12，21
+	if(all_flag[9]==2222&&(c_flag[9]!=22&&c_flag[8]!=22))//C看到12，21
 	{
 		if(straight_flag==1)
 		{
@@ -791,7 +791,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error>0)
-				error=error*4;
+				error=error*3.5;
 			else		//实际不会出现
 				error=error*2;
 		}
@@ -829,7 +829,7 @@ void BarrierControl(void)
 			else
 				error=b_error;
 			if(error<0)
-				error=error*4;
+				error=error*3.2;
 			else				//实际不应出现
 				error=error*2.5;
 		}
