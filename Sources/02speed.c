@@ -13,10 +13,10 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=210,transspeed=165,turnspeed=165,deadspeed=165,barspeed=170;//250,190,180
-int dead_flag=0,dead_cnt=0,dead_not_cnt=0;
+int straightspeed=210,transspeed=165,turnspeed=165,deadspeed=180,barspeed=170;//250,190,180
+int dead_flag=0,dead_cnt=0,dead_cnt2=0,dead_not_cnt=0;
 //**********************差速参数***************************/
-signed int Speed_kc1=16000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=12000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
@@ -73,15 +73,23 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
-	if(TargetSteer==LEFT||TargetSteer==RIGHT)
+	if(TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)
 	{
 		dead_cnt++;
-		if(dead_cnt>=3)
+		if(dead_cnt>=5)
 			dead_flag=1;
 	}
 	else
 		dead_cnt=0;
-	if(b_flag==22)
+	if(dead_flag==1&&(TargetSteer!=LEFT&&TargetSteer!=RIGHT))
+	{
+		dead_cnt2++;
+		if(dead_cnt>=2)
+			dead_flag=2;
+	}
+	else
+		dead_cnt2=0;
+	if(b_flag==22&&ABS(error)<20)
 	{
 		dead_not_cnt++;
 		if(dead_not_cnt>=2)
@@ -109,14 +117,22 @@ void Speed_Set(void)
 		else if(a_bar_flag==1)
 			targetspeed=barspeed;
 	    else if(j==0||a_flag==11||b_flag==11)
-			targetspeed=straightspeed;
-		else if((a_flag==21||a_flag==12)&&b_flag==22)
-			targetspeed=transspeed;
-		//else if(error>=45)
-		else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
+	    {
+	    	straight_flag=1;
+	    	turn_flag=0;
+	    	targetspeed=straightspeed;
+	    }
+		else if(dead_flag==2)
+		{
+			turn_flag=0;
 			targetspeed=deadspeed;
+		}
 		else
-			targetspeed=turnspeed;	
+		{
+			turn_flag=1;
+			straight_flag=0;
+			targetspeed=turnspeed;
+		}	
 	}
 	else
 	{

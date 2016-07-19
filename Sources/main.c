@@ -140,7 +140,7 @@ void ModeGoJudge(void)
 		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 20://ÖĞËÙ£¬ÇĞÄÚ
-		straightspeed=230,transspeed=190,turnspeed=190,deadspeed=190,barspeed=180;
+		straightspeed=230,transspeed=180,turnspeed=180,deadspeed=180,barspeed=180;
 		Speed_kc1=10000;sp_x1=0.006;sp_x2=2;sp_x3=30;
 		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;

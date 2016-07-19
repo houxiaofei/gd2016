@@ -75,22 +75,26 @@ void PitISR2(void)
 		Speed_Set();   //速度设置，变速
 		if(stop_flag==1)  //停车
 		{
-			targetspeed=0;
-			if(((csl+csr)/2)>15)
+			pitcount4++;
+			if(pitcount4>50)
 			{
-				if(mode!=9)
-					SpeedControl(); //位置式控制
-				else if(mode==9)
+				targetspeed=0;
+				if(((csl+csr)/2)>15)
 				{
-					Speed_PID2();//外环位置式
-					DifferSpeed_PID2();//内环位置式
+					if(mode!=9)
+						SpeedControl(); //位置式控制
+					else if(mode==9)
+					{
+						Speed_PID2();//外环位置式
+						DifferSpeed_PID2();//内环位置式
+					}
 				}
+				else
+				{
+				SET_motor(0,0);
+				}
+				timecount=0;
 			}
-			else
-			{
-			SET_motor(0,0);
-			}
-			timecount=0;
 		}
 		else
 		{
