@@ -10,8 +10,8 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3262;//新2820 老3310,右极限值
-unsigned int LEFT=4042;//新3630 老4110,左极限值
+unsigned int RIGHT=3253;//新2820 老3310,右极限值
+unsigned int LEFT=4033;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/

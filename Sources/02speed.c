@@ -99,10 +99,10 @@ void Speed_Set(void)
 	
 	if(c_edge<106)
 	{
-		targetspeed=170;
+		targetspeed=200;
 	}
 	else
-	    targetspeed=230;
+	    targetspeed=270;
 	
 }
 
