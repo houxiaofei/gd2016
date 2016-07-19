@@ -10,13 +10,13 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3116;//新2820 老3310,右极限值
-unsigned int LEFT=3896;//新3630 老4110,左极限值
+unsigned int RIGHT=3262;//新2820 老3310,右极限值
+unsigned int LEFT=4042;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
-unsigned char sp_x2=3,sp_x3=30;//0.0060 2 35
-double sp_x1=0.0080;//0.0060
+unsigned char sp_x2=4,sp_x3=35;//0.0060 2 35
+double sp_x1=0.0085;//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
