@@ -16,7 +16,7 @@ unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
 unsigned char sp_x2=2,sp_x3=30;
-double sp_x1=0.006;//0.0062//0.0060
+double sp_x1=0.005;//0.0062//0.0060
 
 /*************************舵机接口函数***********************/
 void SET_steer(unsigned int steer)
@@ -73,6 +73,20 @@ void Steer_PDSet(void)
 //		else                            {Steer_kp=10;Steer_kd=10;}
 		
 		//校内赛版本
+		if(target_offset>0)
+		{
+			sp_x2=3;
+			sp_x3=30;
+			sp_x1=0.0065;
+			Speed_kc1=11000;
+		}
+		else
+		{
+			sp_x2=2;
+			sp_x3=30;
+			sp_x1=0.005;
+			Speed_kc1=13000;
+		}
 		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
 		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
 		else                            {Steer_kp=10;Steer_kd=12;}//14    

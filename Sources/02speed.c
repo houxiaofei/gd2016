@@ -15,7 +15,7 @@ float csxs=0.6;//差速系数
 //**********************变速参数***************************/
 int straightspeed=230,transspeed=180,turnspeed=180,deadspeed=180,barspeed=180;//250,190,180
 //**********************差速参数***************************/
-signed int Speed_kc1=10000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
