@@ -327,7 +327,7 @@ void LINFlex_TX_Interrupt(void)
 		Ts=55;
 		break;
 	case 55:
-		LINFlex_TX(SendInt4(trans_out_flag));
+		LINFlex_TX(SendInt4(dead_flag));
 		Ts=56;
 		break;
 	case 56:
