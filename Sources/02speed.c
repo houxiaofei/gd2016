@@ -14,6 +14,7 @@ int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
 int straightspeed=210,transspeed=165,turnspeed=165,deadspeed=165,barspeed=170;//250,190,180
+int dead_flag=0,dead_cnt=0,dead_not_cnt=0;
 //**********************差速参数***************************/
 signed int Speed_kc1=16000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
@@ -71,7 +72,23 @@ void SET_motor(int leftSpeed,int rightSpeed)
 
 /*************************变速控制函数*********************/
 void Speed_Set(void)
-{	
+{
+	if(TargetSteer==LEFT||TargetSteer==RIGHT)
+	{
+		dead_cnt++;
+		if(dead_cnt>=3)
+			dead_flag=1;
+	}
+	else
+		dead_cnt=0;
+	if(b_flag==22)
+	{
+		dead_not_cnt++;
+		if(dead_not_cnt>=2)
+			dead_flag=0;
+	}
+	else
+		dead_not_cnt=0;
 	if(mode==10)
 	{
 		int i=0,j=0,all_flag_count=0;

@@ -36,5 +36,6 @@ extern float KP_DifSpd,KI_DifSpd,KD_DifSpd;
 extern int MotorPWM,LMotorPWM,RMotorPWM;
 extern int SumErrorLeft,SumErrorRight;
 
+extern int dead_flag;
 
 #endif /* 02SPEED_H_ */
