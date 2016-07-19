@@ -90,7 +90,7 @@ void ModeBlueImage(void)//¿´CCDÍ¼Ïñ
 		if(steer_flag==1)
 		{
 			steer_flag=0;
-			Direction_Control();
+//			Direction_Control();
 		}
 		if(oled_flag==1)
 		{

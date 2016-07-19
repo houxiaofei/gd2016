@@ -246,8 +246,10 @@ void OLED_Test(void)
 //    OLED_Num(cr_flag);
 //    OLED_Str("  ");
 //    OLED_Num(cl_edge);
-//    OLED_Str("  ");
+    OLED_Str("  ");
 //    OLED_Num(cr_edge);
+    OLED_Str("Sp:");
+    OLED_Num(Steer_kp);
 }
 
 /**
