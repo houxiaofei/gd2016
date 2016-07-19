@@ -95,6 +95,17 @@ void PitISR2(void)
 				}
 				timecount=0;
 			}
+			else
+			{
+				targetspeed=turnspeed;
+				if(mode!=9)
+					SpeedControl(); //位置式控制
+				else if(mode==9)
+				{
+					Speed_PID2();//外环位置式
+					DifferSpeed_PID2();//内环位置式
+				}
+			}
 		}
 		else
 		{
