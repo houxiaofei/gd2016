@@ -42,5 +42,6 @@ extern void KeyJudge(void);
 extern unsigned long TimeMesure(void);
 void LINFlex_RX_Interrupt(void);
 void ChooseMode(void);
+void OledGo(void);
 
 #endif /* 05DEBUG_H_ */

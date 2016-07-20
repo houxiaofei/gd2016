@@ -558,4 +558,85 @@ void ChooseMode(void)
 {//拨码开关拨到下是1，拨到上是0
 	mode=31-(switch1*16+switch2*8+switch3*4+switch4*2+switch5);
 }
-
+//*****************************************************************************************************************
+//****************************************OLED函数*****************************************************    	  *
+//*****************************************************************************************************************
+void OledGo(void)
+{//拨码开关拨到下是1，拨到上是0
+	OLED_Fill(0x00);
+	OLED_SetPointer(0,5);
+	OLED_Str("ts: ");
+	OLED_Num(targetspeed);
+	OLED_Str("  ");
+	OLED_Num(tsl);
+	OLED_Str("  ");
+	OLED_Num(tsr);
+	
+	OLED_SetPointer(1,5);
+	OLED_Str("key: ");
+	OLED_Num(keymode);
+	
+	switch(keymode){
+	case 0:
+		break;
+	case 1:
+		OLED_SetPointer(2,5);
+		OLED_Str("straightspeed: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(straightspeed);
+		break;
+	case 2:
+		OLED_SetPointer(2,5);
+		OLED_Str("turnspeed: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(turnspeed);
+		break;
+	case 3:
+		OLED_SetPointer(2,5);
+		OLED_Str("deadspeed: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(deadspeed);
+		break;
+	case 4:
+		OLED_SetPointer(2,5);
+		OLED_Str("a_bar_value2: zhang ai wu");
+		OLED_SetPointer(3,5);
+	    OLED_Num(a_bar_value2);
+		break;
+	case 5:
+		OLED_SetPointer(2,5);
+		OLED_Str("barleft_kp: ");
+		//OLED_Str("barright_kp: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(barleft_kp*10);
+	    //OLED_Num(barright_kp*10);
+		break;
+	case 6:
+		OLED_SetPointer(2,5);
+		OLED_Str("b_value_end: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(b_value_end);
+		break;
+	case 7:
+		OLED_SetPointer(2,5);
+		OLED_Str("sp_x1: xiedu");
+		OLED_SetPointer(3,5);
+	    OLED_Num(sp_x1*10000);
+		break;
+	case 8:
+		OLED_SetPointer(2,5);
+		OLED_Str("sp_x2: jizhi");
+		OLED_SetPointer(3,5);
+	    OLED_Num(sp_x2*10);
+		break;
+	case 9:
+		OLED_SetPointer(2,5);
+		OLED_Str("Speed_kc1: ");
+		OLED_SetPointer(3,5);
+	    OLED_Num(Speed_kc1/1000);
+		break;
+	default:
+		break;
+		
+	}
+}
