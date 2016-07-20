@@ -23,7 +23,7 @@ extern int targetspeed;
 extern int straightspeed,transspeed,turnspeed,deadspeed,barspeed;
 extern int tsl_PWM,tsr_PWM,tsr_Delta,error_Delta;
 extern int ErrorLeft,ErrorRight,PreErrorRight;
-extern signed int Speed_kc1;
+extern signed int Speed_kc1,Speed_kc1a,Speed_kc1b;
 extern signed int RPID;
 extern int ramp_flag;
 

@@ -139,6 +139,8 @@ void OLED_Test(void)
 	OLED_Num(tsr);
 
 	OLED_SetPointer(1,5);
+	OLED_Str("key: ");
+	OLED_Num(keymode);
 	//	OLED_Str("  ");
 	//	OLED_Str("RPID: ");
 	//	OLED_Num(RPID);
@@ -147,14 +149,14 @@ void OLED_Test(void)
 //	OLED_Str("  ");
 //	OLED_Str("kc1: ");
 //	OLED_Num(Speed_kc1/100);
-	OLED_Str("ba: ");
-    OLED_Num(bar_edge[0]);
-    OLED_Str("  ");
-    OLED_Num(bar_edge[1]);
-    OLED_Str("  ");
-    OLED_Num(bar_edge[2]);
-    OLED_Str("  ");
-    OLED_Num(bar_edge[3]);
+//	OLED_Str("ba: ");
+//    OLED_Num(bar_edge[0]);
+//    OLED_Str("  ");
+//    OLED_Num(bar_edge[1]);
+//    OLED_Str("  ");
+//    OLED_Num(bar_edge[2]);
+//    OLED_Str("  ");
+//    OLED_Num(bar_edge[3]);
 	
 	OLED_SetPointer(2,5);
 	OLED_Str("flag: ");

@@ -432,26 +432,108 @@ void LINFlex_RX_Interrupt(void)
 void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
-//		keymode+=1;
-//		targetspeed+=5;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=10;
+		if(mode==1)
+			TargetSteer+=10;
+		else if(mode==2||mode==31)
+		{
+			targetspeed+=10;
+			SET_motor(targetspeed,targetspeed);
+		}
+		else
+			keymode+=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
-//	    keymode-=1;
-//	    targetspeed-=5;
-//		SET_motor(targetspeed,targetspeed);
-	    TargetSteer-=10;
+		if(mode==1)
+			TargetSteer-=10;
+		else if(mode==2||mode==31)
+		{
+			targetspeed-=10;
+			SET_motor(targetspeed,targetspeed);
+		}
+		else
+			keymode-=1;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
-//		targetspeed+=10;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=10;
+		if(mode==1)
+			TargetSteer+=1;
+		else if(mode==2||mode==31)
+		{
+			targetspeed+=5;
+			SET_motor(targetspeed,targetspeed);
+		}
+		else
+		{
+			switch(keymode){
+			case 1:
+				straightspeed+=10;
+				break;
+			case 2:
+				turnspeed+=5;
+				break;
+			case 3:
+				deadspeed+=5;
+				break;
+			case 4:
+				a_bar_value2+=10;
+				break;
+			case 5:
+				barleft_kp+=1;
+				//barright_kp+=1;
+				break;
+			case 6:
+				b_value_end+=10;
+			case 7:
+				sp_x1+=0.001;
+				break;
+			case 8:
+				sp_x2+=0.5;
+				break;
+			case 9:
+				Speed_kc1+=1000;
+				break;
+			}
+		}
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
-//		targetspeed-=10;
-//		SET_motor(targetspeed,targetspeed);
-		TargetSteer-=10;
+		if(mode==1)
+			TargetSteer-=1;
+		else if(mode==2||mode==31)
+		{
+			targetspeed-=5;
+			SET_motor(targetspeed,targetspeed);
+		}
+		else
+		{
+			switch(keymode){
+			case 1:
+				straightspeed-=10;
+				break;
+			case 2:
+				turnspeed-=5;
+				break;
+			case 3:
+				deadspeed-=5;
+				break;
+			case 4:
+				a_bar_value2-=10;
+				break;
+			case 5:
+				barleft_kp-=1;
+				//barright_kp+=1;
+				break;
+			case 6:
+				b_value_end-=10;
+			case 7:
+				sp_x1-=0.001;
+				break;
+			case 8:
+				sp_x2-=0.5;
+				break;
+			case 9:
+				Speed_kc1-=1000;
+				break;
+			}
+		}
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

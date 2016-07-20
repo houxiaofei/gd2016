@@ -44,7 +44,7 @@ int c_value_end=30,c_scan_end=10;//ÖÕµã30,10
 int a_bar_value=25,a_bar_value2=60,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
 int b_bar_value=25,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=6;//ÕÏ°­Îï
 int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
-int barleft_kp=6,barright_kp=4;
+int barleft_kp=6,barright_kp=3.5;
 
 //int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
 //int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//C-CCDÊúÖ±
@@ -533,6 +533,8 @@ void ErrorCalculate(void)
 		{
 			BarrierJudge();
 		}
+		PixelScan_C();
+		SpecialJudge_C();
 		if(a_flag==0)
 			a_error=0;
 		b_error=(bl_edge-bl_end+br_edge-br_end);
@@ -564,31 +566,34 @@ void ErrorCalculate(void)
 void SpecialJudge_C(void)
 {
 	//ÖÕµãÅĞ¶Ï
-	int k=0;
-	int cnt=0;
-	for(i=cl_edge;i<cr_edge;i++)
+	if(end_judge_flag)
 	{
-		switch(k){
-		case 0:
-			if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//ÏÂ½µÑØ
-				k=1;
-			break;
-		case 1:
-			if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//ÉÏÉıÑØ
-				k=2;
-			break;
-		case 2:
-			if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//ÏÂ½µÑØ
-				k=3;
-			break;
-		case 3:
-			if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//ÉÏÉıÑØ
-				k=4;
-			break;
-		case 4:
-			stop_flag=1;
-			break;
-		}	
+		int k=0;
+		int cnt=0;
+		for(i=cl_edge;i<cr_edge;i++)
+		{
+			switch(k){
+			case 0:
+				if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//ÏÂ½µÑØ
+					k=1;
+				break;
+			case 1:
+				if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//ÉÏÉıÑØ
+					k=2;
+				break;
+			case 2:
+				if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//ÏÂ½µÑØ
+					k=3;
+				break;
+			case 3:
+				if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//ÉÏÉıÑØ
+					k=4;
+				break;
+			case 4:
+				stop_flag=1;
+				break;
+			}	
+		}
 	}
 	
 	//ÕÏ°­ÎïÅĞ¶Ï

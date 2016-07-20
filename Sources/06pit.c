@@ -36,7 +36,7 @@ void PitISR(void)//10ms一个控制周期
 	steer_flag=1;
 	if(pitcount2>=1600)//1600
 		end_judge_flag=1;
-	if(pitcount6>=200)
+	if(pitcount6>=300)
 		start_flag=1;
 	if(a_bar_flag==1||al_bar_flag==1||ar_bar_flag==1)
 	{
@@ -47,6 +47,17 @@ void PitISR(void)//10ms一个控制周期
 			a_bar_flag=0;
 			al_bar_flag=0;
 			ar_bar_flag=0;
+		}
+	}
+	if(a_bar_flag2==1)
+	{
+		pitcount5++;
+		if(pitcount5>=30)
+		{
+			pitcount5=0;
+			a_bar_flag2=0;
+			al_bar_flag2=0;
+			ar_bar_flag2=0;
 		}
 	}
 	else
@@ -64,9 +75,10 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-	if(basic_mode==2)//开环
+	if(basic_mode==2||mode==31)//开环
 	{
 		SpeedCount();  //光编计数，采速度值
+		Speed_Set();
 		if(stop_flag==1)  //停车
 		{
 			targetspeed=0;
