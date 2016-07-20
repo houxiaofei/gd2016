@@ -319,15 +319,15 @@ void LINFlex_TX_Interrupt(void)
 		Ts=53;
 		break;
 	case 53:
-		LINFlex_TX(SendInt4(straight_flag));
+		LINFlex_TX(SendInt4(a_bar_flag2));
 		Ts=54;
 		break;
 	case 54: 
-		LINFlex_TX(SendInt4(trans_enter_flag));      
+		LINFlex_TX(SendInt4(al_bar_flag2+1));      
 		Ts=55;
 		break;
 	case 55:
-		LINFlex_TX(SendInt4(dead_flag));
+		LINFlex_TX(SendInt4(ar_bar_flag2+1));
 		Ts=56;
 		break;
 	case 56:
@@ -433,13 +433,13 @@ void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
 		keymode=1;
-//		targetspeed+=10;
+//		targetspeed+=5;
 //		SET_motor(targetspeed,targetspeed);
 		TargetSteer+=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
-//	    targetspeed-=10;
+//	    targetspeed-=5;
 //		SET_motor(targetspeed,targetspeed);
 	    TargetSteer-=1;
 	    }
@@ -447,13 +447,13 @@ void KeyJudge(void)
 		keymode=3;
 //		targetspeed+=10;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=1;
+		TargetSteer+=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
 //		targetspeed-=10;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer-=1;
+		TargetSteer-=10;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

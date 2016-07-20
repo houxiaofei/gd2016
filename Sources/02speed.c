@@ -73,7 +73,7 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
-	if(TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)
+	if((TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)&&dead_flag==0)
 	{
 		dead_cnt++;
 		if(dead_cnt>=5)

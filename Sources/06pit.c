@@ -76,7 +76,7 @@ void PitISR2(void)
 		if(stop_flag==1)  //Í£³µ
 		{
 			pitcount4++;
-			if(pitcount4>50)
+			if(pitcount4>20)
 			{
 				targetspeed=0;
 				if(((csl+csr)/2)>15)

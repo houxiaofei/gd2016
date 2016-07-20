@@ -15,7 +15,7 @@ int al_start=70,ar_start=62,a_start=66,a_offset=2,bl_start=72,br_start=60,b_star
 int a_T=320,b_T=324,a_Tmax=360,a_Tmin=280,b_Tmax=360,b_Tmin=280,a_avg=0,b_avg=0;                                  //黑白阈值
 int a_PixelNumber=30,b_PixelNumber=44;
 int a_allwhite=19,a_allblack=10,b_allwhite=33,b_allblack=10;                  //全白,全黑判断标准
-int a_scan=6,a_scan1=6,a_scan2=10,a_scan3=10,a_expand=5,a_expand1=0,a_expand2=5;
+int a_scan=10,a_scan1=6,a_scan2=10,a_scan3=10,a_expand=5,a_expand1=0,a_expand2=5;
 int b_scan=8,b_scan1=8,b_scan2=12,b_scan3=12,b_expand=5,b_expand1=0,b_expand2=5;
 int al_scan_i=56,ar_scan_i=76,bl_scan_i=48,br_scan_i=84;//分区坐标
 int a_value2=110,a_value3=110,a_value_T1=120,a_value_T2=110,a_value_T3=80;   //判断跳变沿的差值标准
@@ -55,6 +55,13 @@ int c_scan=5,c_scan1=8,c_scan2=10,cl_scan_i=56,cr_scan_i=76,c_expand1=0,c_expand
 int c_flag[10]={0,0,0,0,0,0,0,0,0,0};//C-CCD横置
 
 int straight_flag=0,trans_enter_flag=0,trans_out_flag=0,turn_flag=0;
+
+//BarrierJudgeNew
+int bar_flag=0,bar_edge[10]={0},bar_left_flag=0,bar_right_flag=0;
+int edge_err1=0,edge_err2=0,bar_contorl_cnt=0;
+int bar_value=70,bar_value_s=10,bar_value_l=17;
+int bar_err_left=25,bar_err_right=-25,bar_cnt_left=1,bar_cnt_right=1,bar_mal_left=5,bar_mal_right=5;
+int a_bar_cnt2,b_bar_value2=25,b_bar_cnt2=0,b_bar_cnttop2=1,a_bar_flag2=0,al_bar_flag2=0,ar_bar_flag2=0;
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -525,7 +532,10 @@ void ErrorCalculate(void)
 		if(end_judge_flag)
 			EndJudge();
 		if(a_flag==22||a_flag==23||a_flag==32||a_flag==33)
+		{
+			BarrierJudgeNew();
 			BarrierJudge();
+		}
 		if(a_flag==0)
 			a_error=0;
 		b_error=(bl_edge-bl_end+br_edge-br_end);
@@ -896,4 +906,103 @@ void DataSet(void)
 	
 }
 
+void BarrierJudgeNew(void)
+{
+	int k=0;
+	j=0;
+	bar_flag=0;
+	for(i=al_end;i<ar_end;i++)
+	{
+		switch(k){
+		case 0://第一次检测跳变沿
+			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)//第一次检测到上升沿
+			{
+				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+				bar_flag=110;
+				k=2;
+			}
+			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
+			{
+				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+				bar_flag=1;
+				k=1;
+			}
+			if(j>=10)
+				k=3;
+			break;
+		case 1://检测上升沿
+			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)
+			{
+				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+				bar_flag+=10;
+				k=2;
+			}
+			if(j>=10)
+				k=3;
+			break;
+		case 2://检测下降沿
+			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
+			{
+				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+				bar_flag+=1;
+				k=1;
+			}
+			break;
+		case 3:
+			break;
+		}
+	}
+	if(bar_flag==122)
+	{
+		a_bar_cnt2++;
+		if(bar_edge[0]!=0&&bar_edge[1]!=0&&bar_edge[2]!=0&&bar_edge[3]!=0)
+		{
+			if(ABS(bar_edge[0]-bar_edge[1])<bar_value_s&&ABS(bar_edge[2]-bar_edge[3])>bar_value_l)
+				al_bar_flag2=1;
+			if(ABS(bar_edge[0]-bar_edge[1])>bar_value_l&&ABS(bar_edge[2]-bar_edge[3])<bar_value_s)
+				ar_bar_flag2=1;
+		}
+		else if(bar_edge[0]==0||bar_edge[1]==0)
+			al_bar_flag2=1;
+		else if(bar_edge[2]==0||bar_edge[3]==0)
+			ar_bar_flag2=1;
+		if(a_bar_cnt2>=2)
+		{
+			a_bar_flag2=1;
+		}
+	}
+}
 
+void BarrierControlNew(void)
+{
+	if(a_bar_flag2==1&&al_bar_flag2==1)
+	{
+		bar_contorl_cnt++;
+		if(bar_contorl_cnt<=bar_cnt_left)
+			error=bar_err_left;
+		else
+			error=b_error*bar_mal_left;
+	}
+	else if(a_bar_flag2==1&&ar_bar_flag2==1)
+	{
+		bar_contorl_cnt++;
+		if(bar_contorl_cnt<=bar_cnt_right)
+			error=bar_err_right;
+		else
+			error=b_error*bar_mal_right;
+	}
+	if((a_error+b_error)>b_bar_value2)
+	{
+		b_bar_cnt2++;
+		if(b_bar_cnt2>b_bar_cnttop2)
+		{
+			a_bar_flag2=0;
+			al_bar_flag2=0;
+			ar_bar_flag2=0;
+		}
+	}
+}
