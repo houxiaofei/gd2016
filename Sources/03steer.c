@@ -77,15 +77,15 @@ void Steer_PDSet(void)
 		{
 			sp_x2=3;//3.5
 			sp_x3=27;
-			sp_x1=0.007;//0.0075
-			Speed_kc1=11000;
+			sp_x1=0.009;//0.0075
+			Speed_kc1=10000;
 		}
 		else
 		{
 			sp_x2=3;
 			sp_x3=27;
-			sp_x1=0.007;
-			Speed_kc1=11000;
+			sp_x1=0.009;
+			Speed_kc1=10000;
 		}
 		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
 		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
