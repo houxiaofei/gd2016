@@ -73,7 +73,7 @@ extern int PixelRight[128];
 
 /***************steer*****************/
 #define TargetSteer EMIOS_0.CH[4].CBDR.R // 舵机值
-#define CENTER 3719//3692 3710 3664 3704 3756新车3278 老车3712   3520   校内赛主车3500
+#define CENTER 3700//3719//3692 3710 3664 3704 3756新车3278 老车3712   3520   校内赛主车3500
 
 /***************stm*****************/
 #define TIME STM.CNT.R

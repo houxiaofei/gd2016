@@ -38,11 +38,14 @@ void PitISR(void)//10ms一个控制周期
 	if(a_bar_flag==1)
 	{
 		pitcount3++;
-		if(pitcount3>=50)
+		if(pitcount3>=30)
 		{
 			a_bar_flag=0;
 			al_bar_flag=0;
 			ar_bar_flag=0;
+			a_bar_flag2=0;
+			al_bar_flag2=0;
+			ar_bar_flag2=0;
 		}
 	}
 	else
