@@ -435,25 +435,25 @@ void KeyJudge(void)
 		keymode=1;
 //		targetspeed+=10;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=1000;
+		TargetSteer+=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 	    keymode=2;
 //	    targetspeed-=10;
 //		SET_motor(targetspeed,targetspeed);
-	    TargetSteer-=100;
+	    TargetSteer-=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		keymode=3;
 //		targetspeed+=10;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=10;
+		TargetSteer+=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		keymode=4;
 //		targetspeed-=10;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer-=10;
+		TargetSteer-=1;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;

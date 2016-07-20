@@ -10,8 +10,8 @@
 /*************************舵机参数***************************/
 int target_offset=0,last_offset=0;	//舵机偏差值记录
 double Steer_kp=0,Steer_kd=0;//舵机P、D值
-unsigned int RIGHT=3100;//新2820 老3310,右极限值
-unsigned int LEFT=3900;//新3630 老4110,左极限值
+unsigned int RIGHT=3250;//新2820 老3310,右极限值
+unsigned int LEFT=4150;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
 
 /*************************舵机PD曲线参数***********************/
@@ -75,17 +75,17 @@ void Steer_PDSet(void)
 		//校内赛版本
 		if(target_offset>0)
 		{
-			sp_x2=3.5;
+			sp_x2=3;//3.5
 			sp_x3=30;
-			sp_x1=0.0075;
-			Speed_kc1=10000;
+			sp_x1=0.0062;//0.0075
+			Speed_kc1=13000;
 		}
 		else
 		{
-			sp_x2=2;
+			sp_x2=3;
 			sp_x3=30;
-			sp_x1=0.006;
-			Speed_kc1=10000;
+			sp_x1=0.0062;
+			Speed_kc1=13000;
 		}
 		if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
 		else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
