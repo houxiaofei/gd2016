@@ -40,6 +40,7 @@ int a_rem=16,ab_rem=24,b_rem=9;                  //补线值
 int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//终点30,10
+int c_value_end=30,c_scan_end=10;//终点30,10
 int a_bar_value=25,a_bar_value2=60,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//障碍物
 int b_bar_value=25,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=6;//障碍物
 int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
@@ -48,11 +49,10 @@ int barleft_kp=6,barright_kp=4;
 //int c_count=0,c_flag=0,c_edge=0,c_edge_left=0,c_edge_right=0;
 //int c_start=0,c_end=0,c_allwhite=0,c_allblack=0,c_T=0,c_value=0,c_scan=0,c_expand=0;//C-CCD竖直
 
-int cl_count=0,cr_count=0,cl_flag=0,cr_flag=0,cl_edge=0,cr_edge=0,cl_edge_left=0,cl_edge_right=0,cr_edge_left=0,cr_edge_right=0;
+int cl_count=0,cr_count=0,c_flag=0,cl_flag=0,cr_flag=0,cl_edge=0,cr_edge=0,cl_edge_left=0,cl_edge_right=0,cr_edge_left=0,cr_edge_right=0;
 int c_start=66,cl_start=70,cr_start=62,cl_end=40,cr_end=92,c_allwhite=20,c_allblack=6,c_T=300,c_avg=0;
 int c_value2=0,c_value3=0,c_value_T1=120,c_value_T2=90,c_value_T3=70;
 int c_scan=5,c_scan1=8,c_scan2=10,cl_scan_i=56,cr_scan_i=76,c_expand1=0,c_expand2=5,c_offset=2;
-int c_flag[10]={0,0,0,0,0,0,0,0,0,0};//C-CCD横置
 
 int straight_flag=0,trans_enter_flag=0,trans_out_flag=0,turn_flag=0;
 
@@ -60,8 +60,8 @@ int straight_flag=0,trans_enter_flag=0,trans_out_flag=0,turn_flag=0;
 int bar_flag=0,bar_edge[10]={0},bar_left_flag=0,bar_right_flag=0;
 int edge_err1=0,edge_err2=0,bar_contorl_cnt=0;
 int bar_value=70,bar_value_s=10,bar_value_l=17;
-int bar_err_left=25,bar_err_right=-25,bar_cnt_left=1,bar_cnt_right=1,bar_mal_left=5,bar_mal_right=5;
-int a_bar_cnt2,b_bar_value2=25,b_bar_cnt2=0,b_bar_cnttop2=1,a_bar_flag2=0,al_bar_flag2=0,ar_bar_flag2=0;
+int bar_err_left=25,bar_err_right=-25,bar_cnt_left=2,bar_cnt_right=2,bar_mal_left=4,bar_mal_right=4;
+int a_bar_cnt2=0,b_bar_value2=25,b_bar_cnt2=0,b_bar_cnttop2=1,a_bar_flag2=0,al_bar_flag2=0,ar_bar_flag2=0;
 
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
@@ -439,9 +439,7 @@ void PixelScan_C(void)
 		else
 			cr_flag=4;
 	}
-	c_flag[0]=c_flag[1];c_flag[1]=c_flag[2];c_flag[2]=c_flag[3];c_flag[3]=c_flag[4];c_flag[4]=c_flag[5];
-	c_flag[5]=c_flag[6];c_flag[6]=c_flag[7];c_flag[7]=c_flag[8];c_flag[8]=c_flag[9];
-	c_flag[9]=cl_flag*10+cr_flag;//每一次扫描将最新的判断情况存在c_flag[9]
+	c_flag=cl_flag*10+cr_flag;
 }
 
 //void PixelScan_C(void)
@@ -533,7 +531,6 @@ void ErrorCalculate(void)
 			EndJudge();
 		if(a_flag==22||a_flag==23||a_flag==32||a_flag==33)
 		{
-			BarrierJudgeNew();
 			BarrierJudge();
 		}
 		if(a_flag==0)
@@ -558,76 +555,162 @@ void ErrorCalculate(void)
 		else
 			error=a_error*0.3+b_error+b_rem;
 		break;
-	case 23: b_error=bl_edge-bl_end; error=b_error+ab_rem; break;
-	case 03: b_error=br_edge-bl_end; error=b_error+ab_rem; break;
+	case 23: b_error=bl_edge-bl_end; error=b_error+ab_rem;break;
+	case 03: b_error=br_edge-bl_end; error=b_error+ab_rem;break;
 	default: wrong_flag=1; break;
 	}
 }
 
-void SpeedFlagJudge_C(void)
+void SpecialJudge_C(void)
 {
-	int turn_count=0;
-	//转弯判断，turn_flag
-	i=0;j=0;
-	for(i=0;i<10;i++)
+	//终点判断
+	int k=0;
+	int cnt=0;
+	for(i=cl_edge;i<cr_edge;i++)
 	{
-		if(all_flag[i]!=2222)
-		{
-			turn_count++;
-		}
-		if(turn_count>=3)
-		{
-			j=1;
+		switch(k){
+		case 0:
+			if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//下降沿
+				k=1;
 			break;
-		}
-	}
-	if(j==1)
-	{
-		straight_flag=0;
-		trans_enter_flag=0;
-		trans_out_flag=0;
-		turn_flag=1;
-		return;
-	}
-	else
-		turn_flag=0;
-	
-	//直道判断，straight_flag
-	i=0;j=0;turn_count=0;
-	for(i=0;i<8;i++)
-	{
-		if(all_flag[i]!=2222||c_flag[i]!=22)
-		{
-			turn_count++;
-		}
-		if(turn_count>=3)
-		{
-			j=1;
+		case 1:
+			if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//上升沿
+				k=2;
 			break;
-		}
-	}
-	if(j==0)
-	{
-		straight_flag=1;
-		trans_enter_flag=0;
-		trans_out_flag=0;
-		return;
+		case 2:
+			if((C[i+c_scan_end]-C[i]<-c_value_end)&&(C[i+1+c_scan_end]-C[i+1]<-c_value_end))//下降沿
+				k=3;
+			break;
+		case 3:
+			if((C[i+c_scan_end]-C[i]>c_value_end)&&(C[i+1+c_scan_end]-C[i+1]>c_value_end))//上升沿
+				k=4;
+			break;
+		case 4:
+			stop_flag=1;
+			break;
+		}	
 	}
 	
-	//转换判断，trans_flag
-	if(all_flag[9]==2222&&(c_flag[9]!=22&&c_flag[8]!=22))//C看到12，21
+	//障碍物判断
+	ar_bar_edge=0;a_bar_avg=0;
+	if(c_flag==33)
 	{
-		if(straight_flag==1)
+		c_scan=c_scan2;
+		c_value3=c_value_T2;
+		for(i=cr_end;i>cr_edge;i--)
 		{
-			straight_flag=0;
-			trans_enter_flag=1;
-			trans_out_flag=0;
+			if(i>(cl_end+c_scan))
+			{
+				if(C[i-c_scan]-C[i]>c_value3&&C[i-c_scan-1]-C[i-1]>c_value3)
+				{
+					a_bar_avg=AverageCalculate((i-c_scan-c_expand2),(i+c_expand1),C);
+					ar_bar_edge=EdgeCalculate((i-c_scan-c_expand2),(i+c_expand1),C,a_bar_avg);
+				}
+			}
 		}
-		else if(trans_enter_flag==0)
+		for(i=cl_end;i<cl_edge;i++)
 		{
-			trans_out_flag=1;
+			if(i>(cl_end+c_scan))
+			{
+				if(C[i+c_scan]-C[i]>c_value3&&C[i+c_scan+1]-C[i+1]>c_value3)
+				{
+					a_bar_avg=AverageCalculate((i+c_scan+c_expand2),(i-c_expand1),C);
+					al_bar_edge=EdgeCalculate((i-c_scan-c_expand2),(i-c_expand1),C,a_bar_avg);
+				}
+			}
 		}
-		return;
+		if(al_bar_edge!=0&&ar_bar_edge!=0)
+		{
+			if((c_start-al_bar_edge)<(ar_bar_edge-c_start))
+			{
+				cl_edge=cr_edge;
+				cr_edge=ar_bar_edge;
+			}
+			else
+			{
+				cr_edge=cl_edge;
+				cl_edge=al_bar_edge;
+			}
+		}
+	}
+	else if(c_flag==23)
+	{
+		c_scan=c_scan2;
+		c_value3=c_value_T2;
+		for(i=cr_end;i>cr_edge;i--)
+		{
+			if(i>(cl_end+c_scan))
+			{
+				if(C[i-c_scan]-C[i]>c_value3&&C[i-c_scan-1]-C[i-1]>c_value3)
+				{
+					a_bar_avg=AverageCalculate((i-c_scan-c_expand2),(i+c_expand1),C);
+					ar_bar_edge=EdgeCalculate((i-c_scan-c_expand2),(i+c_expand1),C,a_bar_avg);
+					cr_edge=ar_bar_edge;
+				}
+			}
+		}
+	}
+	else if(c_flag==32)
+	{
+		c_scan=c_scan2;
+		c_value3=c_value_T2;
+		for(i=cl_end;i<cl_edge;i++)
+		{
+			if(i>(cl_end+c_scan))
+			{
+				if(C[i+c_scan]-C[i]>c_value3&&C[i+c_scan+1]-C[i+1]>c_value3)
+				{
+					a_bar_avg=AverageCalculate((i+c_scan+c_expand2),(i-c_expand1),C);
+					al_bar_edge=EdgeCalculate((i-c_scan-c_expand2),(i-c_expand1),C,a_bar_avg);
+					cl_edge=al_bar_edge;
+				}
+			}
+		}
+	}
+	a_edg_err=cr_edge-cl_edge;
+	ab_difference=ABS(ABS(cr_edge-c_start)-ABS(c_start-cl_edge));
+//	if(a_edg_err<a_bar_value)
+//	{
+//		a_bar_cnt++;	
+//	}
+	if(a_edg_err<a_bar_value&&ab_difference>ab_difference_value)
+	{
+		a_bar_cnt++;	
+	}
+	if(((ABS(cl_edge-c_start)-ABS(cr_edge-c_start))<0)&&al_bar_flag==0&&a_bar_cnt>0)//障碍物在左边
+	{
+		i=0;j=0;
+		for(i=cl_edge;i>cl_end;i--)
+		{
+			if(C[i-4]-C[i]>a_bar_value2)
+			{
+				for(j=cl_end;j<i;j++)
+				{
+					if(C[j+4]-C[j]>a_bar_value2)
+						al_bar_flag=1;
+				}
+			}
+		}
+	}
+	if(((ABS(cl_edge-c_start)-ABS(cr_edge-c_start))>0)&&ar_bar_flag==0&&a_bar_cnt>0)//障碍物在右边
+	{
+		i=0;j=0;
+		for(i=cr_edge;i<cr_end;i++)
+		{
+			if(C[i+4]-C[i]>a_bar_value2)
+			{
+				for(j=cr_end;j>i;j--)
+				{
+					if(C[j-4]-C[j]>a_bar_value2)
+						ar_bar_flag=1;
+				}
+			}
+		}
+	}
+	if((a_bar_cnt>1)&&(al_bar_flag==1||ar_bar_flag==1))
+	{
+		a_bar_cnt=0;
+		a_bar_flag=1;
 	}
 }
 
@@ -868,141 +951,208 @@ void BarrierControl(void)
 	}
 }
 
-void TrendCalculate(void)
-{
-	int i,a,b;
-	int his1=0,his2=0;
-	a=his_num;
-	b=his_num/2;
-	for(i=0;i<a-1;i++)
-	{
-		error_his[i]=error_his[i+1];
-	}
-	error_his[a-1]=error;
-	for(i=0;i<b;i++)
-	{
-		his1+=error_his[i];
-		his2+=error_his[i+b];
-	}
-	trend=(his2-his1)/b;
-}
-void EnterJudge(void)
-{
-	if(ABS(trend)>=trend_value&&ABS(b_error)<=b_error_value)
-	{
-		if(b_error>0&&trend>0)
-			enter_flag=1;
-		else if(b_error<0&&trend<0)
-			enter_flag=1;
-	}
-	else if(ABS(trend)<=trend_value2&&ABS(b_error)>=b_error_value2)
-	{
-		enter_flag=0;
-	}
-}
+//void TrendCalculate(void)
+//{
+//	int i,a,b;
+//	int his1=0,his2=0;
+//	a=his_num;
+//	b=his_num/2;
+//	for(i=0;i<a-1;i++)
+//	{
+//		error_his[i]=error_his[i+1];
+//	}
+//	error_his[a-1]=error;
+//	for(i=0;i<b;i++)
+//	{
+//		his1+=error_his[i];
+//		his2+=error_his[i+b];
+//	}
+//	trend=(his2-his1)/b;
+//}
+//void EnterJudge(void)
+//{
+//	if(ABS(trend)>=trend_value&&ABS(b_error)<=b_error_value)
+//	{
+//		if(b_error>0&&trend>0)
+//			enter_flag=1;
+//		else if(b_error<0&&trend<0)
+//			enter_flag=1;
+//	}
+//	else if(ABS(trend)<=trend_value2&&ABS(b_error)>=b_error_value2)
+//	{
+//		enter_flag=0;
+//	}
+//}
+//
+//void DataSet(void)
+//{
+//	
+//}
 
-void DataSet(void)
-{
-	
-}
+//void BarrierJudgeNew(void)
+//{
+//	int k=0;
+//	j=0;
+//	bar_flag=0;
+//	for(i=al_end;i<ar_end;i++)
+//	{
+//		switch(k){
+//		case 0://第一次检测跳变沿
+//			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)//第一次检测到上升沿
+//			{
+//				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+//				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+//				bar_flag=110;
+//				k=2;
+//			}
+//			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
+//			{
+//				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+//				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+//				bar_flag=1;
+//				k=1;
+//			}
+//			if(j>=10)
+//				k=3;
+//			break;
+//		case 1://检测上升沿
+//			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)
+//			{
+//				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+//				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+//				bar_flag+=10;
+//				k=2;
+//			}
+//			if(j>=10)
+//				k=3;
+//			break;
+//		case 2://检测下降沿
+//			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
+//			{
+//				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
+//				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
+//				bar_flag+=1;
+//				k=1;
+//			}
+//			break;
+//		case 3:
+//			break;
+//		}
+//	}
+//	if(bar_flag==122)
+//	{
+//		a_bar_cnt2++;
+//		if(bar_edge[0]!=0&&bar_edge[1]!=0&&bar_edge[2]!=0&&bar_edge[3]!=0)
+//		{
+//			if(ABS(bar_edge[0]-bar_edge[1])<bar_value_s&&ABS(bar_edge[2]-bar_edge[3])>bar_value_l)
+//				al_bar_flag2=1;
+//			if(ABS(bar_edge[0]-bar_edge[1])>bar_value_l&&ABS(bar_edge[2]-bar_edge[3])<bar_value_s)
+//				ar_bar_flag2=1;
+//		}
+////		else if(bar_edge[0]==0||bar_edge[1]==0)
+////			al_bar_flag2=1;
+////		else if(bar_edge[2]==0||bar_edge[3]==0)
+////			ar_bar_flag2=1;
+//		if(a_bar_cnt2>=2)
+//		{
+//			a_bar_flag2=1;
+//		}
+//	}
+//}
+//
+//void BarrierControlNew(void)
+//{
+//	if(a_bar_flag2==1&&al_bar_flag2==1)
+//	{
+//		bar_contorl_cnt++;
+//		if(bar_contorl_cnt<=bar_cnt_left)
+//			error=bar_err_left;
+//		else
+//			error=b_error*bar_mal_left;
+//	}
+//	else if(a_bar_flag2==1&&ar_bar_flag2==1)
+//	{
+//		bar_contorl_cnt++;
+//		if(bar_contorl_cnt<=bar_cnt_right)
+//			error=bar_err_right;
+//		else
+//			error=b_error*bar_mal_right;
+//	}
+//	if((a_error+b_error)>b_bar_value2)
+//	{
+//		b_bar_cnt2++;
+//		if(b_bar_cnt2>b_bar_cnttop2)
+//		{
+//			a_bar_flag2=0;
+//			al_bar_flag2=0;
+//			ar_bar_flag2=0;
+//		}
+//	}
+//}
 
-void BarrierJudgeNew(void)
-{
-	int k=0;
-	j=0;
-	bar_flag=0;
-	for(i=al_end;i<ar_end;i++)
-	{
-		switch(k){
-		case 0://第一次检测跳变沿
-			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)//第一次检测到上升沿
-			{
-				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
-				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				bar_flag=110;
-				k=2;
-			}
-			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
-			{
-				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
-				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				bar_flag=1;
-				k=1;
-			}
-			if(j>=10)
-				k=3;
-			break;
-		case 1://检测上升沿
-			if(A[i+a_scan]-A[i]>bar_value&&A[i+a_scan+1]-A[i+1]>bar_value)
-			{
-				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
-				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				bar_flag+=10;
-				k=2;
-			}
-			if(j>=10)
-				k=3;
-			break;
-		case 2://检测下降沿
-			if(A[i]-A[i+a_scan]>bar_value&&A[i+1]-A[i+a_scan+1]>bar_value)//第一次检测到下降沿
-			{
-				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
-				bar_edge[j++]=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				bar_flag+=1;
-				k=1;
-			}
-			break;
-		case 3:
-			break;
-		}
-	}
-	if(bar_flag==122)
-	{
-		a_bar_cnt2++;
-		if(bar_edge[0]!=0&&bar_edge[1]!=0&&bar_edge[2]!=0&&bar_edge[3]!=0)
-		{
-			if(ABS(bar_edge[0]-bar_edge[1])<bar_value_s&&ABS(bar_edge[2]-bar_edge[3])>bar_value_l)
-				al_bar_flag2=1;
-			if(ABS(bar_edge[0]-bar_edge[1])>bar_value_l&&ABS(bar_edge[2]-bar_edge[3])<bar_value_s)
-				ar_bar_flag2=1;
-		}
-		else if(bar_edge[0]==0||bar_edge[1]==0)
-			al_bar_flag2=1;
-		else if(bar_edge[2]==0||bar_edge[3]==0)
-			ar_bar_flag2=1;
-		if(a_bar_cnt2>=2)
-		{
-			a_bar_flag2=1;
-		}
-	}
-}
-
-void BarrierControlNew(void)
-{
-	if(a_bar_flag2==1&&al_bar_flag2==1)
-	{
-		bar_contorl_cnt++;
-		if(bar_contorl_cnt<=bar_cnt_left)
-			error=bar_err_left;
-		else
-			error=b_error*bar_mal_left;
-	}
-	else if(a_bar_flag2==1&&ar_bar_flag2==1)
-	{
-		bar_contorl_cnt++;
-		if(bar_contorl_cnt<=bar_cnt_right)
-			error=bar_err_right;
-		else
-			error=b_error*bar_mal_right;
-	}
-	if((a_error+b_error)>b_bar_value2)
-	{
-		b_bar_cnt2++;
-		if(b_bar_cnt2>b_bar_cnttop2)
-		{
-			a_bar_flag2=0;
-			al_bar_flag2=0;
-			ar_bar_flag2=0;
-		}
-	}
-}
+//void SpeedFlagJudge_C(void)
+//{
+//	int turn_count=0;
+//	//转弯判断，turn_flag
+//	i=0;j=0;
+//	for(i=0;i<10;i++)
+//	{
+//		if(all_flag[i]!=2222)
+//		{
+//			turn_count++;
+//		}
+//		if(turn_count>=3)
+//		{
+//			j=1;
+//			break;
+//		}
+//	}
+//	if(j==1)
+//	{
+//		straight_flag=0;
+//		trans_enter_flag=0;
+//		trans_out_flag=0;
+//		turn_flag=1;
+//		return;
+//	}
+//	else
+//		turn_flag=0;
+//	
+//	//直道判断，straight_flag
+//	i=0;j=0;turn_count=0;
+//	for(i=0;i<8;i++)
+//	{
+//		if(all_flag[i]!=2222||c_flag[i]!=22)
+//		{
+//			turn_count++;
+//		}
+//		if(turn_count>=3)
+//		{
+//			j=1;
+//			break;
+//		}
+//	}
+//	if(j==0)
+//	{
+//		straight_flag=1;
+//		trans_enter_flag=0;
+//		trans_out_flag=0;
+//		return;
+//	}
+//	
+//	//转换判断，trans_flag
+//	if(all_flag[9]==2222&&(c_flag[9]!=22&&c_flag[8]!=22))//C看到12，21
+//	{
+//		if(straight_flag==1)
+//		{
+//			straight_flag=0;
+//			trans_enter_flag=1;
+//			trans_out_flag=0;
+//		}
+//		else if(trans_enter_flag==0)
+//		{
+//			trans_out_flag=1;
+//		}
+//		return;
+//	}
+//}

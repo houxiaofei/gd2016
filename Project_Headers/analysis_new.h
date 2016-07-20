@@ -36,20 +36,15 @@ extern int a_bar_flag2,al_bar_flag2,ar_bar_flag2;
 
 int AverageCalculate(int a, int b, int c[]);
 int EdgeCalculate(int a, int b, int c[],int avg);
-extern void DataSet(void);
 extern void PixelScan_B(void);
 extern void PixelScan_A(void);
 extern void PixelScan_C(void);
 extern void ErrorCalculate(void);
 extern void ErrorCalculate_A(void);
-void SpeedFlagJudge_C(void);
-void TrendCalculate(void);
-void EnterJudge(void);
+void SpecialJudge_C(void);
 void EndJudge(void);
 void BarrierJudge(void);
 void BarrierControl(void);
 
-void BarrierJudgeNew(void);
-void BarrierControlNew(void);
 
 #endif /* ANALYSIS_NEW_H_ */

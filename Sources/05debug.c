@@ -361,7 +361,7 @@ void LINFlex_RX_Interrupt(void)
 			RX_flag=0;
 			break;
 		case 2:
-			if(mode==8||basic_mode==4)//单环位置式
+			if(mode!=9)//单环位置式
 			{
 				Speed_kp_Left=(float)(Y[1]*10+Y[2])+((float)(Y[3]*10+Y[4]))/100;
 				Speed_ki_Left=(float)(Y[5]*10+Y[6])+((float)(Y[7]*10+Y[8]))/100;

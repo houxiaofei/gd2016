@@ -13,10 +13,10 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=250,transspeed=200,turnspeed=175,deadspeed=200,barspeed=190;//250,190,180
+int straightspeed=265,transspeed=210,turnspeed=185,deadspeed=210,barspeed=190;//250,190,180
 int dead_flag=0,dead_cnt=0,dead_cnt2=0,dead_not_cnt=0;
 //**********************差速参数***************************/
-signed int Speed_kc1=13000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=10000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
@@ -73,6 +73,7 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
+	int i=0,j=0,all_flag_count=0;
 	if((TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)&&dead_flag==0)
 	{
 		dead_cnt++;
@@ -97,60 +98,39 @@ void Speed_Set(void)
 	}
 	else
 		dead_not_cnt=0;
-	if(mode==10)
+	for(i=0;i<10;i++)
 	{
-		int i=0,j=0,all_flag_count=0;
-		for(i=0;i<10;i++)
+		if(all_flag[i]!=2222)
 		{
-			if(all_flag[i]!=2222)
-			{
-				all_flag_count++;
-			}
-			if(all_flag_count>=3)
-			{
-				j=1;
-				break;
-			}
+			all_flag_count++;
 		}
-		if(stop_flag==1)
-			targetspeed=0;
-		else if(a_bar_flag==1)
-			targetspeed=barspeed;
-	    else if(j==0||a_flag==11||b_flag==11)
-	    {
-	    	straight_flag=1;
-	    	turn_flag=0;
-	    	targetspeed=straightspeed;
-	    }
-		else if(dead_flag==2||dead_flag==1)
+		if(all_flag_count>=3)
 		{
-			turn_flag=0;
-			targetspeed=deadspeed;
+			j=1;
+			break;
 		}
-		else
-		{
-			turn_flag=1;
-			straight_flag=0;
-			targetspeed=turnspeed;
-		}	
+	}
+	if(stop_flag==1)
+		targetspeed=0;
+	else if(a_bar_flag==1)
+		targetspeed=barspeed;
+	else if(j==0||a_flag==11||b_flag==11)
+	{
+		straight_flag=1;
+		turn_flag=0;
+		targetspeed=straightspeed;
+	}
+	else if(dead_flag==2||dead_flag==1)
+	{
+		turn_flag=0;
+		targetspeed=deadspeed;
 	}
 	else
 	{
-		
-		//C-CCD版本
-		if(turn_flag)
-			targetspeed=turnspeed;
-		else if(straight_flag)
-			targetspeed=straightspeed;
-		else if(trans_enter_flag||trans_out_flag)
-			targetspeed=transspeed;
-		else if(Steer_PWM[3]==LEFT||Steer_PWM[3]==RIGHT)
-			targetspeed=deadspeed;
-		else if(a_bar_flag==1)
-			targetspeed=barspeed;
-		else
-			targetspeed=turnspeed;
-	}
+		turn_flag=1;
+		straight_flag=0;
+		targetspeed=turnspeed;
+	}	
 }
 
 //**********************双PID差速控制*******************************************

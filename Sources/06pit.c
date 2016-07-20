@@ -8,8 +8,8 @@
 #include "includes.h"
 
 unsigned int timecount=0;
-unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0;
-unsigned int steer_flag=0,oled_flag=0;
+unsigned int pitcount0=0,pitcount1=0,pitcount2=0,pitcount3=0,pitcount4=0,pitcount5=0,pitcount6=0;
+unsigned int steer_flag=0,oled_flag=0,start_flag=0;
 unsigned int end_judge_flag=0;
 
 void initPIT(void) 
@@ -32,14 +32,18 @@ void PitISR(void)//10ms一个控制周期
 {
 	pitcount1++;
 	pitcount2++;
+	pitcount6++;
 	steer_flag=1;
 	if(pitcount2>=1600)//1600
 		end_judge_flag=1;
-	if(a_bar_flag==1)
+	if(pitcount6>=200)
+		start_flag=1;
+	if(a_bar_flag==1||al_bar_flag==1||ar_bar_flag==1)
 	{
 		pitcount3++;
-		if(pitcount3>=50)
+		if(pitcount3>=30)
 		{
+			pitcount3=0;
 			a_bar_flag=0;
 			al_bar_flag=0;
 			ar_bar_flag=0;
