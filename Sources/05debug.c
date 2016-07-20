@@ -432,25 +432,23 @@ void LINFlex_RX_Interrupt(void)
 void KeyJudge(void)
 {
 	if(S3==0&&S3_last==1){   //按键S3按下
-		keymode=1;
+//		keymode+=1;
 //		targetspeed+=5;
 //		SET_motor(targetspeed,targetspeed);
-		TargetSteer+=1;
+		TargetSteer+=10;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
-	    keymode=2;
+//	    keymode-=1;
 //	    targetspeed-=5;
 //		SET_motor(targetspeed,targetspeed);
-	    TargetSteer-=1;
+	    TargetSteer-=10;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
-		keymode=3;
 //		targetspeed+=10;
 //		SET_motor(targetspeed,targetspeed);
 		TargetSteer+=10;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
-		keymode=4;
 //		targetspeed-=10;
 //		SET_motor(targetspeed,targetspeed);
 		TargetSteer-=10;
