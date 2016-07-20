@@ -13,6 +13,7 @@ unsigned long OLED_cnt;
 int main(void) {
 	initALL();
 	OLED_Init();
+	ChooseMode();
 	ModeGoJudge();
 	while(switch1){
 		OLED_cnt++;
@@ -264,15 +265,15 @@ void ModeGoJudge(void)
 	case 2://高速，切内
 		straightspeed=265;transspeed=190;turnspeed=190;deadspeed=210;barspeed=190;
 		Speed_kc1=10000;sp_x1=0.009;sp_x2=4.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		barleft_kp=4.5,barright_kp=3.5;
 		break;
 	case 3://高速，切中
 		straightspeed=265;transspeed=190;turnspeed=190;deadspeed=210;barspeed=190;
 		Speed_kc1=10000;sp_x1=0.0095;sp_x2=3.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		barleft_kp=4.5,barright_kp=3.5;
 		break;
 	case 4://中速，切内
@@ -301,16 +302,16 @@ void ModeGoJudge(void)
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 10://高高速，切内
-		straightspeed=255;transspeed=215;turnspeed=215;deadspeed=230;barspeed=190;
-		Speed_kc1=10000;sp_x1=0.0095;sp_x2=4;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		straightspeed=250;transspeed=215;turnspeed=220;deadspeed=240;barspeed=190;
+		Speed_kc1=10000;sp_x1=0.0095;sp_x2=4.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
+		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 11://高高速，切中
-		straightspeed=255;transspeed=215;turnspeed=215;deadspeed=230;barspeed=190;
+		straightspeed=250;transspeed=215;turnspeed=215;deadspeed=230;barspeed=190;
 		Speed_kc1=10000;sp_x1=0.0095;sp_x2=3.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 12://低速，切中
 		straightspeed=230;transspeed=190;turnspeed=190;deadspeed=190;barspeed=180;

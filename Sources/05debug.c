@@ -31,7 +31,7 @@ unsigned char S3_last=1;
 unsigned char S4_last=1;
 unsigned char S5_last=1;
 unsigned char S6_last=1;
-unsigned char keymode=0;
+unsigned char keymode=1;
 
 
 //********************************************************************************************************
@@ -440,7 +440,11 @@ void KeyJudge(void)
 			SET_motor(targetspeed,targetspeed);
 		}
 		else
+		{
 			keymode+=1;
+			if(keymode>=10)
+				keymode=1;
+		}
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 		if(mode==1)
@@ -451,7 +455,11 @@ void KeyJudge(void)
 			SET_motor(targetspeed,targetspeed);
 		}
 		else
+		{
 			keymode-=1;
+			if(keymode<=0)
+				keymode=9;
+		}
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		if(mode==1)
