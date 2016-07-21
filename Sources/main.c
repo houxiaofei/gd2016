@@ -37,6 +37,7 @@ void Direction_Control(void) //转向控制函数
 	ImageCapture(A,B,C);  //采图像，A-60，B-30，C-最远
 	PixelScan_A();//图像处理-A
 	PixelScan_B(); //图像处理-B
+	PixelScan_C(); //图像处理-C
 	ErrorCalculate_A();//偏差值计算-A
 	ErrorCalculate();//偏差值计算-B
 	Steer_PDSet();  //舵机PD参数
@@ -263,41 +264,38 @@ void ModeGoJudge(void)
 {
 	switch(mode){
 	case 2://高速，切内
-		straightspeed=265;transspeed=190;turnspeed=190;deadspeed=210;barspeed=190;
-		Speed_kc1=10000;sp_x1=0.009;sp_x2=4.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
-		barleft_kp=4.5,barright_kp=3.5;
+		straightspeed=270;turnspeed=220;
+		Speed_kc1=12000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 3://高速，切中
-		straightspeed=265;transspeed=190;turnspeed=190;deadspeed=210;barspeed=190;
-		Speed_kc1=10000;sp_x1=0.0095;sp_x2=3.5;sp_x3=30;Speed_kc1a=12000;Speed_kc1b=10000;
-		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
-		barleft_kp=4.5,barright_kp=3.5;
+		straightspeed=270;turnspeed=220;
+		Speed_kc1=12000;sp_x1=0.018;sp_x2=3.5;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 4://中速，切内
-		straightspeed=230;transspeed=180;turnspeed=180;deadspeed=180;barspeed=180;
-		Speed_kc1=10000;sp_x1=0.006;sp_x2=3;sp_x3=30;Speed_kc1a=13000;Speed_kc1b=10000;
-		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		straightspeed=270;turnspeed=200;
+		Speed_kc1=12000;sp_x1=0.012;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 5://中速，切中
-		straightspeed=245;transspeed=180;turnspeed=180;deadspeed=190;barspeed=180;
-		//Speed_kc1=11000;sp_x1=0.0075;sp_x2=3.5;sp_x3=30;//error>0
-		Speed_kc1=13000;sp_x1=0.006;sp_x2=3;sp_x3=30;Speed_kc1a=15000;Speed_kc1b=13000;
-		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		straightspeed=270;turnspeed=200;
+		Speed_kc1=13000;sp_x1=0.012;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 8://低速，切内
-		straightspeed=200;transspeed=160;turnspeed=160;deadspeed=160;barspeed=170;
-		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
+		straightspeed=230;turnspeed=170;
+		Speed_kc1=13000;sp_x1=0.012;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 9://低速，切中
-		straightspeed=200;transspeed=165;turnspeed=165;deadspeed=165;barspeed=170;
-		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
+		straightspeed=230;turnspeed=170;
+		Speed_kc1=13000;sp_x1=0.01;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;

@@ -13,7 +13,7 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=265,transspeed=210,turnspeed=190,deadspeed=210,barspeed=190;//250,190,180
+int straightspeed=270,transspeed=210,turnspeed=220,deadspeed=210,barspeed=190;//250,190,180
 int dead_flag=0,dead_cnt=0,dead_cnt2=0,dead_not_cnt=0;
 //**********************差速参数***************************/
 signed int Speed_kc1=10000,Speed_kc1a=10000,Speed_kc1b=10000,Speed_kc2=1300;//170-17000  180 15000,
@@ -73,67 +73,71 @@ void SET_motor(int leftSpeed,int rightSpeed)
 /*************************变速控制函数*********************/
 void Speed_Set(void)
 {
-	int i=0,j=0,all_flag_count=0;
-	if((TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)&&dead_flag==0)
-	{
-		dead_cnt++;
-		if(dead_cnt>=5)
-			dead_flag=1;
-	}
-	else
-		dead_cnt=0;
-	if(dead_flag==1&&((TargetSteer!=LEFT&&TargetSteer!=RIGHT)||ABS(error)<50))
-	{
-		dead_cnt2++;
-		if(dead_cnt>=2)
-			dead_flag=2;
-	}
-	else
-		dead_cnt2=0;
-	if(b_flag==22&&ABS(error)<20)
-	{
-		dead_not_cnt++;
-		if(dead_not_cnt>=2)
-			dead_flag=0;
-	}
-	else
-		dead_not_cnt=0;
-	for(i=0;i<10;i++)
-	{
-		if(all_flag[i]!=2222)
-		{
-			all_flag_count++;
-		}
-		if(all_flag_count>=3)
-		{
-			j=1;
-			break;
-		}
-	}
-	if(stop_flag==1)
-		targetspeed=0;
-	else if(a_bar_flag==1)
-		targetspeed=barspeed;
-	else if(j==0||a_flag==11||b_flag==11)
-	{
-		straight_flag=1;
-		Speed_kc1=Speed_kc1a;
-		turn_flag=0;
-		targetspeed=straightspeed;
-	}
-	else if(dead_flag==2||dead_flag==1)
-	{
-		turn_flag=0;
-		Speed_kc1=Speed_kc1a;
-		targetspeed=deadspeed;
-	}
-	else
-	{
-		turn_flag=1;
-		Speed_kc1=Speed_kc1b;
-		straight_flag=0;
+	if(c_edge<106)
 		targetspeed=turnspeed;
-	}	
+	else
+		targetspeed=straightspeed;
+//	int i=0,j=0,all_flag_count=0;
+//	if((TargetSteer==LEFT||TargetSteer==RIGHT||ABS(error)>50)&&dead_flag==0)
+//	{
+//		dead_cnt++;
+//		if(dead_cnt>=5)
+//			dead_flag=1;
+//	}
+//	else
+//		dead_cnt=0;
+//	if(dead_flag==1&&((TargetSteer!=LEFT&&TargetSteer!=RIGHT)||ABS(error)<50))
+//	{
+//		dead_cnt2++;
+//		if(dead_cnt>=2)
+//			dead_flag=2;
+//	}
+//	else
+//		dead_cnt2=0;
+//	if(b_flag==22&&ABS(error)<20)
+//	{
+//		dead_not_cnt++;
+//		if(dead_not_cnt>=2)
+//			dead_flag=0;
+//	}
+//	else
+//		dead_not_cnt=0;
+//	for(i=0;i<10;i++)
+//	{
+//		if(all_flag[i]!=2222)
+//		{
+//			all_flag_count++;
+//		}
+//		if(all_flag_count>=3)
+//		{
+//			j=1;
+//			break;
+//		}
+//	}
+//	if(stop_flag==1)
+//		targetspeed=0;
+//	else if(a_bar_flag==1)
+//		targetspeed=barspeed;
+//	else if(j==0||a_flag==11||b_flag==11)
+//	{
+//		straight_flag=1;
+//		Speed_kc1=Speed_kc1a;
+//		turn_flag=0;
+//		targetspeed=straightspeed;
+//	}
+//	else if(dead_flag==2||dead_flag==1)
+//	{
+//		turn_flag=0;
+//		Speed_kc1=Speed_kc1a;
+//		targetspeed=deadspeed;
+//	}
+//	else
+//	{
+//		turn_flag=1;
+//		Speed_kc1=Speed_kc1b;
+//		straight_flag=0;
+//		targetspeed=turnspeed;
+//	}	
 }
 
 //**********************双PID差速控制*******************************************

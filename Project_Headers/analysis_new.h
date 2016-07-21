@@ -28,6 +28,7 @@ extern int his_num,trend,trend_value,trend_value2,b_error_value,b_error_value2,e
 extern int barleft_kp,barright_kp;
 
 extern int cl_flag,cr_flag,cl_edge,cr_edge;
+extern int c_flag,c_edge,c_edge_left,c_edge_right;
 
 extern int straight_flag,trans_enter_flag,trans_out_flag,turn_flag;
 
