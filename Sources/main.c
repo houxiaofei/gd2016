@@ -13,17 +13,17 @@ unsigned long OLED_cnt;
 int main(void) {
 	initALL();
 	OLED_Init();
-	ChooseMode();
-	ModeGoJudge();
-	while(switch1){
-		OLED_cnt++;
-		KeyJudge();
-		if(OLED_cnt>=10000)
-		{
-			OLED_cnt=0;
-			OledGo();
-		}
-	}
+//	ChooseMode();
+//	ModeGoJudge();
+//	while(switch1){
+//		OLED_cnt++;
+//		KeyJudge();
+//		if(OLED_cnt>=10000)
+//		{
+//			OLED_cnt=0;
+//			OledGo();
+//		}
+//	}
 	ChooseMode();
 	if(mode>=16) ModeGo();	//跑车
 	else if(mode>=8)   ModeBlueSpeed(); //看速度图像，mode=8=单环位置式，mode=8+1=双环位置式,mode=8+2=2个CCD模式
