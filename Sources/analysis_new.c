@@ -65,7 +65,7 @@ int a_bar_cnt2=0,b_bar_value2=25,b_bar_cnt2=0,b_bar_cnttop2=1,a_bar_flag2=0,al_b
 
 int a_top_value=600,b_top_value=600,c_top_value=600;
 int al_edge_value=0,ar_edge_value=0,bl_edge_value=0,br_edge_value=0;
-int a_edge_diff=100,b_edge_diff=100;
+int a_edge_diff=180,b_edge_diff=180;
 
 int AverageCalculate(int a, int b, int c[])     //跳变沿平均值计算
 {

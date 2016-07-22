@@ -223,7 +223,8 @@ void ModeGoJudgeDebug(void)
 		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
-		barleft_kp=5;barright_kp=2.5;
+		barleft_kp=6;barright_kp=3.5;
+		a_edge_diff=130;b_edge_diff=130;
 		break;
 	case 15:
 		straightspeed=250;turnspeed=190;

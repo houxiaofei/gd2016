@@ -35,6 +35,8 @@ extern int straight_flag,trans_enter_flag,trans_out_flag,turn_flag;
 extern int bar_flag,bar_edge[10],bar_left_flag,bar_right_flag;
 extern int a_bar_flag2,al_bar_flag2,ar_bar_flag2;
 
+extern int a_edge_diff,b_edge_diff;
+
 int AverageCalculate(int a, int b, int c[]);
 int EdgeCalculate(int a, int b, int c[],int avg);
 extern void PixelScan_B(void);
