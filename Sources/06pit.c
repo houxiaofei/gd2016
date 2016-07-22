@@ -41,7 +41,7 @@ void PitISR(void)//6.25ms一个控制周期
 	if(a_bar_flag==1||al_bar_flag==1||ar_bar_flag==1)
 	{
 		pitcount3++;
-		if(pitcount3>=30)
+		if(pitcount3>=48)
 		{
 			pitcount3=0;
 			a_bar_flag=0;
@@ -52,7 +52,7 @@ void PitISR(void)//6.25ms一个控制周期
 	if(a_bar_flag2==1)
 	{
 		pitcount5++;
-		if(pitcount5>=30)
+		if(pitcount5>=48)
 		{
 			pitcount5=0;
 			a_bar_flag2=0;

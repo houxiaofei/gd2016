@@ -207,26 +207,26 @@ void ModeGoJudge(void)
 		straightspeed=230;transspeed=180;turnspeed=180;deadspeed=180;barspeed=180;
 		Speed_kc1=10000;sp_x1=0.006;sp_x2=3;sp_x3=30;Speed_kc1a=13000;Speed_kc1b=10000;
 		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 21://中速，切中
 		straightspeed=245;transspeed=180;turnspeed=180;deadspeed=190;barspeed=180;
 		//Speed_kc1=11000;sp_x1=0.0075;sp_x2=3.5;sp_x3=30;//error>0
 		Speed_kc1=13000;sp_x1=0.006;sp_x2=3;sp_x3=30;Speed_kc1a=15000;Speed_kc1b=13000;
 		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 24://低速，切内
 		straightspeed=200;transspeed=160;turnspeed=160;deadspeed=160;barspeed=170;
 		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 25://低速，切中
 		straightspeed=200;transspeed=165;turnspeed=165;deadspeed=165;barspeed=170;
 		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 26://高高速，切内
 		straightspeed=255;transspeed=215;turnspeed=215;deadspeed=230;barspeed=190;
@@ -244,13 +244,13 @@ void ModeGoJudge(void)
 		straightspeed=190;transspeed=150;turnspeed=150;deadspeed=160;barspeed=170;
 		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 29://低低速，切中
 		straightspeed=190;transspeed=155;turnspeed=155;deadspeed=165;barspeed=170;
 		Speed_kc1=16000;sp_x1=0.005;sp_x2=2;sp_x3=30;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;Motor_PWM_MAX=400;
 		break;
 	case 30://低速，切中
 		straightspeed=230;transspeed=190;turnspeed=190;deadspeed=190;barspeed=180;

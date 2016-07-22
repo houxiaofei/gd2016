@@ -33,7 +33,7 @@ extern float Speed_kp_Right,Speed_ki_Right,Speed_kd_Right;	//µç»úPID
 extern float KP_speed,KI_speed,KD_speed;
 extern float KP_DifSpd,KI_DifSpd,KD_DifSpd;
 
-extern int MotorPWM,LMotorPWM,RMotorPWM;
+extern int MotorPWM,LMotorPWM,RMotorPWM,Motor_PWM_MAX;
 extern int SumErrorLeft,SumErrorRight;
 
 extern int dead_flag;
