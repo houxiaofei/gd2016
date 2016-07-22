@@ -41,7 +41,7 @@ int i=0,j=0;
 
 int b_value_end=30,b_scan_end=10;//ÖÕµã30,10
 int c_value_end=30,c_scan_end=10;//ÖÕµã30,10
-int a_bar_value=25,a_bar_value2=60,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
+int a_bar_value=25,a_bar_value2=50,a_edg_err=0,a_bar_cnt=0,a_bar_flag=0,al_bar_flag=0,ar_bar_flag=0;//ÕÏ°­Îï
 int b_bar_value=25,b_bar_cnt=0,b_bar_cnttop=1,ab_difference=0,ab_difference_value=6;//ÕÏ°­Îï
 int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
 int barleft_kp=6,barright_kp=3.5;

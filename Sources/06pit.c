@@ -15,7 +15,7 @@ unsigned int end_judge_flag=0;
 void initPIT(void) 
 {                                   //1ms一个控制周期// NOTE:  DIVIDER FROM SYSCLK TO PIT ASSUMES DEFAULT DIVIDE BY 1 
     PIT.PITMCR.R = 0x00000001;       // Enable PIT and configure timers to stop in debug mode 
-    PIT.CH[1].LDVAL.R = 500000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 10 msec //电信50万 无偏正片60
+    PIT.CH[1].LDVAL.R = 500000;      // PIT1 timeout = 800000 sysclks x 1sec/80M sysclks = 6.25 msec //电信50万 无偏正片60
     PIT.CH[1].TCTRL.R = 0x000000003; // Enable PIT1 interrupt and make PIT active to count 
     INTC_InstallINTCInterruptHandler(PitISR,60,4); 
 }
@@ -28,15 +28,15 @@ void initPIT2(void)
     udelay(10);
 }
 
-void PitISR(void)//10ms一个控制周期
+void PitISR(void)//6.25ms一个控制周期
 {
 	pitcount1++;
 	pitcount2++;
 	pitcount6++;
 	steer_flag=1;
-	if(pitcount2>=1600)//1600
+	if(pitcount2>=2240)//14s
 		end_judge_flag=1;
-	if(pitcount6>=300)
+	if(pitcount6>=400)//2.5s
 		start_flag=1;
 	if(a_bar_flag==1||al_bar_flag==1||ar_bar_flag==1)
 	{
@@ -65,7 +65,7 @@ void PitISR(void)//10ms一个控制周期
 	//time1=TIME;
 	//time2=TIME;
 	//time3=TimeMesure();
-	if(pitcount1>=100)                         //1s一次
+	if(pitcount1>=160)                         //1s一次
 	{
 		pitcount1=0;
 		oled_flag=1;
