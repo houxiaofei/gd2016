@@ -139,8 +139,16 @@ void OLED_Test(void)
 	OLED_Num(tsr);
 
 	OLED_SetPointer(1,5);
-	OLED_Str("key: ");
-	OLED_Num(keymode);
+	OLED_Str("flag: ");
+    OLED_Num(cl_flag);
+    OLED_Str("  ");
+    OLED_Num(cr_flag);
+    OLED_Str("  ");
+    OLED_Num(cl_edge);
+    OLED_Str("  ");
+    OLED_Num(cr_edge);
+//	OLED_Str("key: ");
+//	OLED_Num(keymode);
 	//	OLED_Str("  ");
 	//	OLED_Str("RPID: ");
 	//	OLED_Num(RPID);
