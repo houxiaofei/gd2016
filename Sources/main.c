@@ -288,13 +288,13 @@ void ModeGoJudge(void)
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 8://低速，切内
-		straightspeed=230;turnspeed=170;
+		straightspeed=220;turnspeed=170;
 		Speed_kc1=13000;sp_x1=0.012;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 9://低速，切中
-		straightspeed=230;turnspeed=170;
+		straightspeed=220;turnspeed=170;
 		Speed_kc1=13000;sp_x1=0.01;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
@@ -311,17 +311,17 @@ void ModeGoJudge(void)
 		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
-	case 12://低速，切中
-		straightspeed=230;transspeed=190;turnspeed=190;deadspeed=190;barspeed=180;
-		Speed_kc1=10000;sp_x1=0.006;sp_x2=2;sp_x3=30;
-		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+	case 12://低低速，切内
+		straightspeed=200;turnspeed=160;
+		Speed_kc1=13000;sp_x1=0.012;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
-	case 13://低速，切中
-		straightspeed=230;transspeed=190;turnspeed=190;deadspeed=190;barspeed=180;
-		Speed_kc1=10000;sp_x1=0.006;sp_x2=2;sp_x3=30;
-		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
-		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
+	case 13://低低速，切中
+		straightspeed=200;turnspeed=160;
+		Speed_kc1=13000;sp_x1=0.012;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=8;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=8;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 14://低速，切中
 		straightspeed=230;transspeed=190;turnspeed=190;deadspeed=190;barspeed=180;

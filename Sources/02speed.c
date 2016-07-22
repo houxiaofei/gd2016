@@ -13,10 +13,10 @@ int csl_cnt[3]={0,0,0},csr_cnt[3]={0,0,0};
 int targetspeed=0,Motor_PWM_MAX=450,Motor_PWM_MIN=-400;
 float csxs=0.6;//差速系数
 //**********************变速参数***************************/
-int straightspeed=270,transspeed=210,turnspeed=220,deadspeed=210,barspeed=190;//250,190,180
+int straightspeed=220,transspeed=170,turnspeed=170,deadspeed=170,barspeed=170;//250,190,180
 int dead_flag=0,dead_cnt=0,dead_cnt2=0,dead_not_cnt=0;
 //**********************差速参数***************************/
-signed int Speed_kc1=10000,Speed_kc1a=10000,Speed_kc1b=10000,Speed_kc2=1300;//170-17000  180 15000,
+signed int Speed_kc1=13000,Speed_kc1a=10000,Speed_kc1b=10000,Speed_kc2=1300;//170-17000  180 15000,
 signed int wheel_distance=9;//半车距8
 signed int RPID=0;
 float r=0;
