@@ -63,7 +63,7 @@ int bar_value=70,bar_value_s=10,bar_value_l=17;
 int bar_err_left=25,bar_err_right=-25,bar_cnt_left=2,bar_cnt_right=2,bar_mal_left=4,bar_mal_right=4;
 int a_bar_cnt2=0,b_bar_value2=25,b_bar_cnt2=0,b_bar_cnttop2=1,a_bar_flag2=0,al_bar_flag2=0,ar_bar_flag2=0;
 
-int a_top_value=600,b_top_value=600;
+int a_top_value=600,b_top_value=600,c_top_value=600;
 int al_edge_value=0,ar_edge_value=0,bl_edge_value=0,br_edge_value=0;
 int a_edge_diff=100,b_edge_diff=100;
 
@@ -490,6 +490,11 @@ void PixelScan_C(void)
 		}
 		if(i<(c_end-c_scan))
 		{
+			if(keymode==1)
+			{
+				if(C[i]>c_top_value)
+					C[i]=c_top_value;
+			}
 			if(C[i]-C[i+c_scan]>c_value&&C[i+1]-C[i+c_scan+1]>c_value)
 			{
 				c_edge_left=i;
@@ -806,7 +811,6 @@ void EndJudge(void)
 	}
 	else
 	{
-		b_value_end=50;
 		for(i=bl_edge;i<br_edge;i++)
 		{
 			switch(k){

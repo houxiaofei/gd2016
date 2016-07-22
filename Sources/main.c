@@ -35,7 +35,7 @@ unsigned long OLED_cnt;
 		if(mode>=8)   ModeGoDebug(); //跑车
 		else if(mode==5)   ModeBlueImage(); //看CCD图像
 		else if(mode==3)   ModeOpenGo();//开环跑
-		else ModeSteerModify();//调舵机中值
+		else if(mode==1) ModeSteerModify();//调舵机中值
 	}
 }
 
@@ -203,6 +203,35 @@ void ModeGoJudgeDebug(void)
 		Speed_kc1=13000;sp_x1=0.015;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		break;
+	case 9:
+		straightspeed=250;turnspeed=190;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		barleft_kp=8;barright_kp=5;
+		break;
+	case 11:
+		straightspeed=250;turnspeed=190;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		barleft_kp=4;barright_kp=2;
+		break;
+	case 13:
+		straightspeed=250;turnspeed=190;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		barleft_kp=5;barright_kp=2.5;
+		break;
+	case 15:
+		straightspeed=250;turnspeed=190;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
+		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		barleft_kp=6;barright_kp=3.5;
+		b_value_end=50;
 		break;
 	}
 }

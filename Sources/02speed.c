@@ -281,12 +281,18 @@ void SpeedControl()//闭环,加差速位置式1111
 	
 	tsl=((r+wheel_distance)/r)*targetspeed;//左轮减速
 	}
-	else
+	else if(error>0)
 	{
 	tsr=((r-wheel_distance)/r)*targetspeed;//右轮减速
 	
 	tsl=targetspeed;//左轮加速((r+1.5*wheel_distance)/r)*
 	
+	}
+	else
+	{
+		tsr=targetspeed;
+		
+		tsl=targetspeed;
 	}
 	
 //	
