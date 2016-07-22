@@ -28,7 +28,7 @@ extern unsigned char S3_last;
 extern unsigned char S4_last;
 extern unsigned char S5_last;
 extern unsigned char S6_last;
-extern unsigned char keymode;
+extern unsigned char keymode,keyend;
 extern unsigned char mode,basic_mode;
 
 extern unsigned long time1;

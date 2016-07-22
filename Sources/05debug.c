@@ -31,7 +31,8 @@ unsigned char S3_last=1;
 unsigned char S4_last=1;
 unsigned char S5_last=1;
 unsigned char S6_last=1;
-unsigned char keymode=1;
+unsigned char keymode=0;
+unsigned char keyend=0;
 
 
 //********************************************************************************************************
@@ -434,114 +435,34 @@ void KeyJudge(void)
 	if(S3==0&&S3_last==1){   //按键S3按下
 		if(mode==1)
 			TargetSteer+=10;
-		else if(mode==2||mode==31)
-		{
-			targetspeed+=10;
-			SET_motor(targetspeed,targetspeed);
-		}
+		else if(mode==3)
+			turnspeed+=5;
 		else
-		{
-			keymode+=1;
-			if(keymode>=10)
-				keymode=1;
-		}
+			keymode=1;
 		}
 	if(S4==0&&S4_last==1){   //按键S4按下
 		if(mode==1)
 			TargetSteer-=10;
-		else if(mode==2||mode==31)
-		{
-			targetspeed-=10;
-			SET_motor(targetspeed,targetspeed);
-		}
+		else if(mode==3)
+			turnspeed-=5;
 		else
-		{
-			keymode-=1;
-			if(keymode<=0)
-				keymode=9;
-		}
+			keymode=0;
 	    }
 	if(S5==0&&S5_last==1){   //按键S5按下
 		if(mode==1)
 			TargetSteer+=1;
-		else if(mode==2||mode==31)
-		{
-			targetspeed+=5;
-			SET_motor(targetspeed,targetspeed);
-		}
+		else if(mode==3)
+			straightspeed+=5;
 		else
-		{
-			switch(keymode){
-			case 1:
-				straightspeed+=10;
-				break;
-			case 2:
-				turnspeed+=5;
-				break;
-			case 3:
-				deadspeed+=5;
-				break;
-			case 4:
-				a_bar_value2+=10;
-				break;
-			case 5:
-				barleft_kp+=1;
-				//barright_kp+=1;
-				break;
-			case 6:
-				b_value_end+=10;
-			case 7:
-				sp_x1+=0.001;
-				break;
-			case 8:
-				sp_x2+=0.5;
-				break;
-			case 9:
-				Speed_kc1+=1000;
-				break;
-			}
-		}
+			keyend=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		if(mode==1)
 			TargetSteer-=1;
-		else if(mode==2||mode==31)
-		{
-			targetspeed-=5;
-			SET_motor(targetspeed,targetspeed);
-		}
+		else if(mode==3)
+			straightspeed-=5;
 		else
-		{
-			switch(keymode){
-			case 1:
-				straightspeed-=10;
-				break;
-			case 2:
-				turnspeed-=5;
-				break;
-			case 3:
-				deadspeed-=5;
-				break;
-			case 4:
-				a_bar_value2-=10;
-				break;
-			case 5:
-				barleft_kp-=1;
-				//barright_kp+=1;
-				break;
-			case 6:
-				b_value_end-=10;
-			case 7:
-				sp_x1-=0.001;
-				break;
-			case 8:
-				sp_x2-=0.5;
-				break;
-			case 9:
-				Speed_kc1-=1000;
-				break;
-			}
-		}
+			keyend=0;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;
@@ -573,78 +494,17 @@ void OledGo(void)
 {//拨码开关拨到下是1，拨到上是0
 	OLED_Fill(0x00);
 	OLED_SetPointer(0,5);
-	OLED_Str("ts: ");
-	OLED_Num(targetspeed);
+	OLED_Str("speed: ");
+	OLED_Num(straightspeed);
 	OLED_Str("  ");
-	OLED_Num(tsl);
+	OLED_Num(turnspeed);
 	OLED_Str("  ");
-	OLED_Num(tsr);
+	OLED_Num(sp_x1*1000);
+
 	
 	OLED_SetPointer(1,5);
 	OLED_Str("key: ");
-	OLED_Num(keymode);
-	
-	switch(keymode){
-	case 0:
-		break;
-	case 1:
-		OLED_SetPointer(2,5);
-		OLED_Str("straightspeed: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(straightspeed);
-		break;
-	case 2:
-		OLED_SetPointer(2,5);
-		OLED_Str("turnspeed: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(turnspeed);
-		break;
-	case 3:
-		OLED_SetPointer(2,5);
-		OLED_Str("deadspeed: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(deadspeed);
-		break;
-	case 4:
-		OLED_SetPointer(2,5);
-		OLED_Str("a_bar_value2: zhang ai wu");
-		OLED_SetPointer(3,5);
-	    OLED_Num(a_bar_value2);
-		break;
-	case 5:
-		OLED_SetPointer(2,5);
-		OLED_Str("barleft_kp: ");
-		//OLED_Str("barright_kp: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(barleft_kp*10);
-	    //OLED_Num(barright_kp*10);
-		break;
-	case 6:
-		OLED_SetPointer(2,5);
-		OLED_Str("b_value_end: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(b_value_end);
-		break;
-	case 7:
-		OLED_SetPointer(2,5);
-		OLED_Str("sp_x1: xiedu");
-		OLED_SetPointer(3,5);
-	    OLED_Num(sp_x1*10000);
-		break;
-	case 8:
-		OLED_SetPointer(2,5);
-		OLED_Str("sp_x2: jizhi");
-		OLED_SetPointer(3,5);
-	    OLED_Num(sp_x2*10);
-		break;
-	case 9:
-		OLED_SetPointer(2,5);
-		OLED_Str("Speed_kc1: ");
-		OLED_SetPointer(3,5);
-	    OLED_Num(Speed_kc1/1000);
-		break;
-	default:
-		break;
-		
-	}
+	OLED_Num(keymode);	
+	OLED_Str("end: ");
+	OLED_Num(keyend);
 }

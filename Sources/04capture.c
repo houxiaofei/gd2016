@@ -103,10 +103,10 @@ void SpeedCount(void)
 	}
 	else 
 		csl=speedcounter1-speedcounter2;
-	if(forwardleft)
-		csl=csl;
-	else 
+	if(backwardleft)
 		csl=-csl;
+	else 
+		csl=csl;
 	speedcounter2=speedcounter1;
 	
 	speedcounter3=EMIOS_0.CH[8].CCNTR.R;               //”“A8
@@ -116,10 +116,10 @@ void SpeedCount(void)
 	}
 	else 
 		csr=speedcounter3-speedcounter4;	
-	if(forwardright) 
-		csr=csr;
-	else 
+	if(backwardright) 
 		csr=-csr;
+	else 
+		csr=csr;
 	speedcounter4=speedcounter3;
 	
 //	csl_cnt[0]=csl_cnt[1];csl_cnt[1]=csl_cnt[2];csl_cnt[2]=csl;

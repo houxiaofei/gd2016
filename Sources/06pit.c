@@ -28,20 +28,20 @@ void initPIT2(void)
     udelay(10);
 }
 
-void PitISR(void)//10ms一个控制周期
+void PitISR(void)//6.25ms一个控制周期
 {
 	pitcount1++;
 	pitcount2++;
 	pitcount6++;
 	steer_flag=1;
-	if(pitcount2>=1600)//1600
+	if(pitcount2>=2240)//14s
 		end_judge_flag=1;
-	if(pitcount6>=300)
+	if(pitcount6>=400)
 		start_flag=1;
 	if(a_bar_flag==1||al_bar_flag==1||ar_bar_flag==1)
 	{
 		pitcount3++;
-		if(pitcount3>=30)
+		if(pitcount3>=48)
 		{
 			pitcount3=0;
 			a_bar_flag=0;
@@ -65,7 +65,7 @@ void PitISR(void)//10ms一个控制周期
 	//time1=TIME;
 	//time2=TIME;
 	//time3=TimeMesure();
-	if(pitcount1>=100)                         //1s一次
+	if(pitcount1>=160)                         //1s一次
 	{
 		pitcount1=0;
 		oled_flag=1;
@@ -75,10 +75,13 @@ void PitISR(void)//10ms一个控制周期
 
 void PitISR2(void)
 {
-	if(basic_mode==2||mode==31)//开环
+	if(mode==1)
+		return;
+	if(mode==3)//开环
 	{
 		SpeedCount();  //光编计数，采速度值
 		Speed_Set();
+		SET_motor(targetspeed,targetspeed);
 		if(stop_flag==1)  //停车
 		{
 			targetspeed=0;
@@ -97,13 +100,7 @@ void PitISR2(void)
 				targetspeed=0;
 				if(((csl+csr)/2)>15)
 				{
-					if(mode!=9)
-						SpeedControl(); //位置式控制
-					else if(mode==9)
-					{
-						Speed_PID2();//外环位置式
-						DifferSpeed_PID2();//内环位置式
-					}
+					SpeedControl(); //位置式控制
 				}
 				else
 				{
@@ -114,24 +111,12 @@ void PitISR2(void)
 			else
 			{
 				targetspeed=turnspeed;
-				if(mode!=9)
-					SpeedControl(); //位置式控制
-				else if(mode==9)
-				{
-					Speed_PID2();//外环位置式
-					DifferSpeed_PID2();//内环位置式
-				}
+				SpeedControl(); //位置式控制
 			}
 		}
 		else
 		{
-			if(mode!=9)
 				SpeedControl(); //位置式控制
-			else if(mode==9)
-			{
-				Speed_PID2();//外环位置式
-				DifferSpeed_PID2();//内环位置式
-			}
 		}
 	}
 	PIT.CH[2].TFLG.B.TIF = 1;//write 1 to clear PIT2 清除标志位

@@ -42,31 +42,22 @@ void Steer_PDSet(void)
 	}
 	else if(targetspeed<280)//140-180//150-190//160 5 8 8 10 10 10
 	{
-		if(mode==2||mode==31)
-		{
-			if(ABS(target_offset)<35)        {Steer_kp=5;Steer_kd=10;}
-			else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.2+5;Steer_kd=10;}
-			else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+7;Steer_kd=10;}
-			else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.1+8;Steer_kd=10;}
-			else                            {Steer_kp=8;Steer_kd=10;}
-			return;
-		}
-		else if(mode==24||mode==25)
-		{
-			if(ABS(target_offset)<35)        {Steer_kp=3;Steer_kd=10;}
-			else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.2+3;Steer_kd=10;}
-			else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+5;Steer_kd=10;}
-			else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.1+6;Steer_kd=10;}
-			else                            {Steer_kp=7;Steer_kd=10;}
-			return;
-		}
-		else
-		{
+//		if(mode==2||mode==31)
+//		{
+//			if(ABS(target_offset)<35)        {Steer_kp=5;Steer_kd=10;}
+//			else if(ABS(target_offset)<45)  {Steer_kp=(ABS(target_offset)-35)*0.2+5;Steer_kd=10;}
+//			else if(ABS(target_offset)<55)  {Steer_kp=(ABS(target_offset)-45)*0.1+7;Steer_kd=10;}
+//			else if(ABS(target_offset)<65)  {Steer_kp=(ABS(target_offset)-55)*0.1+8;Steer_kd=10;}
+//			else                            {Steer_kp=8;Steer_kd=10;}
+//			return;
+//		}
+//		else
+//		{
 			if(ABS(target_offset)<sp_x3) {Steer_kp=sp_x2;Steer_kd=12;}
 			else if(ABS(target_offset)<60)  {Steer_kp=sp_x1*(ABS(target_offset)-sp_x3)*(ABS(target_offset)-sp_x3)+sp_x2;Steer_kd=15;}//0.0111 30 4   0.00325 10 4   0.0091  20 4
 			else                            {Steer_kp=10;Steer_kd=12;}//14
 			return;
-		}
+//		}
 //		if(ABS(target_offset)<25)        {Steer_kp=2;Steer_kd=5;}
 //		else if(ABS(target_offset)<50)  {Steer_kp=(ABS(target_offset)-25)*0.1+2;Steer_kd=5;}
 //		else if(ABS(target_offset)<60)  {Steer_kp=(ABS(target_offset)-50)*0.2+4.5;Steer_kd=5;}
