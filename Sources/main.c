@@ -10,7 +10,7 @@ void ModeSteerModify(void);
 
 unsigned long OLED_cnt;
 
-int main(void) {
+   int main(void) {
 	initALL();
 	OLED_Init();
 //	ChooseMode();

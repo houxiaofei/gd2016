@@ -47,7 +47,7 @@ int al_bar_edge=0,ar_bar_edge=0,a_bar_avg=0;
 int barleft_kp=6,barright_kp=3.5;
 
 int c_count=0,c_flag=0,c_edge=120,c_edge_left=0,c_edge_right=0;
-int c_start=50,c_end=120,c_allwhite=60,c_allblack=10,c_T=320,c_value=80,c_scan=6,c_expand=5;//C-CCDÊúÖ±
+int c_start=50,c_end=120,c_allwhite=60,c_allblack=10,c_T=320,c_value=80,c_scan=10,c_expand=5;//C-CCDÊúÖ±
 
 //int cl_count=0,cr_count=0,c_flag=0,cl_flag=0,cr_flag=0,cl_edge=0,cr_edge=0,cl_edge_left=0,cl_edge_right=0,cr_edge_left=0,cr_edge_right=0;
 //int c_start=66,cl_start=70,cr_start=62,cl_end=40,cr_end=92,c_allwhite=20,c_allblack=6,c_T=300,c_avg=0;
@@ -446,8 +446,8 @@ void PixelScan_C(void)
 {
 	c_count=0;
 	c_flag=4;
-	c_edge=0;
-	for(i=c_start;i>c_end;i++)
+	c_edge=120;
+	for(i=c_start;i<c_end;i++)
 	{
 		if(C[i]>c_T)
 		{
