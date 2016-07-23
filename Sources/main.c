@@ -11,7 +11,7 @@ void ModeGoJudgeDebug(void);
 
 unsigned long OLED_cnt;
 
-   int main(void) {
+    int main(void) {
 	initALL();
 	OLED_Init();
 	ChooseMode();
@@ -186,11 +186,12 @@ void ModeGoJudgeDebug(void)
 		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
-	case 27://第一圈,240,190
-		straightspeed=240;turnspeed=190;
+	case 27://第一圈,50
+		straightspeed=250;turnspeed=190;
 		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		steer_amb_value=50;
 		break;
 	case 29://第二圈，200，170
 		straightspeed=200;turnspeed=170;
@@ -198,18 +199,19 @@ void ModeGoJudgeDebug(void)
 		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
-	case 31://第一圈,0.015
+	case 31://第一圈,200
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.015;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
+		steer_amb_value=200;
 		break;
 	case 9:
 		straightspeed=250;turnspeed=190;
 		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
-		barleft_kp=8;barright_kp=5;
+		steer_amb_value=300;
 		break;
 	case 11:
 		straightspeed=250;turnspeed=190;

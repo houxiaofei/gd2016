@@ -127,18 +127,12 @@ void PixelScan_A(void)
 		}
 		if(i>(al_end+a_scan))
 		{
-			if(keymode==1)
-			{
-				if(A[i]>a_top_value)
-					A[i]=a_top_value;
-			}
 			if(A[i]-A[i-a_scan]>a_value2&&A[i-1]-A[i-a_scan-1]>a_value2)
 			{
 				al_edge_left=i-a_scan-a_expand2;
 				al_edge_right=i+a_expand1;
 				a_avg=AverageCalculate((i-a_scan-a_expand2),(i+a_expand1),A);
 				al_edge=EdgeCalculate((i-a_scan-a_expand2),(i+a_expand1),A,a_avg);
-				al_edge_value=A[al_edge];
 				if(i>al_scan_i)
 					a_T=a_avg;
 				if(al_edge<a_start+a_offset)
@@ -153,7 +147,6 @@ void PixelScan_A(void)
 				al_edge_right=i+a_expand1;
 				a_avg=AverageCalculate((i-a_scan-a_expand2),(i+a_expand1),A);
 				al_edge=EdgeCalculate((i-a_scan-a_expand2),(i+a_expand1),A,a_avg);
-				al_edge_value=A[al_edge];
 				if(al_edge<a_start+a_offset)
 				{
 					al_flag=3;
@@ -186,18 +179,12 @@ void PixelScan_A(void)
 			ar_count++;
 		if(i<(ar_end-a_scan))
 		{
-			if(keymode==1)
-			{
-				if(A[i]>a_top_value)
-					A[i]=a_top_value;
-			}
 			if(A[i]-A[i+a_scan]>a_value2&&A[i+1]-A[i+a_scan+1]>a_value2)
 			{
 				ar_edge_left=i-a_expand1;
 				ar_edge_right=i+a_scan+a_expand2;
 				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
 				ar_edge=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				ar_edge_value=A[ar_edge];
 				if(i<ar_scan_i)
 					a_T=a_avg;
 				if(ar_edge>a_start-a_offset)
@@ -212,7 +199,6 @@ void PixelScan_A(void)
 				ar_edge_right=i+a_scan+a_expand2;
 				a_avg=AverageCalculate((i-a_expand1),(i+a_scan+a_expand2),A);
 				ar_edge=EdgeCalculate((i-a_expand1),(i+a_scan+a_expand2),A,a_avg);
-				ar_edge_value=A[ar_edge];
 				if(ar_edge>a_start-a_offset)
 				{
 					ar_flag=3;
@@ -256,18 +242,12 @@ void PixelScan_B(void)
 			bl_count++;
 		if(i>(bl_end+b_scan))
 		{
-			if(keymode==1)
-			{
-				if(B[i]>b_top_value)
-					B[i]=b_top_value;
-			}
 			if(B[i]-B[i-b_scan]>b_value2&&B[i-1]-B[i-b_scan-1]>b_value2)	//白-黑
 			{
 				bl_edge_left=i-b_scan-b_expand2;
 				bl_edge_right=i+b_expand1;
 				b_avg=AverageCalculate((i-b_scan-b_expand2),(i+b_expand1),B);
 				bl_edge=EdgeCalculate((i-b_scan-b_expand2),(i+b_expand1),B,b_avg);				//获取跳变沿坐标
-				bl_edge_value=B[bl_edge];
 				if(i>bl_scan_i)
 					b_T=b_avg;
 				if(bl_edge<b_start+b_offset)
@@ -282,7 +262,6 @@ void PixelScan_B(void)
 				bl_edge_right=i+b_expand1;
 				b_avg=AverageCalculate((i-b_scan-b_expand2),(i+b_expand1),B);
 				bl_edge=EdgeCalculate((i-b_scan-b_expand2),(i+b_expand1),B,b_avg);			//获取跳变沿坐标
-				bl_edge_value=B[bl_edge];
 				if(bl_edge<b_start+b_offset)
 				{
 					bl_flag=3;
@@ -315,18 +294,12 @@ void PixelScan_B(void)
 			br_count++;
 		if(i<(br_end-b_scan))
 		{
-			if(keymode==1)
-			{
-				if(B[i]>b_top_value)
-					B[i]=b_top_value;
-			}
 			if(B[i]-B[i+b_scan]>b_value2&&B[i+1]-B[i+b_scan+1]>b_value2)	//白-黑
 			{
 				br_edge_left=i-b_expand1;
 				br_edge_right=i+b_scan+b_expand2;
 				b_avg=AverageCalculate((i-b_expand1),(i+b_scan+b_expand2),B);
 				br_edge=EdgeCalculate((i-b_expand1),(i+b_scan+b_expand2),B,b_avg);
-				br_edge_value=B[br_edge];
 				if(i<br_scan_i)
 					b_T=b_avg;
 				if(br_edge>b_start-b_offset)
@@ -341,7 +314,6 @@ void PixelScan_B(void)
 				br_edge_right=i+b_scan+b_expand2;
 				b_avg=AverageCalculate((i-b_expand1),(i+b_scan+b_expand2),B);
 				br_edge=EdgeCalculate((i-b_expand1),(i+b_scan+b_expand2),B,b_avg);
-				br_edge_value=B[br_edge];
 				if(br_edge>b_start-b_offset)
 				{
 					br_flag=3;
@@ -557,15 +529,6 @@ void ErrorCalculate_A(void)
 
 void ErrorCalculate(void)
 {
-	if(keymode==1)
-	{
-		if(bl_edge_value!=0&&br_edge_value!=0)
-		{
-			if(ABS(bl_edge_value-br_edge_value)>b_edge_diff)
-				wrong_flag=1;
-			return;
-		}
-	}
 //	if(b_flag==0&&a_flag==0)	//全黑情况
 //	{
 //		stop_cnt++;

@@ -13,6 +13,8 @@ double Steer_kp=0,Steer_kd=0;//舵机P、D值
 unsigned int RIGHT=3261;//新2820 老3310,右极限值
 unsigned int LEFT=4041;//新3630 老4110,左极限值
 unsigned int Steer_PWM[4]={0,0,0,CENTER};//舵机输出值记录
+unsigned int Steer_amb[2]={CENTER,CENTER};
+int steer_amb_cnt=0,steer_amb_value=100;
 
 /*************************舵机PD曲线参数***********************/
 unsigned char sp_x2=4,sp_x3=35;
@@ -212,6 +214,20 @@ void Steer_PDSet(void)
 /*************************舵机控制，PD***********************/
 void SteerControl(void)
 {
+	if(keymode==1)
+	{
+		steer_amb_cnt++;
+		if(steer_amb_cnt>=2)
+		{
+			steer_amb_cnt=0;
+			Steer_amb[0]=Steer_PWM[2];
+			Steer_amb[1]=Steer_PWM[3];
+			if(ABS(Steer_amb[0]-Steer_amb[1])>steer_amb_value&&a_bar_flag!=1)
+			{
+				wrong_flag=1;
+			}
+		}
+	}
 	if(wrong_flag==1)
 	{
 		Steer_PWM[3]=(Steer_PWM[2]+Steer_PWM[1])/2;

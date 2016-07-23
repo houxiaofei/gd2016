@@ -14,6 +14,7 @@ extern double Steer_kp,Steer_kd;
 extern unsigned int LEFT,RIGHT;
 extern unsigned char sp_x2,sp_x3;
 extern double sp_x1;
+extern int steer_amb_value;
 
 void SET_steer(unsigned int steer);
 extern void Steer_PDSet(void);
