@@ -454,7 +454,7 @@ void KeyJudge(void)
 		else if(mode==3)
 			straightspeed+=5;
 		else
-			keyend=1;
+			keyright=1;
 		}
 	if(S6==0&&S6_last==1){   //按键S6按下
 		if(mode==1)
@@ -462,7 +462,7 @@ void KeyJudge(void)
 		else if(mode==3)
 			straightspeed-=5;
 		else
-			keyend=0;
+			keyright=0;
 		}
 	S3_last=S3;             //保存按键的状态
 	S4_last=S4;
@@ -505,6 +505,6 @@ void OledGo(void)
 	OLED_SetPointer(1,5);
 	OLED_Str("key: ");
 	OLED_Num(keymode);	
-	OLED_Str("end: ");
-	OLED_Num(keyend);
+	OLED_Str("right: ");
+	OLED_Num(keyright);
 }

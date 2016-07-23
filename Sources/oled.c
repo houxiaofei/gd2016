@@ -257,8 +257,8 @@ void OLED_Test(void)
 	CurrentSteer=TargetSteer;
 	OLED_Num(CurrentSteer);
 	OLED_Str("  ");
-	OLED_Str("end: ");
-	OLED_Num(keyend);
+	OLED_Str("kr: ");
+	OLED_Num(keyright);
 //	OLED_Str("bar: ");
 //	OLED_Num(bar_flag);
 //	OLED_Str("  ");

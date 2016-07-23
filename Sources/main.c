@@ -67,6 +67,7 @@ void ModeGoDebug(void)//调试模式跑
 			oled_flag=0;
 			OLED_Test();
 		}
+		KeyJudge();
 	}
 }
 
@@ -164,65 +165,65 @@ void ModeGoJudgeDebug(void)
 	switch(mode){
 	case 25://第一圈
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 21://切外，第二圈
 		straightspeed=230;turnspeed=170;
-		Speed_kc1=13000;sp_x1=0.018;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 23://障碍物不过，第二圈
 		straightspeed=230;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.018;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 19://第三圈
 		straightspeed=210;turnspeed=160;
-		Speed_kc1=13000;sp_x1=0.015;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.018;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=10;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=10;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 27://第一圈,50
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		steer_amb_value=50;
 		break;
 	case 29://第二圈，200，170
 		straightspeed=200;turnspeed=170;
-		Speed_kc1=13000;sp_x1=0.018;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.018;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=12;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=12;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		break;
 	case 31://第一圈,200
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		steer_amb_value=200;
 		break;
 	case 9:
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		steer_amb_value=300;
 		break;
 	case 11:
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		barleft_kp=4;barright_kp=2;
 		break;
 	case 13:
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		barleft_kp=6;barright_kp=3.5;
@@ -230,7 +231,7 @@ void ModeGoJudgeDebug(void)
 		break;
 	case 15:
 		straightspeed=250;turnspeed=190;
-		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;
+		Speed_kc1=13000;sp_x1=0.02;sp_x2=4;sp_x3=35;sp_x1_right=0.025;
 		Speed_kp_Left=15;Speed_ki_Left=0.2;Speed_kd_Left=1;
 		Speed_kp_Right=15;Speed_ki_Right=0.2;Speed_kd_Right=1;
 		barleft_kp=6;barright_kp=3.5;
